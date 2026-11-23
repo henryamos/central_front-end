@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+build/
+coverage/
+playwright-report/
+test-results/
+pnpm-lock.yaml
+next-env.d.ts
+docs/CCC-SDA-*.md
+AGENTS.md
+
+public/mockServiceWorker.js
+public/fonts/figtree-OFL.txt

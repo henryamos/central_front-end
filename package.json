@@ -1,27 +1,66 @@
 {
-  "name": "front-end",
+  "name": "ccc-sda-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "prepare": "husky",
+    "test:e2e:mocks": "playwright test --config=playwright.mock.config.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^7.0.8",
+    "@tanstack/react-query": "^5.108.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.77.0",
     "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "react-hook-form": "^7.92.0",
+    "tailwind-merge": "^3.7.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@tailwindcss/turbopack": "4.3.3",
-    "@types/node": "^20",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^8.0.0",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.3.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
-    "tailwindcss": "4.3.3",
-    "typescript": "^5"
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jsdom": "^31.0.1",
+    "lint-staged": "^17.6.1",
+    "msw": "^3.0.7",
+    "prettier": "^3.10.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tailwindcss": "4.3.5",
+    "typescript": "^5",
+    "vitest": "^5.1.1"
   },
-  "packageManager": "pnpm@11.22.0"
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }

@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CCC SDA Web
 
-## Getting Started
+Public website foundation for Cape Coast Central SDA. The existing folder is named front-end; the package is ccc-sda-web.
 
-First, run the development server:
+## Start
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Use Node.js 24 and pnpm 12.21.0 as pinned in package.json (Corepack or pnpm's package-manager version management).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Run pnpm install --frozen-lockfile.
+2. Copy .env.example to .env.local only if configuration is needed. No secret or API connection is required for the foundation.
+3. Run pnpm dev and open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+On Windows PowerShell with restricted script execution, use pnpm.cmd instead of pnpm. Installation configures Husky automatically; run pnpm prepare if hooks need reinstalling.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Commands
 
-## Learn More
+| Command                         | Purpose                                                  |
+| ------------------------------- | -------------------------------------------------------- |
+| pnpm dev                        | Development server                                       |
+| pnpm build                      | Production build                                         |
+| pnpm start                      | Serve the production build                               |
+| pnpm lint                       | ESLint                                                   |
+| pnpm typecheck                  | Generate route types and check strict TypeScript         |
+| pnpm format / pnpm format:check | Write / check formatting                                 |
+| pnpm test / pnpm test:watch     | Unit tests / watch                                       |
+| pnpm check                      | Formatting, lint, types, unit tests                      |
+| pnpm test:e2e                   | Production smoke tests; build and install Chromium first |
 
-To learn more about Next.js, take a look at the following resources:
+For E2E, run pnpm exec playwright install chromium, pnpm build, then pnpm test:e2e. Port 3000 must be free. CI installs Chromium with system dependencies.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development mock check
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The approved font is self-hosted Figtree. No font provider connection is required.
 
-## Deploy on Vercel
+To exercise Query -> shared HTTP client -> MSW in the browser:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Copy .env.example to .env.local and set NEXT_PUBLIC_API_MOCKING=enabled.
+2. Start pnpm dev (restart after environment changes).
+3. Open http://localhost:3000/dev/foundation and use Refresh request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Mocking defaults off and production builds reject enabling it. The demo route returns 404 in production. Its synthetic endpoint is not a real church API. Use pnpm test:e2e:mocks to verify browser interception automatically on a separate development server at port 3100. Production smoke checks still use pnpm test:e2e after building. Details and ownership are in docs/FOUNDATION.md.
+
+## Structure and rules
+
+Read AGENTS.md, docs/CCC-SDA-PRD.md, docs/CCC-SDA-ARCHITECTURE.md and docs/CCC-SDA-ROADMAP.md before feature work. See [the foundation guide](docs/FOUNDATION.md) for folder ownership, scope and remaining work.
+
+The local branch is main. No remote was configured during foundation setup. Commit messages follow Conventional Commits, for example feat(guests): add approved registration form. Hooks run staged lint/format checks, commit-message validation, then types and unit tests before pushing. CI also builds and runs desktop, tablet and mobile smoke tests.
+
+This is an engineering scaffold. Production content, guest forms, backend integrations, UI primitives, header/footer and final page design remain future work. The infrastructure mock demonstrates the transport/provider stack. Indexing is disabled until publication is approved.

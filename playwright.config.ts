@@ -1,0 +1,35 @@
+import { defineConfig, devices } from "@playwright/test";
+export default defineConfig({
+  testDir: "./tests/e2e",
+  testMatch: "**/foundation.spec.ts",
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 2 : undefined,
+  reporter: process.env.CI ? "github" : "list",
+  use: { baseURL: "http://127.0.0.1:3000", trace: "retain-on-failure" },
+  projects: [
+    { name: "http", testMatch: "**/routing.spec.ts" },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "tablet",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 768, height: 1024 },
+      },
+    },
+    {
+      name: "mobile",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 320, height: 740 },
+      },
+    },
+  ],
+  webServer: {
+    command: "pnpm start --hostname 127.0.0.1",
+    url: "http://127.0.0.1:3000",
+    reuseExistingServer: false,
+    timeout: 120000,
+  },
+});
