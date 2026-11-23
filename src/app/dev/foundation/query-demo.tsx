@@ -9,7 +9,10 @@ export function QueryDemo() {
       apiGet("/api/v1/_foundation/status", foundationStatusSchema, { signal }),
   });
   return (
-    <section className="section container" aria-labelledby="foundation-title">
+    <section
+      className="section site-container"
+      aria-labelledby="foundation-title"
+    >
       <h1 id="foundation-title">Infrastructure check</h1>
       {query.isPending ? (
         <p role="status">Loading mock response...</p>

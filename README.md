@@ -26,7 +26,9 @@ On Windows PowerShell with restricted script execution, use pnpm.cmd instead of 
 | pnpm check                      | Formatting, lint, types, unit tests                      |
 | pnpm test:e2e                   | Production smoke tests; build and install Chromium first |
 
-For E2E, run pnpm exec playwright install chromium, pnpm build, then pnpm test:e2e. Port 3000 must be free. CI installs Chromium with system dependencies.
+For E2E, run pnpm exec playwright install chromium firefox webkit, pnpm build, then pnpm test:e2e. Port 3000 must be free. CI installs Chromium with system dependencies.
+
+See [the design system](docs/DESIGN-SYSTEM.md) for approved colours, Figtree, token usage, responsive rules and browser support.
 
 ## Development mock check
 

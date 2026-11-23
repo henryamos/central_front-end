@@ -10,6 +10,21 @@ export default defineConfig({
   use: { baseURL: "http://127.0.0.1:3000", trace: "retain-on-failure" },
   projects: [
     { name: "http", testMatch: "**/routing.spec.ts" },
+    {
+      name: "design-system",
+      testMatch: "**/design-system.spec.ts",
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "design-system-firefox",
+      testMatch: "**/design-system.spec.ts",
+      use: { ...devices["Desktop Firefox"] },
+    },
+    {
+      name: "design-system-webkit",
+      testMatch: "**/design-system.spec.ts",
+      use: { ...devices["Desktop Safari"] },
+    },
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     {
       name: "tablet",

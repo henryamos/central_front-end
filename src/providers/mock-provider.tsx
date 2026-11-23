@@ -23,13 +23,13 @@ export function MockProvider({ children }: { children: ReactNode }) {
   }, []);
   if (state === "starting")
     return (
-      <p className="section container" role="status">
+      <p className="section site-container" role="status">
         Starting development mocks...
       </p>
     );
   if (state === "error")
     return (
-      <p className="section container" role="alert">
+      <p className="section site-container" role="alert">
         Development mocks could not start. Check the worker setup and reload.
       </p>
     );

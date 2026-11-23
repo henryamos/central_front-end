@@ -24,7 +24,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm build
-      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm test:e2e
       - run: pnpm test:e2e:mocks
       - uses: actions/upload-artifact@v4

@@ -1,9 +1,23 @@
-:root {
-  --brand-primary: #2f557f;
-  --surface: #ffffff;
-  --surface-muted: #f5f5f5;
-  --text: #171717;
-  --font-body: var(--font-figtree), system-ui, sans-serif;
+/* CCC SDA design tokens. Keep raw design values in this file. */
+@theme static {
+  /* Approved palette; remove unrelated Tailwind palette values. */
+  --color-*: initial;
+  --color-primary: #2f557f;
+  --color-background: #ffffff;
+  --color-surface-muted: #f5f5f5;
+  --color-foreground: #171717;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-*: initial;
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Size utilities and plain CSS resolve the same type scale. */
+  --text-*: initial;
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -13,44 +27,92 @@
   --text-3xl: 2rem;
   --text-4xl: 2.5rem;
   --text-5xl: 3rem;
-  --text-heading: clamp(var(--text-3xl), 5vw, var(--text-5xl));
-  --weight-regular: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
+  --text-title: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  --text-xs--line-height: var(--leading-ui);
+  --text-sm--line-height: var(--leading-ui);
+  --text-base--line-height: var(--leading-body);
+  --text-lg--line-height: var(--leading-body);
+  --text-xl--line-height: var(--leading-ui);
+  --text-2xl--line-height: var(--leading-heading);
+  --text-3xl--line-height: var(--leading-heading);
+  --text-4xl--line-height: var(--leading-heading);
+  --text-5xl--line-height: var(--leading-heading);
+  --text-title--line-height: var(--leading-heading);
+  --leading-*: initial;
   --leading-body: 1.6;
   --leading-ui: 1.4;
   --leading-heading: 1.15;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-24: 96px;
-  --radius-none: 0;
+  --tracking-*: initial;
+  --tracking-normal: 0em;
+  --tracking-tight: -0.02em;
+
+  /* Explicit approved steps, rather than unrestricted spacing multiples. */
+  --spacing: initial;
+  --spacing-*: initial;
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+  --radius-*: initial;
+  --radius-none: 0px;
   --radius-sm: 4px;
   --radius-md: 8px;
-  --content-max: 1280px;
-  --measure: 65ch;
-  --touch-target: 48px;
-  --focus-width: 2px;
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --section-space: var(--space-12);
-}
-@theme {
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+
   --breakpoint-*: initial;
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
+
+@theme inline static {
+  /* Inline resolution keeps next/font's local font variable in scope. */
+  --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --color-primary-foreground: var(--color-background);
+  /* Fixed sRGB derivatives: no runtime colour-mixing dependency. */
+  --color-primary-hover: #2c4e73;
+  --color-primary-active: #294666;
+  --color-muted-foreground: #5d5d5d;
+  --color-border: #dadada;
+  --color-border-control: #7f7f7f;
+  --color-focus: var(--color-primary);
+  --color-focus-inverse: var(--color-background);
+}
+
+:root {
+  color-scheme: light;
+  --content-max: 1280px;
+  --measure: 65ch;
+  --page-gutter: var(--spacing-4);
+  --section-space: var(--spacing-12);
+  --touch-target: var(--spacing-12);
+  --focus-width: 2px;
+  --focus-offset: var(--spacing-1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+}
+
 @media (width >= theme(--breakpoint-md)) {
   :root {
-    --section-space: var(--space-24);
+    --page-gutter: var(--spacing-6);
+    --section-space: var(--spacing-16);
+  }
+}
+@media (width >= theme(--breakpoint-lg)) {
+  :root {
+    --page-gutter: var(--spacing-8);
+    --section-space: var(--spacing-24);
   }
 }
 @media (prefers-reduced-motion: reduce) {

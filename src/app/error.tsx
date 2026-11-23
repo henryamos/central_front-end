@@ -6,7 +6,7 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   return (
-    <section className="section container" aria-labelledby="error-title">
+    <section className="section site-container" aria-labelledby="error-title">
       <h1 id="error-title">Something went wrong</h1>
       <p>Please try loading this page again.</p>
       <button type="button" onClick={reset}>

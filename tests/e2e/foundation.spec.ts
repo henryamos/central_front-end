@@ -25,6 +25,10 @@ test("public routes have one main landmark and no horizontal overflow", async ({
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
     await expect(page.getByRole("main")).toHaveCount(1);
+    await expect(
+      page.locator(".site-container .site-container"),
+      "Nested page gutters at " + route,
+    ).toHaveCount(0);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
@@ -32,7 +36,9 @@ test("public routes have one main landmark and no horizontal overflow", async ({
     );
     expect(
       await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth,
       ),
       route,
     ).toBe(true);

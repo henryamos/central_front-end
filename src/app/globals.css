@@ -1,67 +1,72 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
-@theme inline {
-  --font-sans: var(--font-body);
-  --color-primary: var(--brand-primary);
-  --color-background: var(--surface);
-  --color-foreground: var(--text);
+
+/* Base rules must yield to component and utility styles. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-normal);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-normal);
+    overflow-wrap: anywhere;
+  }
+  a {
+    color: var(--color-primary);
+    text-underline-offset: var(--spacing-1);
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  button {
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+    padding: var(--spacing-2) var(--spacing-4);
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+  h1 {
+    font-size: var(--text-title);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-tight);
+    margin: 0 0 var(--spacing-6);
+  }
+  p {
+    max-width: var(--measure);
+    margin: 0 0 var(--spacing-6);
+  }
 }
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-weight: var(--weight-regular);
-  font-size: var(--text-base);
-  line-height: var(--leading-body);
-}
-a {
-  color: var(--brand-primary);
-  text-underline-offset: var(--space-1);
-}
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-button {
-  min-height: var(--touch-target);
-  padding: var(--space-2) var(--space-4);
-  cursor: pointer;
-}
-:focus-visible {
-  outline: var(--focus-width) solid var(--brand-primary);
-  outline-offset: var(--space-1);
-}
-.container {
-  width: min(calc(100% - var(--space-8)), var(--content-max));
-  margin-inline: auto;
-}
-.section {
-  padding-block: var(--section-space);
-}
-h1 {
-  font-size: var(--text-heading);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-heading);
-  margin: 0 0 var(--space-6);
-}
-p {
-  max-width: var(--measure);
-  margin: 0 0 var(--space-6);
-}
-.skip-link {
-  position: absolute;
-  top: var(--space-4);
-  left: var(--space-4);
-  padding: var(--space-3);
-  background: var(--surface);
-  transform: translateY(-200%);
-}
-.skip-link:focus {
-  transform: translateY(0);
+
+@layer components {
+  .site-container {
+    width: min(calc(100% - var(--page-gutter) * 2), var(--content-max));
+    margin-inline: auto;
+  }
+  .section {
+    padding-block: var(--section-space);
+  }
+  .skip-link {
+    position: absolute;
+    top: var(--spacing-4);
+    left: var(--spacing-4);
+    padding: var(--spacing-3);
+    background: var(--color-background);
+    transform: translateY(-200%);
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+  }
 }
