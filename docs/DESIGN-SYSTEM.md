@@ -15,6 +15,7 @@ Status: engineering baseline for the approved light theme. Palette and Figtree a
 | Supporting text        | --color-muted-foreground                       | #5D5D5D               | Neutral text that retains at least 4.5:1 on both surfaces                    |
 | Decorative divider     | --color-border                                 | #DADADA               | For decorative separators, not the sole boundary of an input                 |
 | Control boundary       | --color-border-control                         | #7F7F7F               | At least 3:1 on both surfaces                                                |
+| Validation error       | --color-danger                                 | #B42318               | Semantic text/border feedback; at least 4.5:1 on both surfaces               |
 | Focus                  | --color-focus / --color-focus-inverse          | Denim / white aliases | Choose the ring that contrasts with the surrounding surface                  |
 
 Derived states are fixed sRGB values rather than runtime colour-mixing expressions. No competing decorative accent is introduced. Use semantic colour classes such as bg-primary, text-foreground, text-muted-foreground and border-border-control. The unrelated default Tailwind palette is removed. Add error/success colours only alongside a component requirement and contrast checks. Colour must be accompanied by text or another meaningful indicator.
@@ -23,7 +24,7 @@ Text pairs target at least 4.5:1; meaningful control boundaries target at least 
 
 ## Figtree and typography
 
-The normal variable Figtree file is self-hosted through next/font/local at weights 300-900 with display: swap. Use the four system weights: normal 400, medium 500, semibold 600 and bold 700. All content and controls use the same font; official SDA logo typography remains separate. Font files, origin and the SIL license are under public/fonts.
+The normal variable Figtree file is self-hosted through next/font/local at weights 300-900 with display: swap. Use normal 400, medium 500, semibold 600 and bold 700; black 900 is available for prominent display headings. Keep body text and controls at their existing weights. All content and controls use the same font; official SDA logo typography remains separate. Font files, origin and the SIL license are under public/fonts.
 
 | Token / utility | Size at a 16px root | Intended use                   |
 | --------------- | ------------------- | ------------------------------ |
@@ -44,7 +45,7 @@ Body leading is 1.6, UI leading 1.4 and heading leading 1.15. Size utilities hav
 
 Spacing utilities and CSS share exactly 0 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96px through --spacing-0/1/2/3/4/6/8/12/16/24. Example: p-4 and var(--spacing-4) both mean 16px. Use existing tokens instead of arbitrary one-off sizes. Radii are none (0), sm (4px), md (8px). Default framework shadow tokens are removed. Layout width is capped at 1280px.
 
-Controls have a 48px minimum target in both dimensions. Focus outline is 2px with a 4px offset. Motion durations are --duration-fast (150ms) and --duration-normal (250ms), with ease-standard. Both durations become 0ms for reduced-motion preferences. Components must consume the duration variables rather than embed numeric transition durations.
+Controls have a 48px minimum target in both dimensions. The shared focus width is 2px. Button and Input use a single inset focus treatment without an offset outer outline; error inputs keep the danger colour. Transparent outlines preserve forced-colours visibility. Unstyled controls and links retain the global 2px outline with a 4px offset as a fallback. Motion durations are --duration-fast (150ms) and --duration-normal (250ms), with ease-standard. Control transitions cover background, border and text colours; focus indicators change immediately without animating an old outline colour. Both durations become 0ms for reduced-motion preferences. Components must consume the duration variables rather than embed numeric transition durations.
 
 ## Responsive contract
 
@@ -92,4 +93,4 @@ pnpm test:e2e runs token, contrast, motion and responsive checks in Chromium, Fi
 
 Use Tailwind's semantic utilities for feature styling. In CSS, reference the exact same custom properties. Example utility names: bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active p-4 rounded-sm font-semibold text-base leading-ui. Semantic status tokens and component variants should be added through this file when a real use case establishes them.
 
-The design values live in tokens.css, not a duplicate TypeScript theme object. globals.css owns resets and global/layout rules. Future UI primitives compose those values and document their states without introducing separate palettes or spacing scales.
+The design values live in tokens.css, not a duplicate TypeScript theme object. globals.css owns resets and global/layout rules. Shared UI primitives compose those values and document their states without introducing separate palettes or spacing scales. See [COMPONENTS.md](COMPONENTS.md) for the implemented APIs, states and composition patterns.

@@ -1,4 +1,8 @@
 "use client";
+import { Container } from "@/components/layout/container/container";
+import { Section } from "@/components/layout/section/section";
+import { Heading, Text } from "@/components/ui/typography/typography";
+import { Button } from "@/components/ui/button/button";
 import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "@/lib/api/client";
 import { foundationStatusSchema } from "@/mocks/foundation";
@@ -9,33 +13,32 @@ export function QueryDemo() {
       apiGet("/api/v1/_foundation/status", foundationStatusSchema, { signal }),
   });
   return (
-    <section
-      className="section site-container"
-      aria-labelledby="foundation-title"
-    >
-      <h1 id="foundation-title">Infrastructure check</h1>
-      {query.isPending ? (
-        <p role="status">Loading mock response...</p>
-      ) : query.isError ? (
-        <>
-          <p role="alert">{query.error.message}</p>
-          <button type="button" onClick={() => void query.refetch()}>
-            Try again
-          </button>
-        </>
-      ) : (
-        <>
-          <p>Response source: {query.data.source}</p>
-          <p role="status">Query request ready</p>
-          <button
-            type="button"
-            onClick={() => void query.refetch()}
-            disabled={query.isFetching}
-          >
-            {query.isFetching ? "Refreshing..." : "Refresh request"}
-          </button>
-        </>
-      )}
-    </section>
+    <Section aria-labelledby="foundation-title">
+      <Container className="grid justify-items-start gap-6">
+        <Heading level={1} id="foundation-title">
+          Infrastructure check
+        </Heading>
+        {query.isPending ? (
+          <Text role="status">Loading mock response...</Text>
+        ) : query.isError ? (
+          <>
+            <Text role="alert">{query.error.message}</Text>
+            <Button onClick={() => void query.refetch()}>Try again</Button>
+          </>
+        ) : (
+          <>
+            <Text>Response source: {query.data.source}</Text>
+            <Text role="status">Query request ready</Text>
+            <Button
+              onClick={() => void query.refetch()}
+              loading={query.isFetching}
+              loadingLabel="Refreshing..."
+            >
+              Refresh request
+            </Button>
+          </>
+        )}
+      </Container>
+    </Section>
   );
 }

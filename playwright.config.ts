@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+const baseURL = "http://127.0.0.1:3200";
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: "**/foundation.spec.ts",
@@ -7,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI ? "github" : "list",
-  use: { baseURL: "http://127.0.0.1:3000", trace: "retain-on-failure" },
+  use: { baseURL, trace: "retain-on-failure" },
   projects: [
     { name: "http", testMatch: "**/routing.spec.ts" },
     {
@@ -42,8 +43,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm start --hostname 127.0.0.1",
-    url: "http://127.0.0.1:3000",
+    command: "pnpm start --hostname 127.0.0.1 --port 3200",
+    url: baseURL,
     reuseExistingServer: false,
     timeout: 120000,
   },

@@ -52,6 +52,7 @@
 
 @layer components {
   .site-container {
+    min-inline-size: 0;
     width: min(calc(100% - var(--page-gutter) * 2), var(--content-max));
     margin-inline: auto;
   }

@@ -15,10 +15,11 @@
     "test:e2e": "playwright test",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
     "prepare": "husky",
-    "test:e2e:mocks": "playwright test --config=playwright.mock.config.ts"
+    "test:e2e:dev": "playwright test --config=playwright.dev.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.8",
+    "@radix-ui/react-select": "^2.4.1",
     "@tanstack/react-query": "^5.108.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.77.0",

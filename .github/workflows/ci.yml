@@ -26,7 +26,7 @@ jobs:
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium firefox webkit
       - run: pnpm test:e2e
-      - run: pnpm test:e2e:mocks
+      - run: pnpm test:e2e:dev
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

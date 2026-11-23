@@ -1,0 +1,3 @@
+/** Shared native field surface. Design values remain in tokens.css. */
+export const fieldClasses =
+  "block min-h-(--touch-target) w-full min-w-(--touch-target) rounded-sm border-(length:--control-border-width) border-border-control bg-background px-4 py-3 font-sans text-base leading-ui text-foreground transition-(--transition-control) duration-(--duration-fast) ease-standard placeholder:text-muted-foreground placeholder:opacity-100 focus:border-primary focus:outline-hidden focus:inset-ring-(length:--control-border-width) focus:inset-ring-primary disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-muted-foreground aria-invalid:border-danger aria-invalid:focus:border-danger aria-invalid:focus:inset-ring-danger";

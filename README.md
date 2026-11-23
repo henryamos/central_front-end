@@ -26,9 +26,13 @@ On Windows PowerShell with restricted script execution, use pnpm.cmd instead of 
 | pnpm check                      | Formatting, lint, types, unit tests                      |
 | pnpm test:e2e                   | Production smoke tests; build and install Chromium first |
 
-For E2E, run pnpm exec playwright install chromium firefox webkit, pnpm build, then pnpm test:e2e. Port 3000 must be free. CI installs Chromium with system dependencies.
+For E2E, run pnpm exec playwright install chromium firefox webkit, pnpm build, then pnpm test:e2e. The production test server uses port 3200; that port must be free. CI installs Chromium with system dependencies.
 
 See [the design system](docs/DESIGN-SYSTEM.md) for approved colours, Figtree, token usage, responsive rules and browser support.
+
+## Component reference
+
+Run pnpm dev and open http://localhost:3000/dev/components for the shared primitive reference. It demonstrates local interactions and validation only. See [COMPONENTS.md](docs/COMPONENTS.md) for APIs and usage. Run pnpm test:e2e:dev to check the component reference across Chromium, Firefox and WebKit plus the mock request example.
 
 ## Development mock check
 
@@ -40,7 +44,7 @@ To exercise Query -> shared HTTP client -> MSW in the browser:
 2. Start pnpm dev (restart after environment changes).
 3. Open http://localhost:3000/dev/foundation and use Refresh request.
 
-Mocking defaults off and production builds reject enabling it. The demo route returns 404 in production. Its synthetic endpoint is not a real church API. Use pnpm test:e2e:mocks to verify browser interception automatically on a separate development server at port 3100. Production smoke checks still use pnpm test:e2e after building. Details and ownership are in docs/FOUNDATION.md.
+Mocking defaults off and production builds reject enabling it. The demo route returns 404 in production. Its synthetic endpoint is not a real church API. Use pnpm test:e2e:dev to verify browser interception automatically on a development server at port 3000. Production smoke checks still use pnpm test:e2e after building. Details and ownership are in docs/FOUNDATION.md.
 
 ## Structure and rules
 
@@ -48,4 +52,4 @@ Read AGENTS.md, docs/CCC-SDA-PRD.md, docs/CCC-SDA-ARCHITECTURE.md and docs/CCC-S
 
 The local branch is main. No remote was configured during foundation setup. Commit messages follow Conventional Commits, for example feat(guests): add approved registration form. Hooks run staged lint/format checks, commit-message validation, then types and unit tests before pushing. CI also builds and runs desktop, tablet and mobile smoke tests.
 
-This is an engineering scaffold. Production content, guest forms, backend integrations, UI primitives, header/footer and final page design remain future work. The infrastructure mock demonstrates the transport/provider stack. Indexing is disabled until publication is approved.
+This is an engineering scaffold. Production content, guest forms, backend integrations, the remaining primitives, header/footer and final page design remain future work. The infrastructure mock demonstrates the transport/provider stack. Indexing is disabled until publication is approved.

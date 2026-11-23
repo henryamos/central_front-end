@@ -1,4 +1,8 @@
 "use client";
+import { Container } from "@/components/layout/container/container";
+import { Section } from "@/components/layout/section/section";
+import { Heading, Text } from "@/components/ui/typography/typography";
+import { Button } from "@/components/ui/button/button";
 export default function ErrorPage({
   reset,
 }: {
@@ -6,12 +10,14 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   return (
-    <section className="section site-container" aria-labelledby="error-title">
-      <h1 id="error-title">Something went wrong</h1>
-      <p>Please try loading this page again.</p>
-      <button type="button" onClick={reset}>
-        Try again
-      </button>
-    </section>
+    <Section aria-labelledby="error-title">
+      <Container className="grid justify-items-start gap-6">
+        <Heading level={1} id="error-title">
+          Something went wrong
+        </Heading>
+        <Text>Please try loading this page again.</Text>
+        <Button onClick={reset}>Try again</Button>
+      </Container>
+    </Section>
   );
 }

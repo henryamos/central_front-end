@@ -6,6 +6,9 @@
   --color-background: #ffffff;
   --color-surface-muted: #f5f5f5;
   --color-foreground: #171717;
+  /* Validation text/borders: semantic feedback, never a decorative accent. */
+  --color-danger: #b42318;
+  --color-overlay: #17171799;
   --color-transparent: transparent;
   --color-current: currentColor;
 
@@ -15,6 +18,7 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  --font-weight-black: 900;
 
   /* Size utilities and plain CSS resolve the same type scale. */
   --text-*: initial;
@@ -74,6 +78,7 @@
   --breakpoint-xl: 80rem;
   --ease-*: initial;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --animate-spin: spin 1s linear infinite;
 }
 
 @theme inline static {
@@ -94,11 +99,17 @@
   color-scheme: light;
   --content-max: 1280px;
   --measure: 65ch;
+  --form-max: 32rem;
+  --dialog-max: 30rem;
+  --select-menu-max: 20rem;
+  --layer-popover: 10;
   --page-gutter: var(--spacing-4);
   --section-space: var(--spacing-12);
   --touch-target: var(--spacing-12);
+  --control-border-width: 1px;
   --focus-width: 2px;
   --focus-offset: var(--spacing-1);
+  --transition-control: background-color, border-color, color;
   --duration-fast: 150ms;
   --duration-normal: 250ms;
 }

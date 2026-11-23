@@ -97,6 +97,7 @@ test("semantic colour pairs meet contrast targets and motion respects preference
       "primary-hover",
       "primary-active",
       "border-control",
+      "danger",
     ]) {
       probe.style.color = "var(--color-" + token + ")";
       context.fillStyle = getComputedStyle(probe).color;
@@ -110,7 +111,12 @@ test("semantic colour pairs meet contrast targets and motion respects preference
     return colours;
   });
   for (const surface of ["background", "surface-muted"]) {
-    for (const foreground of ["foreground", "muted-foreground", "primary"]) {
+    for (const foreground of [
+      "foreground",
+      "muted-foreground",
+      "primary",
+      "danger",
+    ]) {
       expect(
         contrast(colours[foreground], colours[surface]),
         foreground + " on " + surface,
@@ -169,27 +175,26 @@ test("layout honours breakpoint edges, text enlargement and long content", async
     320, 375, 639, 640, 767, 768, 1023, 1024, 1279, 1280, 1440, 1920,
   ]) {
     await page.setViewportSize({ width, height: 900 });
-    const layout = await page
-      .locator(".site-container.section")
-      .evaluate((element) => {
-        const rect = element.getBoundingClientRect(),
-          style = getComputedStyle(element);
-        return {
-          width: rect.width,
-          left: rect.left,
-          right: document.documentElement.clientWidth - rect.right,
-          available: document.documentElement.clientWidth,
-          contentLeft: rect.left + parseFloat(style.paddingLeft),
-          contentRight:
-            document.documentElement.clientWidth -
-            rect.right +
-            parseFloat(style.paddingRight),
-          sectionSpace: parseFloat(style.paddingTop),
-          overflow:
-            document.documentElement.scrollWidth >
-            document.documentElement.clientWidth,
-        };
-      });
+    const layout = await page.locator(".site-container").evaluate((element) => {
+      const rect = element.getBoundingClientRect(),
+        style = getComputedStyle(element),
+        sectionStyle = getComputedStyle(element.closest(".section") ?? element);
+      return {
+        width: rect.width,
+        left: rect.left,
+        right: document.documentElement.clientWidth - rect.right,
+        available: document.documentElement.clientWidth,
+        contentLeft: rect.left + parseFloat(style.paddingLeft),
+        contentRight:
+          document.documentElement.clientWidth -
+          rect.right +
+          parseFloat(style.paddingRight),
+        sectionSpace: parseFloat(sectionStyle.paddingTop),
+        overflow:
+          document.documentElement.scrollWidth >
+          document.documentElement.clientWidth,
+      };
+    });
     const gutter = width >= 1024 ? 32 : width >= 768 ? 24 : 16,
       sectionSpace = width >= 1024 ? 96 : width >= 768 ? 64 : 48;
     const expectedWidth = Math.min(layout.available - gutter * 2, 1280);

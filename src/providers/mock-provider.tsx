@@ -1,4 +1,7 @@
 "use client";
+import { Container } from "@/components/layout/container/container";
+import { Section } from "@/components/layout/section/section";
+import { Text } from "@/components/ui/typography/typography";
 import { useEffect, useState, type ReactNode } from "react";
 /** Mounted only in explicitly enabled development mode; gates requests until MSW is ready. */
 export function MockProvider({ children }: { children: ReactNode }) {
@@ -23,15 +26,22 @@ export function MockProvider({ children }: { children: ReactNode }) {
   }, []);
   if (state === "starting")
     return (
-      <p className="section site-container" role="status">
-        Starting development mocks...
-      </p>
+      <Section aria-label="Development startup">
+        <Container>
+          <Text role="status">Starting development mocks...</Text>
+        </Container>
+      </Section>
     );
   if (state === "error")
     return (
-      <p className="section site-container" role="alert">
-        Development mocks could not start. Check the worker setup and reload.
-      </p>
+      <Section aria-label="Development startup error">
+        <Container>
+          <Text role="alert">
+            Development mocks could not start. Check the worker setup and
+            reload.
+          </Text>
+        </Container>
+      </Section>
     );
   return children;
 }

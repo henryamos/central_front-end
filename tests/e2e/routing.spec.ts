@@ -4,6 +4,7 @@ test("unknown records and routes return 404", async ({ request }) => {
   for (const route of [
     "/unknown",
     "/dev/foundation",
+    "/dev/components",
     "/api/v1/_foundation/status",
     "/sermons/missing",
     "/ministries/missing",
