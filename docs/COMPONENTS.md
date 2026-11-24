@@ -18,15 +18,16 @@ API/data impact: client-only example validation in the development preview; prod
 
 ## APIs and states
 
-| Component | Import under src/components | Contract                                                                                                                                                                         |
-| --------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Container | layout/container/container  | Native div props/ref; owns page gutters through .site-container; className may add layout such as grid/gap, not nested page padding                                              |
-| Section   | layout/section/section      | Native section props/ref; owns responsive vertical spacing; label meaningful sections with aria-labelledby or aria-label                                                         |
-| Heading   | ui/typography/typography    | Required level 1-6 determines semantics; optional size title/section/subsection/small determines appearance; optional weight semibold/bold/black (900); native heading props/ref |
-| Text      | ui/typography/typography    | Paragraph props/ref; body/lead/small/caption sizes; default/inherited or muted tone; captions are not body text                                                                  |
-| Button    | ui/button/button            | Native button props/ref; primary/secondary; default type=button; loading and disabled block activation; loadingLabel supplies progress text                                      |
-| Input     | ui/input/input              | Native props/ref for text/email/password/tel/url/search; default text; preserves required, disabled, readOnly, name, autoComplete, inputMode, events and ARIA attributes         |
-| FormField | ui/form-field/form-field    | Explicit unique id, label, optional description/error/required; render callback receives the control's native id/required/ARIA props                                             |
+| Component  | Import under src/components | Contract                                                                                                                                                                                         |
+| ---------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Container  | layout/container/container  | Native div props/ref; owns page gutters through .site-container; className may add layout such as grid/gap, not nested page padding                                                              |
+| Section    | layout/section/section      | Native section props/ref; owns responsive vertical spacing; label meaningful sections with aria-labelledby or aria-label                                                                         |
+| Heading    | ui/typography/typography    | Required level 1-6 determines semantics; optional size title/section/subsection/small determines appearance; optional weight semibold/bold/extrabold (800)/black (900); native heading props/ref |
+| Text       | ui/typography/typography    | Paragraph props/ref; body/lead/small/caption sizes; default/inherited or muted tone; captions are not body text                                                                                  |
+| ButtonLink | ui/button/button-link       | Native Next Link props/ref; primary/secondary; shares Button appearance for navigation; no disabled/loading props                                                                                |
+| Button     | ui/button/button            | Native button props/ref; primary/secondary; default type=button; loading and disabled block activation; loadingLabel supplies progress text                                                      |
+| Input      | ui/input/input              | Native props/ref for text/email/password/tel/url/search; default text; preserves required, disabled, readOnly, name, autoComplete, inputMode, events and ARIA attributes                         |
+| FormField  | ui/form-field/form-field    | Explicit unique id, label, optional description/error/required; render callback receives the control's native id/required/ARIA props                                                             |
 
 Heading size is independent of level. Title uses the existing fluid token; section/subsection sizes step through the shared md breakpoint. Paragraph margins and heading margins are reset so layout gap owns spacing once. Body/control text remains at least 16px. Container and Section do not inject each other; compose them explicitly to avoid doubled gutters.
 
@@ -83,7 +84,7 @@ The one development Playwright configuration is now playwright.dev.config.ts, ru
 
 Unit tests cover semantic layout, refs, heading level, default/explicit submission, disabled/busy behaviour, input events and labels/descriptions/errors, recovery and class merging. Browser tests cover actual CSS colour/border/hover/active states, keyboard order and visible focus, label focus, React Hook Form ref integration, error recovery, reduced motion, all shared breakpoint edges, 48px targets, and long content at 200% text size. Production tests confirm both development references return 404.
 
-Existing placeholder, loading, missing-page, recovery and mock-demo surfaces consume these primitives, so they are verified in real route composition. New features should reuse the same implementations instead of copying markup or classes. Header/navigation/footer and actual page designs are separate follow-up work and require their own content and design review.
+Existing placeholder, loading, missing-page, recovery and mock-demo surfaces consume these primitives, so they are verified in real route composition. New features should reuse the same implementations instead of copying markup or classes. Header/navigation/footer are documented in [PUBLIC-SHELL.md](PUBLIC-SHELL.md); actual page designs still require approved editorial content and review.
 
 References: [React refs](https://react.dev/reference/react/forwardRef), [form instructions](https://www.w3.org/WAI/tutorials/forms/instructions/) and [error identification](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA21).
 

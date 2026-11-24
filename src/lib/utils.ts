@@ -4,8 +4,9 @@ import { extendTailwindMerge } from "tailwind-merge";
 const merge = extendTailwindMerge({
   extend: {
     classGroups: {
-      "font-size": [{ text: ["title"] }],
-      leading: [{ leading: ["body", "ui", "heading"] }],
+      "font-size": [{ text: ["title", "display", "hero-lead"] }],
+      tracking: [{ tracking: ["normal", "tight", "display"] }],
+      leading: [{ leading: ["body", "ui", "heading", "display"] }],
     },
   },
 });

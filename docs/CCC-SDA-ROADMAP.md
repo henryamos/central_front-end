@@ -15,7 +15,7 @@ Version 0.3 · sequence first, dates after estimates and stakeholder approval.
 
 ## First actionable backlog
 1. Verify sitemap and route ownership; agree MVP vs later releases.
-2. Validate the approved Figtree font with real content and the approved palette; review weights and responsive type scale.
+2. Validate the approved DM Sans font with real content and the approved palette; review weights and responsive type scale.
 3. Create component inventory, tokens, responsive grid, interaction states, Figma screens, visual test strategy.
 4. Interview information desk and personal ministry officers; approve guest fields, check-in/follow-up workflow, consent and permissions.
 5. Choose auth, database/storage hosting, workspace tooling and contracts approach; define ADRs.

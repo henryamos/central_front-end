@@ -13,17 +13,29 @@ export default defineConfig({
     { name: "http", testMatch: "**/routing.spec.ts" },
     {
       name: "design-system",
-      testMatch: "**/design-system.spec.ts",
+      testMatch: [
+        "**/design-system.spec.ts",
+        "**/navigation.spec.ts",
+        "**/home.spec.ts",
+      ],
       use: { ...devices["Desktop Chrome"] },
     },
     {
       name: "design-system-firefox",
-      testMatch: "**/design-system.spec.ts",
+      testMatch: [
+        "**/design-system.spec.ts",
+        "**/navigation.spec.ts",
+        "**/home.spec.ts",
+      ],
       use: { ...devices["Desktop Firefox"] },
     },
     {
       name: "design-system-webkit",
-      testMatch: "**/design-system.spec.ts",
+      testMatch: [
+        "**/design-system.spec.ts",
+        "**/navigation.spec.ts",
+        "**/home.spec.ts",
+      ],
       use: { ...devices["Desktop Safari"] },
     },
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },

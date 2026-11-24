@@ -68,7 +68,7 @@ export function ComponentPreview() {
             Typography
           </Heading>
           <Heading level={3}>A shared heading scale</Heading>
-          <Text>Body text uses Figtree and the shared reading measure.</Text>
+          <Text>Body text uses DM Sans and the shared reading measure.</Text>
           <Text size="small" tone="muted">
             Supporting text remains readable on the secondary surface.
           </Text>

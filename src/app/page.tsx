@@ -1,4 +1,4 @@
-import { PagePlaceholder } from "@/components/ui/page-placeholder";
+import { HomePage } from "@/features/home";
 export default function Page() {
-  return <PagePlaceholder title="Cape Coast Central SDA" />;
+  return <HomePage />;
 }

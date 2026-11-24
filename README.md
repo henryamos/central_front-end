@@ -28,15 +28,19 @@ On Windows PowerShell with restricted script execution, use pnpm.cmd instead of 
 
 For E2E, run pnpm exec playwright install chromium firefox webkit, pnpm build, then pnpm test:e2e. The production test server uses port 3200; that port must be free. CI installs Chromium with system dependencies.
 
-See [the design system](docs/DESIGN-SYSTEM.md) for approved colours, Figtree, token usage, responsive rules and browser support.
+See [the design system](docs/DESIGN-SYSTEM.md) for approved colours, DM Sans, token usage, responsive rules and browser support.
 
 ## Component reference
 
 Run pnpm dev and open http://localhost:3000/dev/components for the shared primitive reference. It demonstrates local interactions and validation only. See [COMPONENTS.md](docs/COMPONENTS.md) for APIs and usage. Run pnpm test:e2e:dev to check the component reference across Chromium, Firefox and WebKit plus the mock request example.
 
+## Public site shell
+
+The shared responsive header, navigation and footer now compose every route. See [PUBLIC-SHELL.md](docs/PUBLIC-SHELL.md) for ownership, keyboard behaviour and acceptance. Primary visitor links keep planned visits and guest check-in separate.
+
 ## Development mock check
 
-The approved font is self-hosted Figtree. No font provider connection is required.
+The approved font is self-hosted DM Sans. No font provider connection is required.
 
 To exercise Query -> shared HTTP client -> MSW in the browser:
 
@@ -52,4 +56,4 @@ Read AGENTS.md, docs/CCC-SDA-PRD.md, docs/CCC-SDA-ARCHITECTURE.md and docs/CCC-S
 
 The local branch is main. No remote was configured during foundation setup. Commit messages follow Conventional Commits, for example feat(guests): add approved registration form. Hooks run staged lint/format checks, commit-message validation, then types and unit tests before pushing. CI also builds and runs desktop, tablet and mobile smoke tests.
 
-This is an engineering scaffold. Production content, guest forms, backend integrations, the remaining primitives, header/footer and final page design remain future work. The infrastructure mock demonstrates the transport/provider stack. Indexing is disabled until publication is approved.
+The public homepage, responsive navigation and shared UI are implemented. See [HOMEPAGE.md](docs/HOMEPAGE.md) for the photo carousel and content boundaries. Verified production content, guest forms, backend integrations, remaining primitives and final editorial approval remain future work. The infrastructure mock demonstrates the transport/provider stack. Indexing is disabled until publication is approved.

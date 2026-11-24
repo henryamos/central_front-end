@@ -9,7 +9,7 @@ Build a distinctive, accessible church website and lightweight church administra
 - Public website includes guest registration; no separate guest app or required account.
 - Private administration portal manages guest data, content and operations. Public users cannot access administrative records.
 - SDA Denim #2F557F (sea blue) is the approved sole primary brand colour, replacing Pine Green. Supporting neutrals: white #FFFFFF, off-white #F5F5F5 and near-black #171717. No competing brand accents, gradients, glassmorphism or generic template styling. Use accessible contrast for all text and interactive states.
-- Figtree was approved by Benjamin on 23 November 2026. Self-host the website font; validate its weights and responsive type scale in the design system.
+- DM Sans was approved by Benjamin on 23 November 2026. Self-host the website font; validate its weights and responsive type scale in the design system.
 - Custom components and centrally enforced visual consistency are mandatory.
 - Next.js, TypeScript and TanStack Query are selected frontend direction. NestJS modular monolith with the default Express adapter is the selected backend direction. Redis/BullMQ are optional and deferred until justified by actual background processing requirements.
 - No public member accounts, payment processing or advanced automation required for the first release unless explicitly reprioritized by the church.

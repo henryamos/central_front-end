@@ -1,14 +1,7 @@
 import type { ComponentPropsWithRef } from "react";
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner/spinner";
-const baseClasses =
-  "inline-flex min-h-(--touch-target) min-w-(--touch-target) max-w-full items-center justify-center rounded-sm border-(length:--control-border-width) border-transparent px-4 py-3 text-center font-sans text-base font-semibold leading-ui whitespace-normal cursor-pointer transition-(--transition-control) duration-(--duration-fast) ease-standard focus-visible:outline-hidden focus-visible:inset-ring-(length:--focus-width)";
-const variantClasses = {
-  primary:
-    "bg-primary text-primary-foreground focus-visible:inset-ring-primary-foreground enabled:hover:bg-primary-hover enabled:active:bg-primary-active",
-  secondary:
-    "focus-visible:inset-ring-primary border-primary bg-background text-primary enabled:hover:bg-surface-muted enabled:active:border-primary-active enabled:active:text-primary-active",
-};
+import { buttonStyles } from "./button.styles";
 export type ButtonProps = ComponentPropsWithRef<"button"> & {
   variant?: "primary" | "secondary";
   loading?: boolean;
@@ -31,8 +24,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading ? true : props["aria-busy"]}
       className={cn(
-        baseClasses,
-        variantClasses[variant],
+        buttonStyles(variant),
         loading
           ? "cursor-wait"
           : disabled &&

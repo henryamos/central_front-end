@@ -1,6 +1,7 @@
 import type { ComponentPropsWithRef } from "react";
 import { cn } from "@/lib/utils";
 const headingSizes = {
+  display: "text-display",
   title: "text-title",
   section: "text-2xl md:text-3xl",
   subsection: "text-xl md:text-2xl",
@@ -10,7 +11,7 @@ type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 export type HeadingProps = ComponentPropsWithRef<"h1"> & {
   level: HeadingLevel;
   size?: keyof typeof headingSizes;
-  weight?: "semibold" | "bold" | "black";
+  weight?: "semibold" | "bold" | "extrabold" | "black";
 };
 export function Heading({
   level,
@@ -34,9 +35,12 @@ export function Heading({
       {...props}
       className={cn(
         "m-0 leading-heading font-semibold tracking-tight",
-        { semibold: "font-semibold", bold: "font-bold", black: "font-black" }[
-          weight ?? (level === 1 ? "bold" : "semibold")
-        ],
+        {
+          semibold: "font-semibold",
+          bold: "font-bold",
+          extrabold: "font-extrabold",
+          black: "font-black",
+        }[weight ?? (level === 1 ? "bold" : "semibold")],
         headingSizes[visualSize],
         className,
       )}

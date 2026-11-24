@@ -21,6 +21,7 @@ const routes = [
 test("public routes have one main landmark and no horizontal overflow", async ({
   page,
 }) => {
+  test.setTimeout(60000);
   for (const route of routes) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);

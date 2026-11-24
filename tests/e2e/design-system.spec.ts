@@ -46,7 +46,7 @@ test("approved CSS and Tailwind tokens agree and utilities can override base hea
       font: style.fontFamily,
       localFontLoaded: Array.from(document.fonts).some(
         (face) =>
-          /figtree/i.test(face.family) &&
+          /dmsans/i.test(face.family) &&
           !/fallback/i.test(face.family) &&
           face.status === "loaded",
       ),
@@ -71,7 +71,7 @@ test("approved CSS and Tailwind tokens agree and utilities can override base hea
     unapprovedRadius: "",
   });
   expect(parseFloat(result.leading)).toBeCloseTo(36.8, 1);
-  expect(result.font.toLowerCase()).toContain("figtree");
+  expect(result.font.toLowerCase()).toContain("dmsans");
   expect(result.targetWidth).toBeGreaterThanOrEqual(48);
   expect(result.targetHeight).toBeGreaterThanOrEqual(48);
 });
@@ -157,7 +157,7 @@ test("semantic colour pairs meet contrast targets and motion respects preference
 test("layout honours breakpoint edges, text enlargement and long content", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/about");
   // Exercise percentage-based layout with a real vertical scrollbar too.
   await page.evaluate(() => {
     const spacer = document.createElement("div");
@@ -175,26 +175,32 @@ test("layout honours breakpoint edges, text enlargement and long content", async
     320, 375, 639, 640, 767, 768, 1023, 1024, 1279, 1280, 1440, 1920,
   ]) {
     await page.setViewportSize({ width, height: 900 });
-    const layout = await page.locator(".site-container").evaluate((element) => {
-      const rect = element.getBoundingClientRect(),
-        style = getComputedStyle(element),
-        sectionStyle = getComputedStyle(element.closest(".section") ?? element);
-      return {
-        width: rect.width,
-        left: rect.left,
-        right: document.documentElement.clientWidth - rect.right,
-        available: document.documentElement.clientWidth,
-        contentLeft: rect.left + parseFloat(style.paddingLeft),
-        contentRight:
-          document.documentElement.clientWidth -
-          rect.right +
-          parseFloat(style.paddingRight),
-        sectionSpace: parseFloat(sectionStyle.paddingTop),
-        overflow:
-          document.documentElement.scrollWidth >
-          document.documentElement.clientWidth,
-      };
-    });
+    const layout = await page
+      .getByRole("main")
+      .locator(".site-container")
+      .first()
+      .evaluate((element) => {
+        const rect = element.getBoundingClientRect(),
+          style = getComputedStyle(element),
+          sectionStyle = getComputedStyle(
+            element.closest(".section") ?? element,
+          );
+        return {
+          width: rect.width,
+          left: rect.left,
+          right: document.documentElement.clientWidth - rect.right,
+          available: document.documentElement.clientWidth,
+          contentLeft: rect.left + parseFloat(style.paddingLeft),
+          contentRight:
+            document.documentElement.clientWidth -
+            rect.right +
+            parseFloat(style.paddingRight),
+          sectionSpace: parseFloat(sectionStyle.paddingTop),
+          overflow:
+            document.documentElement.scrollWidth >
+            document.documentElement.clientWidth,
+        };
+      });
     const gutter = width >= 1024 ? 32 : width >= 768 ? 24 : 16,
       sectionSpace = width >= 1024 ? 96 : width >= 768 ? 64 : 48;
     const expectedWidth = Math.min(layout.available - gutter * 2, 1280);

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-test("development requests use the browser worker and local Figtree", async ({
+test("development requests use the browser worker and local DM Sans", async ({
   page,
 }) => {
   const response = page.waitForResponse((response) =>
@@ -22,5 +22,5 @@ test("development requests use the browser worker and local Figtree", async ({
     await document.fonts.ready;
     return getComputedStyle(document.body).fontFamily;
   });
-  expect(family.toLowerCase()).toContain("figtree");
+  expect(family.toLowerCase()).toContain("dmsans");
 });

@@ -1,6 +1,6 @@
 # CCC SDA design tokens and responsive contract
 
-Status: engineering baseline for the approved light theme. Palette and Figtree are approved. Component compositions and responsive screens still require design review. Source of truth: src/styles/tokens.css; globals.css applies base rules and shared layout classes.
+Status: engineering baseline for the approved light theme. Palette is approved; DM Sans is the current typography preview. Component compositions and responsive screens still require design review. Source of truth: src/styles/tokens.css; globals.css applies base rules and shared layout classes.
 
 ## Colours
 
@@ -9,10 +9,10 @@ Status: engineering baseline for the approved light theme. Palette and Figtree a
 | SDA Denim              | --color-primary                                | #2F557F               | 7.70:1 on white; 7.06:1 on off-white                                         |
 | Main surface           | --color-background                             | #FFFFFF               | White text is reserved for Denim surfaces                                    |
 | Secondary surface      | --color-surface-muted                          | #F5F5F5               | Use for surface grouping, with an explicit control border where needed       |
-| Main text              | --color-foreground                             | #171717               | 17.93:1 on white; 16.44:1 on off-white                                       |
+| Main text              | --color-foreground                             | SDA Denim alias       | Blue-on-white direction; same contrast as primary                            |
 | Text on Denim          | --color-primary-foreground                     | White alias           | Use for filled primary controls                                              |
 | Primary hover / active | --color-primary-hover / --color-primary-active | #2C4E73 / #294666     | Darker Denim states, derived once from the approved primary and text colours |
-| Supporting text        | --color-muted-foreground                       | #5D5D5D               | Neutral text that retains at least 4.5:1 on both surfaces                    |
+| Supporting text        | --color-muted-foreground                       | #49617B               | Muted Denim that retains at least 4.5:1 on both light surfaces               |
 | Decorative divider     | --color-border                                 | #DADADA               | For decorative separators, not the sole boundary of an input                 |
 | Control boundary       | --color-border-control                         | #7F7F7F               | At least 3:1 on both surfaces                                                |
 | Validation error       | --color-danger                                 | #B42318               | Semantic text/border feedback; at least 4.5:1 on both surfaces               |
@@ -22,9 +22,11 @@ Derived states are fixed sRGB values rather than runtime colour-mixing expressio
 
 Text pairs target at least 4.5:1; meaningful control boundaries target at least 3:1. These checks cover the token pairs, not a claim that a complete page passes every WCAG requirement. References: [WCAG contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).
 
-## Figtree and typography
+Public-site direction, 24 November 2026: keep headings and main text Denim blue on light surfaces, with muted Denim supporting text. Use white text on blue and photographic surfaces. Avoid black/blue split headings; the shared foreground tokens apply this consistently across components, navigation and footer. Near-black is retained for photo overlays, not marketing text.
 
-The normal variable Figtree file is self-hosted through next/font/local at weights 300-900 with display: swap. Use normal 400, medium 500, semibold 600 and bold 700; black 900 is available for prominent display headings. Keep body text and controls at their existing weights. All content and controls use the same font; official SDA logo typography remains separate. Font files, origin and the SIL license are under public/fonts.
+## DM Sans and typography
+
+DM Sans replaces the Hanken Grotesk trial for visual review. The normal variable DM Sans file is self-hosted through next/font/local at weights 100-1000 with display: swap. Use normal 400, medium 500, semibold 600 and bold 700; extrabold 800 and black 900 are available for prominent display headings. Keep body text and controls at their existing weights. All content and controls use the same font; official SDA logo typography remains separate. Font files, origin and the SIL license are under public/fonts.
 
 | Token / utility | Size at a 16px root | Intended use                   |
 | --------------- | ------------------- | ------------------------------ |
@@ -39,7 +41,7 @@ The normal variable Figtree file is self-hosted through next/font/local at weigh
 | text-5xl        | 48px                | Largest baseline size          |
 | text-title      | Fluid 32-48px       | Page title                     |
 
-Body leading is 1.6, UI leading 1.4 and heading leading 1.15. Size utilities have explicit matching line heights so Tailwind defaults cannot silently change the scale. Reading width is 65ch. font-sans resolves the locally loaded Figtree variable. Do not shrink body or control text to make a layout fit. Long content wraps, and heading size remains usable when text is enlarged.
+Body leading is 1.6, UI leading 1.4 and heading leading 1.15. Size utilities have explicit matching line heights so Tailwind defaults cannot silently change the scale. Reading width is 65ch. font-sans resolves the locally loaded DM Sans variable. Do not shrink body or control text to make a layout fit. Long content wraps, and heading size remains usable when text is enlarged.
 
 ## Spacing, shape and motion
 

@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
-import { PagePlaceholder } from "@/components/ui/page-placeholder";
-export const metadata: Metadata = { title: "Ministries" };
+import { MinistriesPage } from "@/features/ministries";
 export default function Page() {
-  return <PagePlaceholder title="Ministries" />;
+  return <MinistriesPage />;
 }
