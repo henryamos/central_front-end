@@ -20,7 +20,7 @@ export function HomePage() {
             id="home-title"
             size="display"
             weight="extrabold"
-            className="leading-display tracking-display motion-safe:animate-hero-enter"
+            className="text-4xl leading-display font-bold tracking-display motion-safe:animate-hero-enter sm:text-display sm:font-extrabold"
           >
             Cape Coast
             <br />
@@ -35,9 +35,9 @@ export function HomePage() {
               for worship, Bible study and fellowship.
             </span>
             <span aria-hidden="true" className="grid gap-3 sm:gap-1">
-              <span className="sm:hidden">
-                <span className="block">Come as you are.</span>
-                <span className="block">Find a place to belong.</span>
+              <span className="text-balance sm:hidden">
+                Come as you are and find a place to belong. Join us this Sabbath
+                for worship, Bible study and fellowship.
               </span>
               <span className="hidden sm:block">
                 Come as you are and find a place to belong.

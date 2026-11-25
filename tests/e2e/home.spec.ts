@@ -22,6 +22,19 @@ test("phone layouts keep navigation, hero controls and section actions compact a
       header.getByRole("link", { name: "Donate", exact: true }),
     ).toHaveCount(0);
     const carousel = page.locator(carouselSelector);
+    const title = carousel.getByRole("heading", { level: 1 });
+    await expect(title).toHaveCSS("font-size", "40px");
+    await expect(title).toHaveCSS("font-weight", "700");
+    const titleBox = await title.boundingBox();
+    const headerBox = await header.boundingBox();
+    expect(titleBox!.y - headerBox!.y - headerBox!.height).toBeLessThanOrEqual(
+      80,
+    );
+    await expect(
+      carousel.locator(".text-hero-lead .sm\\:hidden"),
+    ).toContainText(
+      "Join us this Sabbath for worship, Bible study and fellowship.",
+    );
     await expect(carousel.locator("[data-hero-shade]")).toHaveCSS(
       "background-image",
       "none",
