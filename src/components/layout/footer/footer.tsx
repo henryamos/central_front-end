@@ -1,8 +1,8 @@
 ﻿import Link from "next/link";
-import { ArrowUpRight, CalendarDays } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/layout/container/container";
 import { footerNavigation } from "@/components/layout/navigation/navigation";
-import { ButtonLink } from "@/components/ui/button/button-link";
 
 const footerLink =
   "inline-flex min-h-(--touch-target) min-w-(--touch-target) max-w-full items-center rounded-sm py-3 text-base leading-ui text-primary no-underline underline-offset-(--spacing-1) hover:underline focus-visible:outline-focus";
@@ -15,19 +15,18 @@ export function Footer() {
           <Link
             href="/"
             aria-label="Cape Coast Central SDA home"
-            className="inline-block max-w-full rounded-sm text-4xl leading-heading font-extrabold tracking-tight text-primary no-underline focus-visible:outline-focus sm:text-5xl"
+            className="inline-flex max-w-full flex-col items-start gap-6 rounded-sm text-xl leading-ui font-semibold text-primary no-underline focus-visible:outline-focus"
           >
-            Cape Coast
-            <br />
-            Central SDA
+            <Image
+              src="/icons/adventist-en-tm-centered--denim.png"
+              alt="Seventh-day Adventist Church"
+              width={1852}
+              height={1140}
+              sizes="192px"
+              className="h-auto w-(--brand-footer-width) max-w-full"
+            />
+            <span>Cape Coast Central SDA</span>
           </Link>
-          <p className="m-0 mt-4 text-base text-muted-foreground">
-            Seventh-day Adventist Church
-          </p>
-          <ButtonLink href="/visit" className="mt-8">
-            <CalendarDays aria-hidden="true" className="size-4 shrink-0" />
-            Plan a Visit
-          </ButtonLink>
         </div>
         <nav
           aria-label="Footer navigation"

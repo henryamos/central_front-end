@@ -1,5 +1,51 @@
 import { test, expect } from "@playwright/test";
 test.setTimeout(60000);
+test("official branding follows the header surface and stays available on inner pages", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const header = page.getByRole("banner");
+  const denim = header.locator(".brand-logo-default");
+  const white = header.locator(".brand-logo-inverse");
+  const identity = header.getByRole("link", {
+    name: "Cape Coast Central SDA home",
+  });
+  await expect(white).toBeVisible();
+  await expect(denim).toBeHidden();
+  for (const width of [320, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(identity).toBeVisible();
+    const displayed = width < 640 ? denim : white;
+    await expect(displayed).toBeVisible();
+    await expect(width < 640 ? white : denim).toBeHidden();
+    await expect
+      .poll(() =>
+        displayed.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+      )
+      .toBeGreaterThan(0);
+    const image = await displayed.boundingBox();
+    expect(image!.width / image!.height).toBeCloseTo(1852 / 1140, 1);
+  }
+  await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
+  await expect(denim).toBeVisible();
+  await expect(white).toBeHidden();
+  const footerLogo = page.getByRole("contentinfo").getByRole("img", {
+    name: "Seventh-day Adventist Church",
+    exact: true,
+  });
+  await expect(footerLogo).toBeVisible();
+  await expect
+    .poll(() =>
+      footerLogo.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  await page.goto("/about");
+  await expect(denim).toBeVisible();
+  await expect(white).toBeHidden();
+  await identity.click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(white).toBeVisible();
+});
 test("public shell preserves shared gutters, touch targets and text reflow", async ({
   page,
 }) => {
@@ -74,16 +120,38 @@ test("public shell preserves shared gutters, touch targets and text reflow", asy
   }
   await expect(page.locator(".site-container .site-container")).toHaveCount(0);
 });
-test("mobile navigation closes on Escape, route changes, outside actions and desktop resize", async ({
+test("mobile overlay covers content, locks scrolling and closes on Escape, routes and desktop resize", async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/");
   const open = page.getByRole("button", { name: "Open navigation" });
   await open.focus();
   await page.keyboard.press("Enter");
   const close = page.getByRole("button", { name: "Close navigation" });
-  await expect(close).toHaveAttribute("aria-expanded", "true");
+  const dialog = page.getByRole("dialog", { name: "Menu", exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveCSS("animation-name", "navigation-enter");
+  await expect(dialog).toHaveCSS("transform", "matrix(1, 0, 0, 1, 0, 0)");
+  await expect(
+    page.locator("[data-header-row] button[aria-controls]"),
+  ).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
+  const menuBox = await dialog.boundingBox();
+  expect(menuBox!.x).toBeCloseTo(0, 0);
+  expect(menuBox!.y).toBeCloseTo(0, 0);
+  expect(menuBox!.width).toBe(375);
+  expect(menuBox!.height).toBe(812);
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  expect(
+    await dialog.evaluate((element) =>
+      element.contains(document.activeElement),
+    ),
+  ).toBe(true);
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
   const nav = page.getByRole("navigation", {
     name: "Primary navigation",
     exact: true,
@@ -92,6 +160,8 @@ test("mobile navigation closes on Escape, route changes, outside actions and des
     nav.getByRole("link", { name: "Plan a Visit", exact: true }),
   ).toBeInViewport();
   await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
   await expect(open).toBeFocused();
   await expect(open).toHaveAttribute("aria-expanded", "false");
   await open.click();
@@ -105,8 +175,26 @@ test("mobile navigation closes on Escape, route changes, outside actions and des
     nav.getByRole("link", { name: "All ministries", exact: true }),
   ).toHaveAttribute("href", "/ministries");
   await page.keyboard.press("Escape");
-  await page.mouse.click(360, 800);
   await expect(open).toHaveAttribute("aria-expanded", "false");
+  await page
+    .locator("main")
+    .evaluate((element) => element.scrollIntoView({ block: "end" }));
+  const before = await page.evaluate(() => window.scrollY);
+  const triggerBox = await open.boundingBox();
+  await page.mouse.click(
+    triggerBox!.x + triggerBox!.width / 2,
+    triggerBox!.y + triggerBox!.height / 2,
+  );
+  await expect(dialog).toBeVisible();
+  await expect(page.locator("body")).toHaveCSS("position", "fixed");
+  await expect(page.locator("body")).toHaveCSS("top", `-${before}px`);
+  const lockedScroll = await page.evaluate(() => window.scrollY);
+  await page.mouse.move(180, 600);
+  await page.mouse.wheel(0, 500);
+  expect(await page.evaluate(() => window.scrollY)).toBe(lockedScroll);
+  await close.click();
+  await expect(open).toBeFocused();
+  expect(await page.evaluate(() => window.scrollY)).toBe(before);
   await open.click();
   await page.setViewportSize({ width: 1440, height: 900 });
   await expect(

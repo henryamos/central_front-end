@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { CalendarDays, HandHeart, Menu, X } from "lucide-react";
+import { CalendarDays, HandHeart, Menu } from "lucide-react";
 import { Container } from "@/components/layout/container/container";
 import { Button } from "@/components/ui/button/button";
 import { ButtonLink } from "@/components/ui/button/button-link";
 import { Accordion } from "@/components/ui/accordion/accordion";
+import { Dialog } from "@/components/ui/dialog/dialog";
 import { SiteIdentity } from "./site-identity";
 import { NavigationLink } from "./navigation-link";
 import {
@@ -89,6 +90,11 @@ export function SiteNavigation() {
       ref={rootRef}
       onKeyDown={(event) => {
         if (event.key !== "Escape") return;
+        if (open) {
+          event.preventDefault();
+          close();
+          return;
+        }
         const disclosure = Array.from(
           rootRef.current?.querySelectorAll<HTMLDetailsElement>(
             "details[open]",
@@ -98,17 +104,13 @@ export function SiteNavigation() {
           event.preventDefault();
           disclosure.open = false;
           disclosure.querySelector("summary")?.focus();
-        } else if (open) {
-          event.preventDefault();
-          close();
-          triggerRef.current?.focus();
         }
       }}
     >
       <Container
         ref={rowRef}
         data-header-row
-        className="flex min-h-(--header-height) flex-wrap items-center justify-between gap-x-3 gap-y-2 py-4 xl:gap-x-6"
+        className="flex min-h-(--header-height) flex-wrap items-center justify-between gap-x-3 gap-y-2 py-3 sm:py-4 xl:gap-x-6"
       >
         <SiteIdentity compact onNavigate={close} />
         <nav
@@ -148,6 +150,7 @@ export function SiteNavigation() {
           <ButtonLink
             href={givingNavigation.href}
             variant="primary"
+            className="hidden sm:inline-flex"
             onNavigate={close}
           >
             <HandHeart aria-hidden="true" className="size-4" />
@@ -157,40 +160,58 @@ export function SiteNavigation() {
             ref={triggerRef}
             variant="secondary"
             className="size-12 shrink-0 border-transparent bg-transparent p-0 sm:w-auto sm:px-4 xl:hidden"
-            aria-label={open ? "Close navigation" : "Open navigation"}
+            aria-label="Open navigation"
             aria-expanded={open}
             aria-controls={panelId}
+            aria-haspopup="dialog"
             onClick={() => {
               if (open) close();
               else setMenu({ pathname, open: true });
             }}
           >
             <span className="flex items-center gap-2">
-              {open ? (
-                <X aria-hidden="true" className="size-6" />
-              ) : (
-                <Menu aria-hidden="true" className="size-6" />
-              )}
+              <Menu aria-hidden="true" className="size-6" />
               <span className="hidden sm:inline">Menu</span>
             </span>
           </Button>
         </div>
       </Container>
-      <div
+      <Dialog
         id={panelId}
-        hidden={!open}
-        className="max-h-[calc(100vh-var(--header-row-size)-var(--control-border-width))] overflow-y-auto overscroll-contain border-t-(length:--control-border-width) border-border bg-background supports-[height:100dvh]:max-h-[calc(100dvh-var(--header-row-size)-var(--control-border-width))] xl:hidden"
+        open={open}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) close();
+        }}
+        title="Menu"
+        closeLabel="Close navigation"
+        returnFocusRef={triggerRef}
+        variant="fullscreen"
+        className="xl:hidden"
       >
-        <Container className="py-4">
+        <div className="py-3">
           <nav aria-label="Primary navigation" className="grid gap-4">
-            <div className="flex flex-wrap items-center gap-3">
-              <ButtonLink href={visitNavigation.href} onNavigate={close}>
+            <div className="grid grid-cols-2 items-center gap-3 sm:flex sm:flex-wrap">
+              <ButtonLink
+                href={visitNavigation.href}
+                onNavigate={close}
+                className="px-3 sm:px-4"
+              >
                 <CalendarDays aria-hidden="true" className="size-4" />
                 {visitNavigation.label}
               </ButtonLink>
-              <NavigationLink href={guestNavigation.href} onNavigate={close}>
-                {guestNavigation.label}
-              </NavigationLink>
+              <ButtonLink
+                href={givingNavigation.href}
+                onNavigate={close}
+                className="px-3 sm:px-4"
+              >
+                <HandHeart aria-hidden="true" className="size-4 shrink-0" />
+                {givingNavigation.label}
+              </ButtonLink>
+              <div className="col-span-2 sm:contents">
+                <NavigationLink href={guestNavigation.href} onNavigate={close}>
+                  {guestNavigation.label}
+                </NavigationLink>
+              </div>
             </div>
             <ul className="m-0 grid gap-1 p-0">
               {[
@@ -237,8 +258,8 @@ export function SiteNavigation() {
               </div>
             </Accordion>
           </nav>
-        </Container>
-      </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

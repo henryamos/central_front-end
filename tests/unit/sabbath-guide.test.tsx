@@ -1,8 +1,45 @@
 // @vitest-environment jsdom
 import "../setup";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { SabbathInvitation } from "@/features/home/components/sabbath-invitation";
+vi.mock("@/features/home/hooks/use-carousel-environment", () => ({
+  useCarouselEnvironment: () => ({ reducedMotion: true, visible: true }),
+}));
+
+it("rotates arbitrary programme pairs manually, wraps, and offers the complete schedule", () => {
+  render(
+    <SabbathInvitation
+      services={Array.from({ length: 5 }, (_, index) => ({
+        id: String(index),
+        label: `Gathering ${index + 1}`,
+        kind: "activity",
+        day: "Sunday",
+        time: "6:00 PM",
+      }))}
+    />,
+  );
+  expect(
+    screen.getByText("Gathering 1").closest("[data-weekly-reveal]"),
+  ).toHaveAttribute("aria-hidden", "false");
+  expect(
+    screen.getByText("Gathering 3").closest("[data-weekly-reveal]"),
+  ).toHaveAttribute("aria-hidden", "true");
+  fireEvent.click(screen.getByRole("button", { name: "Next gatherings" }));
+  expect(
+    screen.getByText("Gathering 3").closest("[data-weekly-reveal]"),
+  ).toHaveAttribute("aria-hidden", "false");
+  expect(
+    screen.getByText("Gathering 1").closest("[data-weekly-reveal]"),
+  ).toHaveAttribute("aria-hidden", "true");
+  fireEvent.click(screen.getByRole("button", { name: "Next gatherings" }));
+  expect(screen.getByText("Gathering 5")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Next gatherings" }));
+  expect(screen.getByText("Gathering 1")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "View all gatherings" }));
+  for (let index = 1; index <= 5; index++)
+    expect(screen.getByText(`Gathering ${index}`)).toBeVisible();
+});
 it("shows relevant visitor actions and honestly pending details for each attendance mode", () => {
   render(<SabbathInvitation />);
   expect(screen.getByRole("tab", { name: "In person" })).toHaveAttribute(
@@ -98,14 +135,23 @@ it("keeps missing times explicit when only part of the programme is supplied", (
   expect(screen.getByText("Days and times to be confirmed.")).toBeVisible();
 });
 
-it("uses the confirmed Wednesday for midweek prayer and leaves other missing details pending", () => {
+it("shows the confirmed weekly days and time ranges against the correct gatherings", () => {
   render(<SabbathInvitation />);
-  expect(screen.getByText("Midweek prayer")).toBeVisible();
-  expect(screen.getByText("Bible study")).toBeVisible();
-  expect(screen.getAllByText("Saturday")).toHaveLength(2);
-  expect(screen.getByText("Wednesday")).toBeVisible();
-  expect(screen.getAllByText("Day to be confirmed")).toHaveLength(1);
-  expect(screen.getAllByText("Time to be confirmed")).toHaveLength(4);
+  for (const [label, day, time] of [
+    ["Sabbath School", "Saturday", "8:00 AM – 10:00 AM"],
+    ["Worship service", "Saturday", "10:00 AM – 1:00 PM"],
+    ["Midweek prayer", "Wednesday", "6:00 PM – 8:00 PM"],
+    ["Bible study", "Sunday", "6:00 PM – 8:00 PM"],
+  ]) {
+    const row = screen.getByText(label).closest("[data-weekly-reveal]");
+    expect(row).toHaveTextContent(day);
+    expect(row).toHaveTextContent(time);
+  }
+  expect(screen.queryByText("Day to be confirmed")).not.toBeInTheDocument();
+  expect(screen.queryByText("Time to be confirmed")).not.toBeInTheDocument();
+  expect(
+    screen.queryByText("Days and times to be confirmed."),
+  ).not.toBeInTheDocument();
 });
 it("accepts additional gathering types with their own day and time", () => {
   render(

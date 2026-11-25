@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Container } from "@/components/layout/container/container";
 import { Button } from "@/components/ui/button/button";
@@ -122,16 +122,79 @@ export function HomeHero({
           />
         </div>
         <div
+          data-hero-shade
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-(--home-hero-overlay-height) bg-(image:--home-hero-gradient)"
+          className="pointer-events-none absolute inset-0 bg-overlay"
         />
         <Container className="relative flex min-h-(--home-hero-min) flex-col gap-8 pt-[calc(var(--header-row-size)+var(--spacing-12))] pb-[calc(var(--home-invitation-overlap)+var(--spacing-4))] md:pt-[calc(var(--header-row-size)+var(--spacing-16))]">
           <div className="grid flex-1 content-center justify-items-start py-8">
             {children}
           </div>
-          <div className="grid items-center sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+          <div
+            data-hero-controls
+            className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-0"
+          >
+            <Button
+              aria-label="Previous photograph"
+              onClick={() => goTo((active + slides.length - 1) % slides.length)}
+              className="size-12 border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:hidden"
+            >
+              <ChevronLeft aria-hidden="true" className="size-6" />
+            </Button>
             <div
-              className="mx-auto flex max-w-full flex-wrap justify-center sm:col-start-2"
+              aria-hidden="true"
+              className="relative col-start-2 mx-auto grid size-12 place-items-center sm:hidden"
+            >
+              <svg viewBox="0 0 48 48" className="absolute inset-0 size-12">
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="21"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  className="opacity-60"
+                />
+                <circle
+                  key={slide.src}
+                  cx="24"
+                  cy="24"
+                  r="21"
+                  pathLength="1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeDasharray="1"
+                  strokeDashoffset="1"
+                  strokeLinecap="round"
+                  className={cn(
+                    "origin-center -rotate-90 motion-reduce:animate-none",
+                    ready && "animate-carousel-progress",
+                    animationState,
+                  )}
+                  onAnimationEnd={(event) => {
+                    if (
+                      event.animationName === "carousel-progress" &&
+                      rotating &&
+                      ready
+                    )
+                      goTo((active + 1) % slides.length);
+                  }}
+                />
+              </svg>
+              <span className="text-sm font-semibold tabular-nums">
+                {active + 1} / {slides.length}
+              </span>
+            </div>
+            <Button
+              aria-label="Next photograph"
+              onClick={() => goTo((active + 1) % slides.length)}
+              className="col-start-3 size-12 border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:hidden"
+            >
+              <ChevronRight aria-hidden="true" className="size-6" />
+            </Button>
+            <div
+              className="mx-auto hidden max-w-full flex-wrap justify-center sm:col-start-2 sm:flex"
               role="group"
               aria-label="Choose a photograph"
               onMouseEnter={() => setHovered(true)}
@@ -219,7 +282,7 @@ export function HomeHero({
                     ? "Pause slideshow"
                     : "Resume slideshow"
               }
-              className="size-12 justify-self-end border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:col-start-3 sm:row-start-1"
+              className="col-start-4 row-start-1 size-12 justify-self-end border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:col-start-3"
               onClick={() => setPlaying((value) => !value)}
             >
               {rotating ? (

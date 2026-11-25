@@ -40,7 +40,7 @@ export function Header() {
       className={cn(
         "site-header sticky top-0 z-(--layer-header) shrink-0 border-b-(length:--control-border-width) transition-colors duration-(--duration-normal) ease-standard",
         transparent
-          ? "border-transparent bg-transparent"
+          ? "border-border bg-background sm:border-transparent sm:bg-transparent"
           : "border-border bg-background",
       )}
     >

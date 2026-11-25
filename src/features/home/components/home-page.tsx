@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, CirclePlay } from "lucide-react";
 import { Container } from "@/components/layout/container/container";
@@ -8,13 +7,14 @@ import { ButtonLink } from "@/components/ui/button/button-link";
 import { homeSlides, homeMinistries } from "../constants/home.constants";
 import { HomeHero } from "./home-hero";
 import { SabbathInvitation } from "./sabbath-invitation";
+import { ChurchIntroduction } from "./church-introduction";
 const textLink =
   "inline-flex min-h-(--touch-target) min-w-(--touch-target) max-w-full items-center justify-between gap-4 rounded-sm py-3 text-base font-semibold no-underline hover:underline focus-visible:inset-ring-(length:--focus-width) focus-visible:inset-ring-primary focus-visible:outline-hidden";
 export function HomePage() {
   return (
     <>
       <HomeHero slides={homeSlides}>
-        <div className="grid w-full max-w-(--home-copy-max) justify-items-start gap-6 text-left">
+        <div className="grid w-full max-w-(--home-copy-max) justify-items-start gap-4 text-left sm:gap-6">
           <Heading
             level={1}
             id="home-title"
@@ -34,9 +34,15 @@ export function HomePage() {
               Come as you are and find a place to belong. Join us this Sabbath
               for worship, Bible study and fellowship.
             </span>
-            <span aria-hidden="true" className="grid gap-1">
-              <span>Come as you are and find a place to belong.</span>
-              <span>
+            <span aria-hidden="true" className="grid gap-3 sm:gap-1">
+              <span className="sm:hidden">
+                <span className="block">Come as you are.</span>
+                <span className="block">Find a place to belong.</span>
+              </span>
+              <span className="hidden sm:block">
+                Come as you are and find a place to belong.
+              </span>
+              <span className="hidden sm:block">
                 <span>Join us this Sabbath</span>{" "}
                 <span className="inline-block w-max max-w-full">
                   <span>for</span>{" "}
@@ -55,12 +61,17 @@ export function HomePage() {
               </span>
             </span>
           </Text>
-          <div className="flex flex-wrap items-center gap-4 motion-safe:animate-hero-enter motion-safe:[animation-delay:var(--hero-actions-delay)]">
-            <ButtonLink href="/visit">
+          <div className="mt-2 flex w-full flex-col items-stretch gap-3 motion-safe:animate-hero-enter motion-safe:[animation-delay:var(--hero-actions-delay)] sm:mt-0 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <ButtonLink href="/visit" className="w-full sm:w-auto">
               <CalendarDays aria-hidden="true" className="size-4" />
               Plan a Visit
             </ButtonLink>
-            <ButtonLink href="/watch" variant="secondary">
+            <ButtonLink
+              href="/watch"
+              aria-label="Watch online"
+              variant="secondary"
+              className="w-full border-background bg-transparent text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background not-disabled:active:border-background not-disabled:active:text-background sm:w-auto sm:border-primary sm:bg-background sm:text-primary sm:not-disabled:hover:bg-surface-muted sm:focus-visible:inset-ring-primary sm:not-disabled:active:border-primary-active sm:not-disabled:active:text-primary-active"
+            >
               <CirclePlay aria-hidden="true" className="size-4" />
               Watch online
             </ButtonLink>
@@ -68,46 +79,7 @@ export function HomePage() {
         </div>
       </HomeHero>
       <SabbathInvitation />
-      <Section aria-labelledby="church-title">
-        <Container className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-          <div className="relative aspect-4/3">
-            <Image
-              src="/images/Elder2.jpg"
-              alt="People gathered together in a church hall."
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover object-center"
-            />
-          </div>
-          <div className="grid gap-6">
-            <Text size="small" tone="muted" className="font-semibold">
-              OUR CHURCH
-            </Text>
-            <Heading level={2} id="church-title">
-              Get to know
-              <br />
-              Cape Coast Central.
-            </Heading>
-            <Text tone="muted">
-              Explore our beliefs, our story and the people who serve our
-              church.
-            </Text>
-            <div className="grid divide-y divide-border">
-              <Link href="/about" className={textLink}>
-                About our church{" "}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-              <Link href="/about/beliefs" className={textLink}>
-                Our beliefs <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-              <Link href="/about/leadership" className={textLink}>
-                Meet our leadership{" "}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </Section>
+      <ChurchIntroduction />
       <Section aria-labelledby="ministries-title" className="bg-surface-muted">
         <Container className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
           <div className="grid content-start gap-6">

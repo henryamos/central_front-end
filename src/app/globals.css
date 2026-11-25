@@ -77,31 +77,42 @@
 }
 
 @layer utilities {
-  .site-header [data-header-row] > a span {
-    color: inherit;
+  .brand-logo-inverse {
+    display: none;
   }
-  .site-header[data-transparent="true"] [data-header-row] > a,
-  .site-header[data-transparent="true"] [data-header-row] nav > ul > li > a,
-  .site-header[data-transparent="true"] [data-header-row] summary,
-  .site-header[data-transparent="true"]
-    [data-header-row]
-    button[aria-controls] {
-    color: var(--color-background);
-  }
-  .site-header[data-transparent="true"]
-    [data-header-row]
-    nav
-    > ul
-    > li
-    > a:hover,
-  .site-header[data-transparent="true"] [data-header-row] summary:hover,
-  .site-header[data-transparent="true"]
-    [data-header-row]
-    button[aria-controls]:hover {
-    background: var(--color-primary);
-  }
-  .site-header[data-transparent="true"] [data-header-row] :focus-visible {
-    --tw-inset-ring-color: var(--color-background);
+  @media (width >= theme(--breakpoint-sm)) {
+    .site-header[data-transparent="true"] .brand-logo-default {
+      display: none;
+    }
+    .site-header[data-transparent="true"] .brand-logo-inverse {
+      display: block;
+    }
+    .site-header [data-header-row] > a span {
+      color: inherit;
+    }
+    .site-header[data-transparent="true"] [data-header-row] > a,
+    .site-header[data-transparent="true"] [data-header-row] nav > ul > li > a,
+    .site-header[data-transparent="true"] [data-header-row] summary,
+    .site-header[data-transparent="true"]
+      [data-header-row]
+      button[aria-controls] {
+      color: var(--color-background);
+    }
+    .site-header[data-transparent="true"]
+      [data-header-row]
+      nav
+      > ul
+      > li
+      > a:hover,
+    .site-header[data-transparent="true"] [data-header-row] summary:hover,
+    .site-header[data-transparent="true"]
+      [data-header-row]
+      button[aria-controls]:hover {
+      background: var(--color-primary);
+    }
+    .site-header[data-transparent="true"] [data-header-row] :focus-visible {
+      --tw-inset-ring-color: var(--color-background);
+    }
   }
   .hero-phrase:not(:first-child) {
     visibility: hidden;

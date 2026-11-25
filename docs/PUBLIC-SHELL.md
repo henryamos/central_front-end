@@ -8,13 +8,15 @@ As a visitor, I can move between church information, worship, events and visitor
 
 - Root app/layout.tsx composes Header, one main landmark and Footer, retaining the skip link, providers and local font. Body layout keeps the footer after the content; no route group or second main is introduced.
 - components/layout/header and footer own the public shell. navigation/navigation.ts owns route labels used by both surfaces; it contains no contact, social, service or payment values.
-- SiteIdentity uses the existing church name as a text identity until the official logo is provided. It links home; no substitute SDA logo is fabricated.
+- SiteIdentity pairs the supplied official Adventist signature with the local church name and links home. The Denim signature appears on solid headers and the white signature on the homepage photo; compact phone navigation retains the official signature and an accessible local home-link name. The footer repeats the Denim signature above the church identity. Supplied artwork retains its proportions and typography; the Bluejay alternatives are reserved to preserve the approved Denim palette.
 - SiteNavigation owns mobile disclosure state and the desktop Resources disclosure. NavigationLink uses exact aria-current=page and visually identifies parent route sections. Route segment matching avoids false matches such as /aboutness.
 - ButtonLink is a real next/link anchor. It shares button.styles.ts with Button, including pointer/focus states; it does not accept disabled or loading props. No nested button/anchor, extra styling library or global menu provider.
 
 ## Responsive and interaction behaviour
 
-The header uses the shared xl breakpoint for its full navigation. Below that, the Menu control reveals navigation in ordinary document flow. Plan a Visit and Guest check-in appear first, as separate journeys. There is no modal focus trap or background scroll lock for this inline disclosure. Escape closes it and returns focus to Menu; pointer actions outside navigation close it without moving focus. Following a route closes menus. ResizeObserver watches CSS visibility of the mobile trigger and clears open state when desktop navigation takes over, without maintaining a second breakpoint map in JavaScript.
+Phone refinement (25 November 2026): below sm the sticky header uses a solid white surface, a 64px official logo and a visible two-line local church name. The normal row is 72px high and grows naturally for enlarged text. The trigger opens the shared Dialog in its fullscreen variant, with a brief slide-in animation, a persistent close button and an independently scrolling navigation area. The page behind it is inert and scroll-locked, so opening the menu never pushes or scrolls the hero, weekly guide or church section. Donate remains available inside the overlay beside Plan a Visit. Reduced motion shows the overlay without animation. From sm upward the closed header retains its existing transparent homepage treatment and actions.
+
+The header uses the shared xl breakpoint for its full desktop navigation. Below that the menu covers the viewport through a native modal dialog. Focus stays inside it, including the Ministries and Resources summaries; Escape, its close button and following a route dismiss it and restore focus appropriately. Resizing to desktop closes the overlay and restores scrolling. ResizeObserver watches CSS visibility of the trigger rather than maintaining another breakpoint map in JavaScript.
 
 Desktop Resources uses native details/summary and ordinary navigation links, without application-menu roles or unnecessary arrow-key behaviour. Enter/Space toggles it; ArrowDown opens and focuses its first link consistently with Safari keyboard preferences; Tab follows the browser's normal link-focus behaviour; Escape closes and returns focus; outside actions dismiss. Resources links also appear in the footer. The mobile menu needs hydration; all destinations remain available through server-rendered footer links if scripts fail.
 
@@ -24,7 +26,7 @@ Header, main and footer use sibling Containers with equal gutters. No nested pag
 
 States: current route/section, expanded/collapsed mobile navigation, open/closed Resources, keyboard focus and pointer feedback. Static navigation has no request/loading/error state; existing route loading/error/not-found boundaries remain authoritative. Public routes still show honest unavailable-content states where editorial content is pending.
 
-No new API, data migration, authentication, personal data collection, form submission, payment handling, external service or dependency. Existing Give, Contact and other routes retain their unavailable-content states. Official logo, approved welcome copy, authentic images, worship times, location, social channels and giving details still require church verification. Links do not imply those features are launch-ready. No invented contacts or service times are published. Crawling remains disabled.
+No new API, data migration, authentication, personal data collection, form submission, payment handling, external service or dependency. Existing Give, Contact and other routes retain their unavailable-content states. The supplied official logo is integrated; approved welcome copy, authentic images, worship times, location, social channels and giving details still require church verification. Links do not imply those features are launch-ready. No invented contacts or service times are published. Crawling remains disabled.
 
 ## Acceptance and verification
 
@@ -38,6 +40,8 @@ No new API, data migration, authentication, personal data collection, form submi
 Rollout: local implementation only; no deployment or indexing change. Rollback: remove the shell composition from root layout or revert this stage, retaining the committed primitive foundation. The navigation proposal and final editorial design remain subject to church/design review before publication.
 
 ## Footer composition revision
+
+Logo-led refinement (25 November 2026): remove the redundant footer Plan a Visit button. The official Denim logo and a smaller, single-line 20px church name share one accessible home link. Remove the duplicated Seventh-day Adventist Church caption, which is already part of the logo. Navigation and the closing utility strip retain their existing layout and destinations.
 
 The screenshot review identified an oversized action rail, an underfilled middle column and excessive visual weight in the all-blue surface. The revision removes the rail and uses a white main surface with the church identity and shared Plan a Visit button on the left. Navigation keeps Watch and Donate in the relevant groups, balancing the columns. The information desk, guest check-in and copyright sit in a compact Denim strip. No slogans, invented contacts or social links are added.
 
