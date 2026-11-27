@@ -1,0 +1,14 @@
+Cape Coast Central church wordmark
+
+Layout and wording: supplied CCC SDA logo.svg.
+The supplied file referenced a missing local PNG and an unbundled font.
+The deployed SVGs use vector outlines for both the symbol and lettering.
+Blue and white variants share the same artwork and proportions.
+
+Outline source: Advent Sans SPD, the official South Pacific Division font.
+https://fonts.adventistchurch.com/AdventSans-SPD.otf
+Copyright: Seventh-day Adventist Church South Pacific Division.
+Designer: Types & Symbols; South Pacific amendments by Shane Winfield.
+Font license: SIL Open Font License 1.1.
+https://openfontlicense.org/open-font-license-official-text/
+No font binary is bundled with these SVGs.

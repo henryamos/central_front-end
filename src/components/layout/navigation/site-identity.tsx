@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ComponentProps } from "react";
-/** Official Adventist signature paired with the local church name. */
+/** Complete local church wordmark; its lettering is already part of the SVG. */
 export function SiteIdentity({
-  compact = false,
   onNavigate,
 }: {
-  compact?: boolean;
   onNavigate?: ComponentProps<typeof Link>["onNavigate"];
 }) {
   return (
@@ -18,33 +16,24 @@ export function SiteIdentity({
     >
       <span
         aria-hidden="true"
-        className={
-          compact
-            ? "block w-16 shrink-0 sm:w-(--brand-header-width)"
-            : "block w-(--brand-header-width) shrink-0"
-        }
+        className="block w-(--brand-header-mobile-width) max-w-full shrink-0 sm:w-(--brand-header-width)"
       >
         <Image
-          src="/icons/adventist-en-tm-centered--denim.png"
+          src="/icons/CCC%20SDA%20logo.svg"
           alt=""
-          width={1852}
-          height={1140}
-          sizes="(min-width: 640px) 96px, 64px"
+          width={938}
+          height={173}
+          unoptimized
           className="brand-logo-default block h-auto w-full"
         />
         <Image
-          src="/icons/adventist-en-centered--white.png"
+          src="/icons/ccc-sda-logo-white.svg"
           alt=""
-          width={1852}
-          height={1140}
-          sizes="(min-width: 640px) 96px, 64px"
+          width={938}
+          height={173}
+          unoptimized
           className="brand-logo-inverse h-auto w-full"
         />
-      </span>
-      <span className="min-w-0 border-l border-current pl-3 text-base leading-ui font-bold sm:pl-4">
-        Cape Coast
-        <br />
-        Central SDA
       </span>
     </Link>
   );

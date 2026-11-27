@@ -18,14 +18,13 @@ export function Footer() {
             className="inline-flex max-w-full flex-col items-start gap-6 rounded-sm text-xl leading-ui font-semibold text-primary no-underline focus-visible:outline-focus"
           >
             <Image
-              src="/icons/adventist-en-tm-centered--denim.png"
-              alt="Seventh-day Adventist Church"
-              width={1852}
-              height={1140}
-              sizes="192px"
+              src="/icons/CCC%20SDA%20logo.svg"
+              alt="Cape Coast Central Seventh-day Adventist Church"
+              width={938}
+              height={173}
+              unoptimized
               className="h-auto w-(--brand-footer-width) max-w-full"
             />
-            <span>Cape Coast Central SDA</span>
           </Link>
         </div>
         <nav

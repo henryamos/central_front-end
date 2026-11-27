@@ -181,8 +181,9 @@
   --layer-header: 20;
   --layer-skip-link: 30;
   --header-height: 72px;
-  --brand-header-width: 6rem;
-  --brand-footer-width: 12rem;
+  --brand-header-mobile-width: 14rem;
+  --brand-header-width: 20rem;
+  --brand-footer-width: 20rem;
   --header-row-size: var(--header-height);
   --navigation-menu-max: 28rem;
   --home-invitation-overlap: var(--spacing-12);

@@ -112,7 +112,7 @@ export function SiteNavigation() {
         data-header-row
         className="flex min-h-(--header-height) flex-wrap items-center justify-between gap-x-3 gap-y-2 py-3 sm:py-4 xl:gap-x-6"
       >
-        <SiteIdentity compact onNavigate={close} />
+        <SiteIdentity onNavigate={close} />
         <nav
           aria-label="Primary navigation"
           className="hidden min-w-0 flex-1 flex-wrap items-center justify-center xl:flex"

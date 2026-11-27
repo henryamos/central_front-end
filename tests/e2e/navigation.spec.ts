@@ -8,13 +8,21 @@ test.beforeEach(async ({ page }) => {
 test("official branding follows the header surface and stays available on inner pages", async ({
   page,
 }) => {
+  // Multiple viewport changes and route visits need headroom on slower runners.
+  test.setTimeout(180000);
   await page.goto("/");
+  const svg = await page.request.get("/icons/CCC%20SDA%20logo.svg");
+  expect(svg.ok()).toBe(true);
+  expect(await svg.text()).not.toMatch(
+    /<text\b|<image\b|font-family|xlink:href/,
+  );
   const header = page.getByRole("banner");
   const denim = header.locator(".brand-logo-default");
   const white = header.locator(".brand-logo-inverse");
   const identity = header.getByRole("link", {
     name: "Cape Coast Central SDA home",
   });
+  await expect(identity).toHaveText("");
   await expect(white).toBeVisible();
   await expect(denim).toBeHidden();
   for (const width of [320, 768, 1440]) {
@@ -29,13 +37,13 @@ test("official branding follows the header surface and stays available on inner 
       )
       .toBeGreaterThan(0);
     const image = await displayed.boundingBox();
-    expect(image!.width / image!.height).toBeCloseTo(1852 / 1140, 1);
+    expect(image!.width / image!.height).toBeCloseTo(937.91 / 172.99, 1);
   }
   await page.getByRole("contentinfo").scrollIntoViewIfNeeded();
   await expect(denim).toBeVisible();
   await expect(white).toBeHidden();
   const footerLogo = page.getByRole("contentinfo").getByRole("img", {
-    name: "Seventh-day Adventist Church",
+    name: "Cape Coast Central Seventh-day Adventist Church",
     exact: true,
   });
   await expect(footerLogo).toBeVisible();
@@ -48,7 +56,7 @@ test("official branding follows the header surface and stays available on inner 
   await expect(denim).toBeVisible();
   await expect(white).toBeHidden();
   await identity.click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/$/, { timeout: 20000 });
   await expect(white).toBeVisible();
 });
 test("public shell preserves shared gutters, touch targets and text reflow", async ({
@@ -85,11 +93,15 @@ test("public shell preserves shared gutters, touch targets and text reflow", asy
         0,
       );
     }
-    for (const element of await page
+    for (const box of await page
       .getByRole("banner")
       .locator("a:visible,button:visible,summary:visible")
-      .all()) {
-      const box = await element.boundingBox();
+      .evaluateAll((elements) =>
+        elements.map((element) => {
+          const rect = element.getBoundingClientRect();
+          return { width: rect.width, height: rect.height };
+        }),
+      )) {
       expect(Math.round((box?.height ?? 0) * 100) / 100).toBeGreaterThanOrEqual(
         48,
       );

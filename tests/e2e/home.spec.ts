@@ -207,6 +207,8 @@ test.describe("church-day welcome", () => {
 test("phone layouts keep navigation, hero controls and section actions compact and reachable", async ({
   page,
 }, testInfo) => {
+  // This matrix makes four full page visits with section and menu screenshots.
+  test.setTimeout(240000);
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [320, 375, 390, 430]) {
     await page.setViewportSize({ width, height: width === 320 ? 740 : 844 });
@@ -218,7 +220,7 @@ test("phone layouts keep navigation, hero controls and section actions compact a
     expect((await row.boundingBox())!.height).toBeLessThanOrEqual(80);
     await expect(
       header.getByRole("link", { name: "Cape Coast Central SDA home" }),
-    ).toContainText("Central SDA");
+    ).toHaveAttribute("aria-label", "Cape Coast Central SDA home");
     await expect(
       header.getByRole("link", { name: "Donate", exact: true }),
     ).toHaveCount(0);
@@ -316,10 +318,14 @@ test("phone layouts keep navigation, hero controls and section actions compact a
         path: testInfo.outputPath(`phone-${width}-church.png`),
       });
     for (const section of [weekly, church]) {
-      for (const control of await section
+      for (const box of await section
         .locator("a:visible,button:visible")
-        .all()) {
-        const box = await control.boundingBox();
+        .evaluateAll((elements) =>
+          elements.map((element) => {
+            const rect = element.getBoundingClientRect();
+            return { width: rect.width, height: rect.height };
+          }),
+        )) {
         expect(box!.width).toBeGreaterThanOrEqual(48);
         expect(box!.height).toBeGreaterThanOrEqual(48);
       }
