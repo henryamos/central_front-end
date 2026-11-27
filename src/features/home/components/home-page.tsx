@@ -1,3 +1,4 @@
+import { BoardIdentity } from "@/features/church-life/board-identity";
 import { BranchConnector } from "@/features/church-life/branch-connector";
 import { LeadershipDirectory } from "@/features/church-life/leadership-directory";
 import { BranchPreview } from "@/features/church-life/branch-preview";
@@ -69,7 +70,7 @@ export function HomePage() {
             <LeadershipDirectory />
           ) : (
             <div className="church-board">
-              <div className="board-root">Cape Coast Central SDA</div>
+              <BoardIdentity />
               <ul className="board-branches">
                 <li className="board-branch">
                   <BranchConnector />

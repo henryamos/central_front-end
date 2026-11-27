@@ -1,6 +1,6 @@
+import { BoardIdentity } from "@/features/church-life/board-identity";
 import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "./branch-preview";
-import { Church } from "lucide-react";
 import { publishedLeaders, type ChurchLeader } from "./records";
 import { leadershipHierarchy, type LeaderBranch } from "./leadership-hierarchy";
 function LeaderProfile({ branch }: { branch: LeaderBranch }) {
@@ -36,10 +36,7 @@ export function LeadershipDirectory({
   const roots = leadershipHierarchy(leaders);
   return (
     <div className="church-board">
-      <div className="board-root">
-        <Church aria-hidden="true" className="size-5" />
-        Cape Coast Central SDA
-      </div>
+      <BoardIdentity />
       <ul className="board-branches">
         {roots.length ? (
           roots.map((branch) => (

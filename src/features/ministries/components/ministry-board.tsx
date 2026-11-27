@@ -1,6 +1,6 @@
+import { BoardIdentity } from "@/features/church-life/board-identity";
 import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "@/features/church-life/branch-preview";
-import { Church } from "lucide-react";
 import { ministries } from "../constants/ministries.constants";
 const art = {
   "sabbath-school": { symbol: "study" },
@@ -15,10 +15,7 @@ const art = {
 export function MinistryBoard() {
   return (
     <div className="church-board">
-      <div className="board-root">
-        <Church aria-hidden="true" className="size-5" />
-        Cape Coast Central SDA
-      </div>
+      <BoardIdentity />
       <ul className="board-branches">
         {ministries.map((ministry) => (
           <li

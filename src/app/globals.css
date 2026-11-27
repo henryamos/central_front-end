@@ -138,7 +138,7 @@
   .church-board {
     --branch-gap: var(--spacing-8);
     --branch-row-gap: var(--spacing-12);
-    --branch-start: calc(var(--branch-row-gap) - var(--spacing-1));
+    --branch-start: 0px;
     --branch-ink: var(--color-muted-foreground);
     display: grid;
     background: var(--color-surface-muted);
@@ -154,9 +154,10 @@
     gap: var(--spacing-2);
     padding: var(--spacing-2) var(--spacing-4);
     border-radius: var(--radius-sm);
-    background: var(--color-primary);
-    color: var(--color-background);
-    font-weight: 700;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    width: min(100%, 22rem);
+    padding: var(--spacing-4) var(--spacing-6);
   }
   .board-branches,
   .board-children {
@@ -186,10 +187,10 @@
     position: absolute;
     pointer-events: none;
     overflow: visible;
-    top: var(--branch-start);
+    top: 0;
     left: 0;
-    width: var(--branch-gap);
-    height: var(--spacing-8);
+    width: calc(var(--branch-gap) + (100% - var(--branch-gap)) / 2);
+    height: var(--branch-row-gap);
     color: var(--branch-ink);
   }
   .board-branch:last-child::before,
@@ -386,9 +387,14 @@
       display: none;
     }
   }
+  @media (min-width: 48rem) {
+    .board-branch:nth-child(even) {
+      --branch-row-gap: var(--spacing-24);
+    }
+  }
   @media (min-width: 64rem) {
     .church-board {
-      --branch-gap: var(--spacing-24);
+      --branch-gap: var(--spacing-12);
       --branch-row-gap: var(--spacing-16);
     }
   }
@@ -396,6 +402,19 @@
     li[data-branch-arrived] > .board-connector .connector-trace {
       stroke-dasharray: 1;
       animation: draw-branch var(--duration-branch-draw) ease-in-out both;
+    }
+    li[data-branch-motion] > .branch-preview,
+    li[data-branch-motion] > .board-entry > .branch-preview {
+      transition:
+        opacity var(--duration-branch-arrival),
+        transform var(--duration-branch-arrival);
+    }
+    li[data-branch-motion]:not([data-branch-arrived]) > .branch-preview,
+    li[data-branch-motion]:not([data-branch-arrived])
+      > .board-entry
+      > .branch-preview {
+      opacity: 0.25;
+      transform: translateY(var(--spacing-6)) scale(0.94);
     }
     li[data-branch-arrived] > .branch-preview,
     li[data-branch-arrived] > .board-entry > .branch-preview {
@@ -452,6 +471,13 @@
     }
     .branch-preview[data-expanded="true"] .profile-art img {
       transform: scale(1.025);
+    }
+  }
+}
+@layer components {
+  @media (min-width: 64rem) {
+    .board-branch:nth-child(even) {
+      --branch-row-gap: var(--spacing-24);
     }
   }
 }

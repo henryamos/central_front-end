@@ -44,12 +44,12 @@ export function BranchPreview({
     if (!branch || !("IntersectionObserver" in window)) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          branch.setAttribute("data-branch-arrived", "");
-          observer.disconnect();
+        for (const entry of entries) {
+          branch.setAttribute("data-branch-motion", "");
+          branch.toggleAttribute("data-branch-arrived", entry.isIntersecting);
         }
       },
-      { threshold: 0.35, rootMargin: "0px 0px -48px 0px" },
+      { threshold: 0.2, rootMargin: "0px 0px -48px 0px" },
     );
     observer.observe(trigger.current!);
     return () => observer.disconnect();

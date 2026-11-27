@@ -90,4 +90,4 @@ The leadership board uses the same curved branches and full-size previews. A pub
 
 Directory cards use a compact photographic header, a dark upper-right category label and a wrapping summary strip with an eye icon linking to the profile. Each curved branch stays visible as an accent stroke traces its path once when its card enters the viewport. The card scales gently from its connection point as the stroke arrives. Reduced motion keeps the hierarchy static.
 
-The desktop board leaves 192px between opposing cards and 64px between rows. Connections trace for 1.4 seconds before the card settles into place. Phone rows use 48px gaps.
+The board uses the church wordmark as its origin. Curved branches land at the top centre of each card. Each card and connection replay on entering the viewport from either direction, with a fade and scale on leaving. The second column is staggered for a sequential reading flow. Reduced motion shows static cards.

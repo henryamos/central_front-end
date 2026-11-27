@@ -984,6 +984,7 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
 test("connector endpoints meet their cards on desktop and mobile", async ({
   page,
 }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ministries");
   await page.locator("#music summary").click();
   for (const width of [390, 1280]) {
@@ -1001,7 +1002,10 @@ test("connector endpoints meet their cards on desktop and mobile", async ({
           .querySelector(".branch-preview")!
           .getBoundingClientRect();
         const x = end.left + end.width / 2;
-        return Math.min(Math.abs(x - card.left), Math.abs(x - card.right));
+        return Math.max(
+          Math.abs(x - (card.left + card.width / 2)),
+          Math.abs(end.top + end.height / 2 - card.top),
+        );
       });
       expect(gap).toBeLessThanOrEqual(1);
     }
