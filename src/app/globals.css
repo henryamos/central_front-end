@@ -225,7 +225,7 @@
     grid-area: 1/1;
     position: relative;
     overflow: hidden;
-    min-height: clamp(7rem, 12vw, 9rem);
+    min-height: clamp(8.25rem, 13vw, 10.5rem);
     background: var(--color-primary);
   }
   .profile-heading {
@@ -260,14 +260,14 @@
     grid-area: 1/1;
     align-self: end;
     z-index: 1;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--spacing-2);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: calc(var(--touch-target) + var(--spacing-3));
     margin-top: var(--spacing-12);
     padding: 0 var(--spacing-3);
-    background: var(--color-background);
+    background: color-mix(in srgb, var(--color-background) 96%, transparent);
     color: var(--color-primary);
     border-top: 1px solid var(--color-border);
     pointer-events: none;
@@ -276,17 +276,46 @@
   }
   .profile-summary p {
     margin: 0;
-    padding-top: var(--spacing-1);
+    padding-block: var(--spacing-2);
+    overflow-wrap: anywhere;
     font-size: var(--text-sm);
   }
   .profile-summary a {
     display: inline-flex;
+    justify-content: center;
+    min-width: var(--touch-target);
+    border-radius: var(--radius-sm);
     align-items: center;
     gap: var(--spacing-1);
     min-height: var(--touch-target);
     font-size: var(--text-sm);
     font-weight: 700;
     text-decoration: underline;
+  }
+  .profile-summary a:is(:hover, :focus-visible) {
+    background: var(--color-surface-muted);
+  }
+  .board-connector {
+    z-index: 2;
+  }
+  .connector-trace {
+    color: var(--color-primary);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .music-branches {
+    position: relative;
+  }
+  .music-branches[open]::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto auto var(--spacing-4);
+    height: var(--touch-target);
+    width: 1px;
+    background: var(--branch-ink);
+  }
+  .music-branches summary {
+    margin-left: var(--spacing-6);
   }
   .branch-preview[data-expanded="true"] .profile-summary {
     opacity: 1;
@@ -347,9 +376,9 @@
     }
   }
   @media (prefers-reduced-motion: no-preference) {
-    li[data-branch-arrived] > .board-connector path {
+    li[data-branch-arrived] > .board-connector .connector-trace {
       stroke-dasharray: 1;
-      animation: draw-branch var(--duration-hero-enter) ease-out both;
+      animation: draw-branch var(--duration-hero-enter) ease-in-out both;
     }
     @keyframes draw-branch {
       from {

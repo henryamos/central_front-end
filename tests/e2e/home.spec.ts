@@ -967,7 +967,7 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
   await expect(branch).toHaveAttribute("data-branch-arrived", "");
   const animation = () =>
     branch
-      .locator(":scope > .board-connector path")
+      .locator(":scope > .board-connector .connector-trace")
       .evaluate((el) => getComputedStyle(el).animationName);
   expect(await animation()).toBe("draw-branch");
   const art = branch.locator(".profile-art");
@@ -977,4 +977,30 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
   );
   await page.emulateMedia({ reducedMotion: "reduce" });
   expect(await animation()).toBe("none");
+});
+test("connector endpoints meet their cards on desktop and mobile", async ({
+  page,
+}) => {
+  await page.goto("/ministries");
+  await page.locator("#music summary").click();
+  for (const width of [390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const selector of [
+      "#sabbath-school",
+      "#music",
+      "#music .board-children > li:first-child",
+    ]) {
+      const gap = await page.locator(selector).evaluate((el) => {
+        const end = el
+          .querySelector(":scope > svg circle")!
+          .getBoundingClientRect();
+        const card = el
+          .querySelector(".branch-preview")!
+          .getBoundingClientRect();
+        const x = end.left + end.width / 2;
+        return Math.min(Math.abs(x - card.left), Math.abs(x - card.right));
+      });
+      expect(gap).toBeLessThanOrEqual(1);
+    }
+  }
 });

@@ -3,7 +3,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
+  Eye,
   ArrowDownRight,
   BookOpen,
   Church,
@@ -118,9 +118,10 @@ export function BranchPreview({
         <Link
           href={href}
           aria-label={"View details for " + name}
+          title={"View details for " + name}
           tabIndex={expanded ? 0 : -1}
         >
-          View details <ArrowRight aria-hidden="true" className="size-4" />
+          <Eye aria-hidden="true" className="size-5" />
         </Link>
       </div>
     </div>
