@@ -40,7 +40,9 @@ export function MinistryBoard() {
                     {ministry.groups.map((name) => (
                       <li key={name}>
                         <BranchPreview
+                          category="Music group"
                           symbol="music"
+                          image="/images/General2.jpg"
                           name={name}
                           description={
                             name +

@@ -956,3 +956,23 @@ test("leadership preview opens its directory from the phone board", async ({
     .click();
   await expect(page).toHaveURL(/\/about\/leadership$/);
 });
+
+test("scroll draws a curved branch and keeps the card controls still for reduced motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/ministries");
+  const branch = page.locator("li#personal-ministry");
+  await branch.scrollIntoViewIfNeeded();
+  await expect(branch).toHaveAttribute("data-branch-arrived", "");
+  const animation = () =>
+    branch.evaluate((el) => getComputedStyle(el, "::after").animationName);
+  expect(await animation()).toBe("draw-branch");
+  const art = branch.locator(".profile-art");
+  const title = branch.locator(".profile-heading");
+  expect((await art.boundingBox())!.height).toBeGreaterThan(
+    (await title.boundingBox())!.height,
+  );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(await animation()).toBe("none");
+});

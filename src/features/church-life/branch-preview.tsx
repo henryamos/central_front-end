@@ -1,5 +1,5 @@
 "use client";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -27,16 +27,33 @@ export function BranchPreview({
   subtitle,
   image,
   symbol = "people",
+  category = "Ministry",
 }: {
   name: string;
   description: string;
   href: string;
   subtitle?: string;
   image?: string;
+  category?: "Ministry" | "Music group" | "Leadership";
   symbol?: keyof typeof symbols;
 }) {
   const id = useId(),
     trigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const branch = trigger.current?.closest("li");
+    if (!branch || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          branch.setAttribute("data-branch-arrived", "");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.12 },
+    );
+    observer.observe(trigger.current!);
+    return () => observer.disconnect();
+  }, []);
   const [mode, setMode] = useState<"closed" | "hover" | "pinned">("closed");
   const expanded = mode !== "closed",
     Icon = symbols[symbol];
@@ -76,17 +93,13 @@ export function BranchPreview({
         }
       >
         <span className="profile-art" aria-hidden="true">
-          {image ? (
-            <Image
-              fill
-              src={image}
-              alt=""
-              sizes="(min-width:768px) 36vw, 85vw"
-              className="object-cover object-[center_35%]"
-            />
-          ) : (
-            <Icon className="size-12" strokeWidth={1.25} />
-          )}
+          <Image
+            fill
+            src={image ?? "/images/ChurhcBuilding.jpg"}
+            alt=""
+            sizes="(min-width:768px) 44vw, 85vw"
+            className="object-cover object-[center_35%]"
+          />
         </span>
         <span className="profile-heading">
           <span>
@@ -96,6 +109,10 @@ export function BranchPreview({
           <ArrowDownRight aria-hidden="true" className="size-5 shrink-0" />
         </span>
       </button>
+      <span className="profile-label" aria-hidden="true">
+        <Icon aria-hidden="true" className="size-4" />
+        {category}
+      </span>
       <div id={id} className="profile-summary" aria-hidden={!expanded}>
         <p>{description}</p>
         <Link

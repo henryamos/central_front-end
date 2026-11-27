@@ -7,6 +7,7 @@ function LeaderProfile({ branch }: { branch: LeaderBranch }) {
   return (
     <>
       <BranchPreview
+        category="Leadership"
         image={leader.portrait}
         name={leader.name}
         subtitle={leader.role}
@@ -53,6 +54,7 @@ export function LeadershipDirectory({
         ) : (
           <li className="board-branch">
             <BranchPreview
+              category="Leadership"
               name="Church officers"
               subtitle="Leadership profiles will appear here when published."
               image="/images/ChurhcBuilding.jpg"

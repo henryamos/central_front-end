@@ -315,7 +315,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 3/1;
+    aspect-ratio: 3/2;
     min-height: var(--spacing-24);
     background: var(--color-primary);
     color: var(--color-background);
@@ -342,9 +342,9 @@
     min-height: var(--spacing-24);
     height: calc(100% - var(--spacing-16));
     overflow: auto;
-    background: var(--color-background);
-    color: var(--color-primary);
-    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--color-church-overlay);
+    color: var(--color-background);
+    padding: var(--spacing-16) var(--spacing-4) var(--spacing-4);
     visibility: hidden;
     opacity: 0;
   }
@@ -352,9 +352,12 @@
     visibility: visible;
     opacity: 1;
   }
+  .profile-summary a {
+    color: inherit;
+  }
   .profile-summary p {
     margin: 0;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
   }
   .profile-summary a,
   .board-children .profile-summary a {
@@ -394,7 +397,7 @@
     align-self: stretch;
     overflow: visible;
     display: grid;
-    align-content: center;
+    align-content: end;
     justify-items: start;
     z-index: 1;
     pointer-events: none;
@@ -441,6 +444,67 @@
   @media (prefers-reduced-motion: no-preference) {
     .profile-summary {
       transition: opacity var(--duration-fast) ease-out;
+    }
+  }
+}
+
+@layer components {
+  .profile-art {
+    overflow: hidden;
+  }
+  .profile-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-overlay);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .profile-label {
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+    inset: var(--spacing-3) auto auto var(--spacing-3);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-sm);
+    background: var(--color-background);
+    color: var(--color-primary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .profile-summary {
+    background: var(--color-church-overlay);
+  }
+  .profile-summary a,
+  .board-children .profile-summary a {
+    color: var(--color-background);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .board-branch[data-branch-arrived]::after {
+      animation: draw-branch var(--duration-hero-enter) ease-out both;
+    }
+    li[data-branch-arrived] > .branch-preview,
+    li[data-branch-arrived] > .board-entry > .branch-preview {
+      animation: branch-settle var(--duration-hero-enter) ease-out both;
+    }
+    .profile-art img {
+      transition: transform var(--duration-hero-enter) ease-out;
+    }
+    .branch-preview[data-expanded="true"] .profile-art img {
+      transform: scale(1.035);
+    }
+    @keyframes branch-settle {
+      from {
+        opacity: 0.75;
+        transform: translateY(var(--spacing-2));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
 }

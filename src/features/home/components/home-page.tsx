@@ -72,6 +72,7 @@ export function HomePage() {
               <ul className="board-branches">
                 <li className="board-branch">
                   <BranchPreview
+                    category="Leadership"
                     image="/images/ChurhcBuilding.jpg"
                     name="Church officers"
                     description="Explore the church leadership directory and find the information desk."
