@@ -133,7 +133,7 @@ export function HomeHero({
           className="pointer-events-none absolute inset-0 bg-overlay"
         />
         <Container className="relative flex min-h-(--home-hero-min) flex-col gap-8 pt-[calc(var(--header-row-size)+var(--spacing-12))] pb-[calc(var(--home-invitation-overlap)+var(--spacing-4))] md:pt-[calc(var(--header-row-size)+var(--spacing-16))]">
-          <div className="grid flex-1 content-start justify-items-start pt-4 pb-8 sm:content-center sm:py-8">
+          <div className="grid flex-1 content-center justify-items-start pt-12 pb-8 sm:py-8">
             {children}
           </div>
           <div

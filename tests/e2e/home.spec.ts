@@ -869,3 +869,36 @@ test("Sabbath invitation preserves hierarchy, reachable actions and responsive g
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/contact$/, { timeout: 20000 });
 });
+
+test("events and leadership reflow below the mobile welcome", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const heading = await page.locator("#home-title").boundingBox();
+  const header = await page.getByRole("banner").boundingBox();
+  expect(heading!.y - header!.y - header!.height).toBeGreaterThanOrEqual(96);
+  for (const path of ["/", "/events"]) {
+    if (path !== "/") await page.goto(path);
+    await page.getByRole("button", { name: "Latest", exact: true }).click();
+    await expect(
+      page.getByText("No event announcements have been published yet."),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Past", exact: true }).click();
+    await expect(
+      page.getByText("No past events have been published yet."),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth <=
+          document.documentElement.clientWidth,
+      ),
+    ).toBe(true);
+  }
+  await page.goto("/about/leadership");
+  await expect(
+    page.getByText("Leadership profiles will appear here when published."),
+  ).toBeVisible();
+});

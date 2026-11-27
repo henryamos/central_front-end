@@ -1,3 +1,5 @@
+import { EventBrowser } from "@/features/church-life/event-browser";
+import { LeadershipDirectory } from "@/features/church-life/leadership-directory";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, CirclePlay } from "lucide-react";
 import { Container } from "@/components/layout/container/container";
@@ -67,22 +69,39 @@ export function HomePage() {
           </ul>
         </Container>
       </Section>
-      <Section aria-labelledby="church-life-title">
+      <Section aria-label="Events and leadership">
+        <Container className="grid gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-16">
+          <section
+            aria-labelledby="home-events"
+            className="grid content-start gap-4"
+          >
+            <Heading level={2} id="home-events">
+              Church events
+            </Heading>
+            <EventBrowser />
+          </section>
+          <section
+            aria-labelledby="home-leaders"
+            className="grid content-start gap-4"
+          >
+            <Heading level={2} id="home-leaders">
+              Church leadership
+            </Heading>
+            <LeadershipDirectory />
+          </section>
+        </Container>
+      </Section>
+      <Section aria-labelledby="church-life-title" className="bg-surface-muted">
         <Container className="grid gap-8">
           <Heading level={2} id="church-life-title">
             Explore church life.
           </Heading>
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2">
             {[
               {
                 title: "Sermons",
                 body: "Messages and recorded worship.",
                 href: "/sermons",
-              },
-              {
-                title: "Events",
-                body: "Church programmes and gatherings.",
-                href: "/events",
               },
               {
                 title: "News",

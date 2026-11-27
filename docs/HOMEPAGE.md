@@ -79,3 +79,5 @@ Confirmed by the user, 24 November 2026: midweek prayer is Wednesday; its time r
 Bottom overlay correction: the single blue gradient is positioned at bottom: 0 with a token-controlled 70% height, fading to fully transparent at its own top edge. The top 30% of every photograph has no overlay. It is stationary and non-interactive; original images and carousel effects remain unchanged.
 
 The homepage offers music on every fresh visit or refresh. Enable music starts the local recording at 45% volume. Not now dismisses the card for the current page. The compact controls retain 48px touch targets. The church introduction groups its overview link with the heading and places the topic tabs directly above the selected story.
+
+Events and church leadership share a responsive homepage section. The Events and Leadership pages reuse the same lists. Upcoming includes ongoing events through their Ghana end date, Latest orders by publication, and Past shows finished events. Leadership profiles group by team. Both collections are empty until church records are supplied.
