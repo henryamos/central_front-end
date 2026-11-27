@@ -137,7 +137,7 @@
 @layer components {
   .church-board {
     --branch-gap: var(--spacing-8);
-    --branch-row-gap: var(--spacing-6);
+    --branch-row-gap: var(--spacing-12);
     --branch-start: calc(var(--branch-row-gap) - var(--spacing-1));
     --branch-ink: var(--color-muted-foreground);
     display: grid;
@@ -343,7 +343,7 @@
   @media (min-width: 48rem) {
     .church-board {
       --branch-gap: var(--spacing-12);
-      --branch-row-gap: var(--spacing-8);
+      --branch-row-gap: var(--spacing-12);
       padding: var(--spacing-6);
     }
     .board-root {
@@ -353,7 +353,7 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       width: 100%;
-      max-width: var(--home-copy-max);
+      max-width: var(--content-max);
       justify-self: center;
       margin: 0;
     }
@@ -386,16 +386,22 @@
       display: none;
     }
   }
+  @media (min-width: 64rem) {
+    .church-board {
+      --branch-gap: var(--spacing-24);
+      --branch-row-gap: var(--spacing-16);
+    }
+  }
   @media (prefers-reduced-motion: no-preference) {
     li[data-branch-arrived] > .board-connector .connector-trace {
       stroke-dasharray: 1;
-      animation: draw-branch var(--duration-hero-enter) ease-in-out both;
+      animation: draw-branch var(--duration-branch-draw) ease-in-out both;
     }
     li[data-branch-arrived] > .branch-preview,
     li[data-branch-arrived] > .board-entry > .branch-preview {
       transform-origin: var(--card-origin, left) var(--spacing-6);
-      animation: card-connect var(--duration-church-panel) ease-out
-        var(--duration-normal) backwards;
+      animation: card-connect var(--duration-branch-arrival) ease-out
+        var(--duration-branch-draw) backwards;
     }
     @media (min-width: 48rem) {
       .board-branch:nth-child(odd) {
@@ -408,9 +414,21 @@
         --card-origin: left;
       }
     }
+    li[data-branch-arrived] > .board-connector circle {
+      animation: connection-arrive var(--duration-branch-arrival) ease-out
+        var(--duration-branch-draw) backwards;
+    }
+    @keyframes connection-arrive {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
     @keyframes card-connect {
       from {
-        transform: scale(0.94);
+        transform: scale(0.9);
         opacity: 0.65;
       }
       to {

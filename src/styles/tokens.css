@@ -198,6 +198,8 @@
   --home-copy-max: 56rem;
   --music-notice-max: 18rem;
   --church-discovery-max: 48rem;
+  --duration-branch-draw: 1400ms;
+  --duration-branch-arrival: 550ms;
   --duration-church-panel: 400ms;
   --church-panel-distance: var(--spacing-3);
   --home-visit-measure: 38ch;

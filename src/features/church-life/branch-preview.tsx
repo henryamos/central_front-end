@@ -49,7 +49,7 @@ export function BranchPreview({
           observer.disconnect();
         }
       },
-      { threshold: 0.12 },
+      { threshold: 0.35, rootMargin: "0px 0px -48px 0px" },
     );
     observer.observe(trigger.current!);
     return () => observer.disconnect();
