@@ -1,3 +1,4 @@
+import { SiteArrival } from "@/components/ui/brand-loading/site-arrival";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/config/env";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
+      <SiteArrival />
       <Header />
       <main id="main-content" tabIndex={-1} className="flex-1">
         {children}

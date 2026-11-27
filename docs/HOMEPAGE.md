@@ -91,3 +91,5 @@ The leadership board uses the same curved branches and full-size previews. A pub
 Directory cards use a compact photographic header, a dark upper-right category label and a wrapping summary strip with an eye icon linking to the profile. Each curved branch stays visible as an accent stroke traces its path once when its card enters the viewport. The card scales gently from its connection point as the stroke arrives. Reduced motion keeps the hierarchy static.
 
 The board uses the church wordmark as its origin. Curved branches land at the top centre of each card. Each card and connection replay on entering the viewport from either direction, with a fade and scale on leaving. The second column is staggered for a sequential reading flow. Reduced motion shows static cards.
+
+Cards enter from their own side of the board and reverse the slide and fade as they leave the viewport. Fresh page loads show the animated Adventist symbol for at least 900ms, then fade out when the window load completes, with a four-second readiness fallback. Route loading shares the same screen. Reduced motion uses a static logo and progress line.

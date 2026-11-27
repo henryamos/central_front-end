@@ -414,23 +414,25 @@
       > .board-entry
       > .branch-preview {
       opacity: 0.25;
-      transform: translateY(var(--spacing-6)) scale(0.94);
+      transform: translateX(var(--card-shift, var(--spacing-8))) scale(0.94);
     }
     li[data-branch-arrived] > .branch-preview,
     li[data-branch-arrived] > .board-entry > .branch-preview {
       transform-origin: var(--card-origin, left) var(--spacing-6);
       animation: card-connect var(--duration-branch-arrival) ease-out
-        var(--duration-branch-draw) backwards;
+        var(--duration-normal) backwards;
     }
     @media (min-width: 48rem) {
       .board-branch:nth-child(odd) {
         --card-origin: right;
+        --card-shift: calc(-1 * var(--spacing-12));
       }
       .board-branch:only-child {
         --card-origin: center;
       }
       .board-children > li {
         --card-origin: left;
+        --card-shift: var(--spacing-12);
       }
     }
     li[data-branch-arrived] > .board-connector circle {
@@ -447,11 +449,11 @@
     }
     @keyframes card-connect {
       from {
-        transform: scale(0.9);
+        transform: translateX(var(--card-shift, var(--spacing-12))) scale(0.94);
         opacity: 0.65;
       }
       to {
-        transform: scale(1);
+        transform: translateX(0) scale(1);
         opacity: 1;
       }
     }
@@ -478,6 +480,75 @@
   @media (min-width: 64rem) {
     .board-branch:nth-child(even) {
       --branch-row-gap: var(--spacing-24);
+    }
+  }
+}
+@layer components {
+  .brand-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: var(--spacing-6);
+    background: var(--color-background);
+    color: var(--color-primary);
+    transition: opacity var(--duration-normal);
+    pointer-events: auto;
+  }
+  .brand-loading[data-leaving="true"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .brand-loading p {
+    margin: 0;
+    font-weight: 600;
+    font-size: var(--text-lg);
+  }
+  .brand-loading-mark {
+    display: grid;
+    justify-items: center;
+    gap: var(--spacing-6);
+  }
+  .brand-loading-line {
+    width: var(--spacing-24);
+    height: 2px;
+    background: var(--color-border);
+    overflow: hidden;
+  }
+  .brand-loading-line::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 100%;
+    background: var(--color-primary);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .brand-loading-mark img {
+      animation: brand-breathe 1600ms ease-in-out infinite;
+    }
+    .brand-loading-line::after {
+      animation: brand-progress 1600ms ease-in-out infinite;
+    }
+    @keyframes brand-breathe {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(0.94);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes brand-progress {
+      from {
+        transform: translateX(-100%);
+      }
+      to {
+        transform: translateX(200%);
+      }
     }
   }
 }
