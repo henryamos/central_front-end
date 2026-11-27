@@ -3,10 +3,126 @@ import { homeSlides } from "../../src/features/home/constants/home.constants";
 test.setTimeout(90000);
 const carouselSelector = 'section[aria-roledescription="carousel"]';
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page }, testInfo) => {
+  if (!testInfo.title.startsWith("music uses"))
+    await page.addInitScript(() =>
+      sessionStorage.setItem("church-music-choice", "dismissed"),
+    );
   await page.clock.setFixedTime(new Date("2026-11-27T12:00:00Z"));
 });
 
+test("header becomes opaque before scrolled hero copy reaches the navigation", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const header = page.getByRole("banner");
+  await expect(header).toHaveAttribute("data-transparent", "true");
+  for (const offset of [1, 120, 240, 400]) {
+    await page.evaluate((top) => window.scrollTo(0, top), offset);
+    await expect(header).toHaveAttribute("data-transparent", "false");
+    await expect(header).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(header).toBeInViewport();
+  }
+  await page.screenshot({
+    path: testInfo.outputPath("opaque-scrolled-header.png"),
+  });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(header).toHaveAttribute("data-transparent", "true");
+});
+
+test("music uses the local recording at 45 percent after consent and continues through photo changes", async ({
+  page,
+  browserName,
+}, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto("/");
+  const dialog = page.getByRole("dialog", {
+    name: "Background music",
+    exact: true,
+  });
+  const audio = page.locator("audio");
+  const invitation = page.locator('[aria-label="Background music invitation"]');
+  await expect(invitation).toBeVisible({ timeout: 30000 });
+  await expect(
+    page
+      .locator(carouselSelector)
+      .getByRole("link", { name: "Plan a Visit", exact: true })
+      .locator(".."),
+  ).toHaveCSS("opacity", "1");
+  await page.screenshot({ path: testInfo.outputPath("music-invitation.png") });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.screenshot({
+    path: testInfo.outputPath("music-invitation-desktop.png"),
+  });
+  await page.setViewportSize({ width: 320, height: 740 });
+  await expect(dialog).toBeHidden();
+  await expect
+    .poll(() => audio.evaluate((a: HTMLAudioElement) => a.paused))
+    .toBe(true);
+  await invitation
+    .getByRole("button", { name: "Enable music", exact: true })
+    .click();
+  await expect(dialog).toBeHidden();
+  if (
+    browserName === "webkit" &&
+    process.platform === "win32" &&
+    (await audio.evaluate((a: HTMLAudioElement) => a.error?.code === 4))
+  ) {
+    await page
+      .getByRole("button", { name: "Play background music", exact: true })
+      .click();
+    await expect(dialog.getByRole("status")).toContainText(
+      /Music could not start|Music is unavailable|Press Play/,
+    );
+    test.skip(
+      true,
+      "Windows WebKit reports MEDIA_ERR_SRC_NOT_SUPPORTED for this MP3; real playback is verified in Chromium.",
+    );
+  }
+  await expect
+    .poll(() =>
+      audio.evaluate((a: HTMLAudioElement) => !a.paused && a.currentTime > 0),
+    )
+    .toBe(true);
+  expect(await audio.evaluate((a: HTMLAudioElement) => a.volume)).toBeCloseTo(
+    0.45,
+  );
+  const before = await audio.evaluate((a: HTMLAudioElement) => a.currentTime);
+  await expect(page.locator("[data-rotation-control]")).toHaveAttribute(
+    "aria-label",
+    "Pause slideshow",
+  );
+  await page
+    .getByRole("button", { name: "Next photograph", exact: true })
+    .click();
+  await expect
+    .poll(() => audio.evaluate((a: HTMLAudioElement) => a.currentTime))
+    .toBeGreaterThan(before);
+  await page
+    .getByRole("button", { name: "Pause background music", exact: true })
+    .click();
+  await expect(dialog).toBeVisible();
+  await expect
+    .poll(() => audio.evaluate((a: HTMLAudioElement) => a.paused))
+    .toBe(true);
+  const volume = dialog.getByRole("slider", { name: "Music volume" });
+  await volume.focus();
+  await volume.press("Home");
+  await volume.press("ArrowRight");
+  expect(await audio.evaluate((a: HTMLAudioElement) => a.volume)).toBeCloseTo(
+    0.01,
+  );
+  await dialog.getByRole("button", { name: "Play music", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect
+    .poll(() => audio.evaluate((a: HTMLAudioElement) => !a.paused))
+    .toBe(true);
+  await page.reload();
+  await expect(dialog).toBeHidden();
+});
 test.describe("church-day welcome", () => {
   test.use({ timezoneId: "America/Los_Angeles" });
 
@@ -28,7 +144,7 @@ test.describe("church-day welcome", () => {
       );
       await expect(hero.locator("[data-hero-greeting]")).toBeVisible();
       await expect(
-        hero.getByText(/Welcome to Cape Coast Central SDA Church/),
+        hero.getByText(/Cape Coast Central SDA Church/),
       ).toBeVisible();
       await expect(hero.locator(".hero-phrase")).toHaveCount(0);
       await expect(
@@ -64,7 +180,7 @@ test.describe("church-day welcome", () => {
     await page.clock.setFixedTime(new Date("2026-11-29T00:30:00Z"));
     await page.reload();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "Welcome to Cape Coast Central SDA Church",
+      "Cape Coast Central SDA Church",
     );
     await expect(page.locator("[data-hero-greeting]")).toContainText(
       "Come as you are",
@@ -80,7 +196,7 @@ test.describe("church-day welcome", () => {
       "Midweek prayer",
     );
     await expect(page.locator("[data-hero-welcome]")).toHaveText(
-      "Welcome to Cape Coast Central SDA Church",
+      "Cape Coast Central SDA Church",
     );
     await expect(page.locator(".text-hero-lead")).toContainText(
       "6:00 PM–8:00 PM",
@@ -342,16 +458,46 @@ async function waitForPhoto(page: import("@playwright/test").Page) {
         photo.evaluate(
           (image) =>
             (image as HTMLImageElement).complete &&
-            (image as HTMLImageElement).naturalWidth > 0,
+            (image as HTMLImageElement).naturalWidth > 0 &&
+            getComputedStyle(image).opacity === "1" &&
+            image
+              .closest('[aria-roledescription="slide"]')
+              ?.getAttribute("aria-busy") === "false",
         ),
       { timeout: 30000 },
     )
     .toBe(true);
-  await expect(photo).toHaveCSS("opacity", "1");
-  await expect(
-    page.locator(carouselSelector + ' [aria-roledescription="slide"]'),
-  ).toHaveAttribute("aria-busy", "false");
 }
+
+test("hero photos fade out and in with alternating zoom and a reduced-motion fallback", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  await waitForPhoto(page);
+  const image = page.locator(
+    carouselSelector + ' [aria-roledescription="slide"] img',
+  );
+  await expect(image).toHaveCSS("animation-name", "carousel-zoom");
+  const before = await image.evaluate((e) => getComputedStyle(e).transform);
+  await page.waitForTimeout(500);
+  expect(await image.evaluate((e) => getComputedStyle(e).transform)).not.toBe(
+    before,
+  );
+  await page
+    .getByRole("button", { name: "Show photograph 2 of " + homeSlides.length })
+    .evaluate((e: HTMLElement) => e.click());
+  await waitForPhoto(page);
+  const outgoing = page.locator("[data-hero-outgoing]");
+  await expect(outgoing).toHaveCSS("animation-name", "hero-photo-out");
+  await expect(outgoing).toHaveCSS("animation-duration", "1s");
+  await expect(outgoing).toHaveCSS("opacity", "0");
+  await expect(image).toHaveCSS("opacity", "1");
+  await expect(image).toHaveCSS("animation-direction", "reverse");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(image).toHaveCSS("animation-name", "none");
+  await expect(outgoing).toHaveCSS("animation-name", "none");
+});
 test("homepage uses real content and selected photographs with stable manual controls", async ({
   page,
   browserName,
@@ -360,7 +506,7 @@ test("homepage uses real content and selected photographs with stable manual con
   await page.goto("/");
   const carousel = page.locator(carouselSelector);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Welcome to Cape Coast Central SDA Church",
+    "Cape Coast Central SDA Church",
   );
   await expect(
     page.getByText("Content is not available yet.", { exact: true }),
@@ -496,7 +642,7 @@ test("hero has balanced heading, supporting copy and actions with a protective h
   const header = page.getByRole("banner");
   await expect(header).toHaveCSS("position", "sticky");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Welcome to Cape Coast Central SDA Church",
+    "Cape Coast Central SDA Church",
   );
   const copy = page.locator("[data-hero-greeting]");
   await expect(copy).toHaveCount(1);

@@ -17,9 +17,6 @@ export function HeroGreeting() {
         weight="extrabold"
         className="grid gap-2 text-home-welcome leading-display font-bold tracking-display motion-safe:animate-hero-enter sm:font-extrabold"
       >
-        <span className="block text-xl leading-ui font-medium tracking-normal sm:text-2xl">
-          Welcome to
-        </span>{" "}
         <span>
           <span className="block">Cape Coast</span>{" "}
           <span className="block">Central SDA Church</span>

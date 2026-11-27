@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/container/container";
 import { Button } from "@/components/ui/button/button";
 import { cn } from "@/lib/utils";
 import { useCarouselEnvironment } from "../hooks/use-carousel-environment";
+import { HeroMusic } from "./hero-music";
 type Slide = { src: string; alt: string; position: string };
 /** One native CSS timeline controls progress and rotation. Only photos crossfade. */
 export function HomeHero({
@@ -55,7 +56,7 @@ export function HomeHero({
       onFocusCapture={(event) => {
         if (
           event.target instanceof Element &&
-          !event.target.closest("[data-rotation-control]")
+          !event.target.closest("[data-rotation-control], [data-music-control]")
         )
           setPlaying(false);
       }}
@@ -68,12 +69,17 @@ export function HomeHero({
         />
         {previous && (
           <Image
+            data-hero-outgoing
             src={previous.slide.src}
             alt=""
             fill
             sizes="100vw"
             aria-hidden="true"
-            className="object-cover"
+            className={cn(
+              "object-cover",
+              ready &&
+                "animate-hero-photo-out motion-reduce:animate-none motion-reduce:opacity-0",
+            )}
             style={{
               objectPosition: previous.slide.position,
               transform: previous.transform,
@@ -108,7 +114,7 @@ export function HomeHero({
             }}
             onError={() => setFailed(slide.src)}
             className={cn(
-              "object-cover transition-opacity duration-(--duration-normal) ease-standard",
+              "object-cover transition-opacity duration-(--duration-hero-fade) ease-standard motion-reduce:duration-0",
               ready || (!previous && active === 0 && failed !== slide.src)
                 ? "opacity-100"
                 : "opacity-0",
@@ -264,33 +270,36 @@ export function HomeHero({
                 </Button>
               ))}
             </div>
-            <Button
-              data-rotation-control
-              type="button"
-              disabled={reducedMotion}
-              aria-label={
-                reducedMotion
-                  ? "Slideshow paused"
-                  : rotating
-                    ? "Pause slideshow"
-                    : "Resume slideshow"
-              }
-              title={
-                reducedMotion
-                  ? "Slideshow paused for reduced motion"
-                  : rotating
-                    ? "Pause slideshow"
-                    : "Resume slideshow"
-              }
-              className="col-start-4 row-start-1 size-12 justify-self-end border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:col-start-3"
-              onClick={() => setPlaying((value) => !value)}
-            >
-              {rotating ? (
-                <Pause aria-hidden="true" className="size-4" />
-              ) : (
-                <Play aria-hidden="true" className="size-4" />
-              )}
-            </Button>
+            <div className="col-start-4 row-start-1 flex items-center gap-1 justify-self-end sm:col-start-3">
+              <HeroMusic />
+              <Button
+                data-rotation-control
+                type="button"
+                disabled={reducedMotion}
+                aria-label={
+                  reducedMotion
+                    ? "Slideshow paused"
+                    : rotating
+                      ? "Pause slideshow"
+                      : "Resume slideshow"
+                }
+                title={
+                  reducedMotion
+                    ? "Slideshow paused for reduced motion"
+                    : rotating
+                      ? "Pause slideshow"
+                      : "Resume slideshow"
+                }
+                className="size-12 border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background"
+                onClick={() => setPlaying((value) => !value)}
+              >
+                {rotating ? (
+                  <Pause aria-hidden="true" className="size-4" />
+                ) : (
+                  <Play aria-hidden="true" className="size-4" />
+                )}
+              </Button>
+            </div>
           </div>
         </Container>
       </div>

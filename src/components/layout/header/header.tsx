@@ -1,13 +1,28 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { SiteNavigation } from "@/components/layout/navigation/site-navigation";
 import { cn } from "@/lib/utils";
+function subscribeScroll(callback: () => void) {
+  window.addEventListener("scroll", callback, { passive: true });
+  return () => window.removeEventListener("scroll", callback);
+}
+function readScrolled() {
+  return window.scrollY > 0;
+}
+function serverScrolled() {
+  return false;
+}
 export function Header() {
   const pathname = usePathname();
   const ref = useRef<HTMLElement>(null);
   const [heroVisible, setHeroVisible] = useState(true);
-  const transparent = pathname === "/" && heroVisible;
+  const scrolled = useSyncExternalStore(
+    subscribeScroll,
+    readScrolled,
+    serverScrolled,
+  );
+  const transparent = pathname === "/" && heroVisible && !scrolled;
   useEffect(() => {
     const hero = document.querySelector("[data-header-overlay]");
     const header = ref.current;
@@ -38,7 +53,7 @@ export function Header() {
       ref={ref}
       data-transparent={transparent}
       className={cn(
-        "site-header sticky top-0 z-(--layer-header) shrink-0 border-b-(length:--control-border-width) transition-colors duration-(--duration-normal) ease-standard",
+        "site-header sticky top-0 z-(--layer-header) shrink-0 border-b-(length:--control-border-width)",
         transparent
           ? "border-border bg-background sm:border-transparent sm:bg-transparent"
           : "border-border bg-background",

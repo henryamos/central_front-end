@@ -32,7 +32,7 @@ it("updates an open page across Saturday boundaries and cleans up its timer", ()
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Welcome to Cape Coast Central SDA Church",
+        name: "Cape Coast Central SDA Church",
       }),
     ).toBeVisible();
     expect(screen.queryByText(/^Come as you are/)).not.toBeInTheDocument();
@@ -44,7 +44,7 @@ it("updates an open page across Saturday boundaries and cleans up its timer", ()
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Welcome to Cape Coast Central SDA Church",
+        name: "Cape Coast Central SDA Church",
       }),
     ).toBeVisible();
     act(() => {
@@ -55,7 +55,7 @@ it("updates an open page across Saturday boundaries and cleans up its timer", ()
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "Welcome to Cape Coast Central SDA Church",
+        name: "Cape Coast Central SDA Church",
       }),
     ).toBeVisible();
     view.unmount();

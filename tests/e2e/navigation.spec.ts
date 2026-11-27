@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
 test.setTimeout(60000);
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() =>
+    sessionStorage.setItem("church-music-choice", "dismissed"),
+  );
+});
 test("official branding follows the header surface and stays available on inner pages", async ({
   page,
 }) => {
