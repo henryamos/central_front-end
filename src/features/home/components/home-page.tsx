@@ -1,3 +1,4 @@
+import { newestSermons } from "@/features/public-site/sermons";
 import { EventBrowser } from "@/features/church-life/event-browser";
 import { LeadershipDirectory } from "@/features/church-life/leadership-directory";
 import Link from "next/link";
@@ -14,6 +15,7 @@ import { ChurchIntroduction } from "./church-introduction";
 const textLink =
   "inline-flex min-h-(--touch-target) min-w-(--touch-target) max-w-full items-center justify-between gap-4 rounded-sm py-3 text-base font-semibold no-underline hover:underline focus-visible:inset-ring-(length:--focus-width) focus-visible:inset-ring-primary focus-visible:outline-hidden";
 export function HomePage() {
+  const latest = newestSermons()[0];
   return (
     <>
       <HomeHero slides={homeSlides}>
@@ -79,6 +81,9 @@ export function HomePage() {
               Church events
             </Heading>
             <EventBrowser />
+            <Link className={textLink + " justify-self-start"} href="/events">
+              All events <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
           </section>
           <section
             aria-labelledby="home-leaders"
@@ -99,9 +104,11 @@ export function HomePage() {
           <div className="grid gap-8 md:grid-cols-2">
             {[
               {
-                title: "Sermons",
-                body: "Messages and recorded worship.",
-                href: "/sermons",
+                title: "Latest sermon",
+                body:
+                  latest?.title ??
+                  "Browse the sermon library. No recordings have been published yet.",
+                href: latest ? "/sermons/" + latest.slug : "/sermons",
               },
               {
                 title: "News",

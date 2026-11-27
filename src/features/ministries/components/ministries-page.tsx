@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/layout/container/container";
 import { Section } from "@/components/layout/section/section";
 import { Heading, Text } from "@/components/ui/typography/typography";
@@ -28,14 +29,27 @@ export function MinistriesPage() {
                 size="subsection"
                 id={ministry.slug + "-title"}
               >
-                {ministry.name}
+                <Link
+                  className="inline-flex min-h-12 items-center underline"
+                  href={"/ministries/" + ministry.slug}
+                >
+                  {ministry.name}
+                </Link>
               </Heading>
               <Text tone="muted">{ministry.description}</Text>
               {"groups" in ministry && (
                 <ul className="m-0 grid gap-2 pl-4">
                   {ministry.groups.map((group) => (
                     <li key={group} className="text-base">
-                      {group}
+                      <Link
+                        className="inline-flex min-h-12 items-center underline"
+                        href={
+                          "/ministries/" +
+                          group.toLowerCase().replaceAll(" ", "-")
+                        }
+                      >
+                        {group}
+                      </Link>
                     </li>
                   ))}
                 </ul>

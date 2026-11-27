@@ -1,5 +1,6 @@
 ﻿"use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button/button";
 import { eventsForView, publishedEvents, type EventView } from "./records";
@@ -52,7 +53,12 @@ export function EventBrowser() {
                 key={event.id}
                 className="grid gap-1 border-b border-border pb-4"
               >
-                <span className="text-lg font-semibold">{event.title}</span>
+                <Link
+                  className="w-fit py-3 text-lg font-semibold underline"
+                  href={"/events/" + event.id}
+                >
+                  {event.title}
+                </Link>
                 <span>
                   <time dateTime={event.startDate}>
                     {dateFormat.format(new Date(event.startDate))}

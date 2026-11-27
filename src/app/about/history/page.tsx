@@ -1,6 +1,21 @@
 import type { Metadata } from "next";
-import { PagePlaceholder } from "@/components/ui/page-placeholder";
-export const metadata: Metadata = { title: "History" };
+import { PublicPage, PageLinks } from "@/features/public-site/public-page";
+
+export const metadata: Metadata = { title: "Our history" };
 export default function Page() {
-  return <PagePlaceholder title="History" />;
+  return (
+    <PublicPage
+      title={"Our history"}
+      intro={"The story of Cape Coast Central SDA Church."}
+    >
+      <p>The church history has yet to be published.</p>
+      <PageLinks
+        items={[
+          ["Our church", "/about"],
+          ["Church leadership", "/about/leadership"],
+          ["Church photographs", "/gallery"],
+        ]}
+      />
+    </PublicPage>
+  );
 }

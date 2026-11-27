@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { UsersRound } from "lucide-react";
 import { publishedLeaders } from "./records";
 export function LeadershipDirectory() {
@@ -18,8 +19,18 @@ export function LeadershipDirectory() {
             .filter((leader) => leader.team === team)
             .map((leader) => (
               <dd key={leader.id} className="m-0 grid">
+                {leader.portrait && (
+                  <Image
+                    width={96}
+                    height={96}
+                    src={leader.portrait}
+                    alt=""
+                    className="mb-2 size-24 rounded-sm object-cover"
+                  />
+                )}
                 <strong>{leader.name}</strong>
                 <span>{leader.role}</span>
+                {leader.biography && <p>{leader.biography}</p>}
               </dd>
             ))}
         </div>

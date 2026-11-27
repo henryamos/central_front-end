@@ -14,6 +14,9 @@ const routes = [
   "/give",
   "/gallery",
   "/blog",
+  "/bulletins",
+  "/ministries/music",
+  "/ministries/church-choir",
   "/news",
   "/faq",
   "/contact",
@@ -53,4 +56,36 @@ test("skip link supports keyboard navigation", async ({ page }) => {
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
+});
+
+test("public church journeys connect schedules, music groups and gallery filters", async ({
+  page,
+}) => {
+  await page.goto("/visit");
+  await expect(
+    page.getByRole("main").getByText("Sabbath School", { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: "Guest check-in" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Check in", exact: true }),
+  ).toBeDisabled();
+  await page.goto("/ministries/music");
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: "Youth Choir" })
+    .click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Youth Choir",
+  );
+  await page.goto("/gallery");
+  await page.getByRole("button", { name: "Church building" }).click();
+  await expect(page.getByRole("main").getByRole("img")).toHaveCount(1);
+  await page.goto("/faq");
+  await page.getByText("When is midweek prayer?", { exact: true }).click();
+  await expect(
+    page.getByText(/Midweek prayer meets on Wednesday/),
+  ).toBeVisible();
 });

@@ -5,6 +5,8 @@ export type ChurchEvent = {
   startDate: string;
   endDate?: string;
   publishedOn: string;
+  description?: string;
+  registrationUrl?: string;
   location?: string;
 };
 
@@ -36,5 +38,7 @@ export type ChurchLeader = {
   name: string;
   role: string;
   team: string;
+  biography?: string;
+  portrait?: string;
 };
 export const publishedLeaders: readonly ChurchLeader[] = [];
