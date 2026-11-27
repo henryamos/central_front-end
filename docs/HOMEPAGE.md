@@ -77,3 +77,5 @@ Weekly programme scope: the user clarified that the section should include midwe
 Confirmed by the user, 24 November 2026: midweek prayer is Wednesday; its time remains unconfirmed. Hero styling is one straight vertical Denim fade with two opacity endpoints, no additional scrim, angled layers or colour shifts. The transparent endpoint preserves the photo rather than tinting its full height.
 
 Bottom overlay correction: the single blue gradient is positioned at bottom: 0 with a token-controlled 70% height, fading to fully transparent at its own top edge. The top 30% of every photograph has no overlay. It is stationary and non-interactive; original images and carousel effects remain unchanged.
+
+The homepage offers music on every fresh visit or refresh. Enable music starts the local recording at 45% volume. Not now dismisses the card for the current page. The compact controls retain 48px touch targets. The church introduction groups its overview link with the heading and places the topic tabs directly above the selected story.

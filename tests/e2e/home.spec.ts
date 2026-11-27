@@ -5,8 +5,11 @@ const carouselSelector = 'section[aria-roledescription="carousel"]';
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (!testInfo.title.startsWith("music uses"))
-    await page.addInitScript(() =>
-      sessionStorage.setItem("church-music-choice", "dismissed"),
+    await page.addLocatorHandler(
+      page.getByRole("complementary", { name: "Background music invitation" }),
+      async (card) => {
+        await card.getByRole("button", { name: "Not now" }).click();
+      },
     );
   await page.clock.setFixedTime(new Date("2026-11-27T12:00:00Z"));
 });
@@ -64,15 +67,11 @@ test("music uses the local recording at 45 percent after consent and continues t
   await invitation
     .getByRole("button", { name: "Enable music", exact: true })
     .click();
-  await expect(dialog).toBeHidden();
   if (
     browserName === "webkit" &&
     process.platform === "win32" &&
     (await audio.evaluate((a: HTMLAudioElement) => a.error?.code === 4))
   ) {
-    await page
-      .getByRole("button", { name: "Play background music", exact: true })
-      .click();
     await expect(dialog.getByRole("status")).toContainText(
       /Music could not start|Music is unavailable|Press Play/,
     );
@@ -121,6 +120,12 @@ test("music uses the local recording at 45 percent after consent and continues t
     .poll(() => audio.evaluate((a: HTMLAudioElement) => !a.paused))
     .toBe(true);
   await page.reload();
+  await expect(invitation).toBeVisible();
+  expect(await audio.evaluate((a: HTMLAudioElement) => a.paused)).toBe(true);
+  await invitation.getByRole("button", { name: "Not now" }).click();
+  await expect(invitation).toBeHidden();
+  await page.reload();
+  await expect(invitation).toBeVisible();
   await expect(dialog).toBeHidden();
 });
 test.describe("church-day welcome", () => {

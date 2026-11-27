@@ -195,7 +195,7 @@
   --ease-weekly-flip: cubic-bezier(0.45, 0, 0.55, 1);
   --home-hero-min: 44rem;
   --home-copy-max: 56rem;
-  --music-notice-max: 22rem;
+  --music-notice-max: 18rem;
   --church-discovery-max: 48rem;
   --duration-church-panel: 400ms;
   --church-panel-distance: var(--spacing-3);

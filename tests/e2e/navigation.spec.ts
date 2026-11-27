@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
 test.setTimeout(60000);
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() =>
-    sessionStorage.setItem("church-music-choice", "dismissed"),
+  await page.addLocatorHandler(
+    page.getByRole("complementary", { name: "Background music invitation" }),
+    async (card) => {
+      await card.getByRole("button", { name: "Not now" }).click();
+    },
   );
 });
 test("official branding follows the header surface and stays available on inner pages", async ({

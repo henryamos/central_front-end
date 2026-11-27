@@ -4,31 +4,9 @@ import { createPortal } from "react-dom";
 import { Music2, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button/button";
 import { Dialog } from "@/components/ui/dialog/dialog";
-let memoryChoice: string | null = null;
-function readChoice() {
-  if (memoryChoice) return memoryChoice;
-  try {
-    return sessionStorage.getItem("church-music-choice") || "pending";
-  } catch {
-    return "pending";
-  }
-}
-function subscribeChoice(callback: () => void) {
-  window.addEventListener("church-music-choice", callback);
-  return () => window.removeEventListener("church-music-choice", callback);
-}
-function saveChoice(value: string) {
-  memoryChoice = value;
-  try {
-    sessionStorage.setItem("church-music-choice", value);
-  } catch {
-    /* Optional preference storage. */
-  }
-  window.dispatchEvent(new Event("church-music-choice"));
-}
-function serverChoice() {
-  return "loading";
-}
+const subscribeToBody = () => () => {};
+const clientBody = () => document.body;
+const serverBody = () => null;
 
 export function HeroMusic() {
   const [open, setOpen] = useState(false);
@@ -37,12 +15,12 @@ export function HeroMusic() {
   const [notice, setNotice] = useState("");
   const trigger = useRef<HTMLButtonElement>(null);
   const audio = useRef<HTMLAudioElement>(null);
-  const choice = useSyncExternalStore(
-    subscribeChoice,
-    readChoice,
-    serverChoice,
+  const portalTarget = useSyncExternalStore(
+    subscribeToBody,
+    clientBody,
+    serverBody,
   );
-  const prompt = choice === "pending";
+  const [prompt, setPrompt] = useState(true);
   useEffect(() => {
     const player = audio.current;
     if (!player) return;
@@ -56,55 +34,55 @@ export function HeroMusic() {
       document.removeEventListener("visibilitychange", pauseHidden);
     };
   }, []);
-  useEffect(() => {
-    if (choice !== "enabled") return;
-    void audio.current
-      ?.play()
-      .catch(() => setNotice("Press Play to start the music."));
-  }, [choice]);
   async function toggle() {
     const player = audio.current;
     if (!player) return;
     if (!player.paused) {
       player.pause();
-      saveChoice("dismissed");
     } else {
       try {
         await player.play();
-        saveChoice("enabled");
         setNotice("");
       } catch {
         setNotice("Music could not start. Please try Play again.");
+        setOpen(true);
       }
     }
   }
   return (
     <>
       {prompt &&
+        portalTarget &&
         createPortal(
           <aside
             data-music-control
             aria-label="Background music invitation"
-            className="shadow-sm fixed right-(--page-gutter) bottom-(--page-gutter) z-(--layer-header) grid w-[calc(100%-var(--page-gutter)*2)] max-w-(--music-notice-max) gap-3 rounded-sm border-(length:--control-border-width) border-border bg-background p-4 text-foreground"
+            className="shadow-sm fixed right-(--page-gutter) bottom-(--page-gutter) z-(--layer-header) grid w-[calc(100%-var(--page-gutter)*2)] max-w-(--music-notice-max) gap-1 rounded-sm border-(length:--control-border-width) border-border bg-background px-4 pt-3 pb-2 text-foreground"
           >
             <p className="m-0 text-base font-semibold">
               Music while you browse?
             </p>
             <p className="m-0 text-sm">Gyatabruwa · Osei Boateng</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-1">
               <Button
+                variant="secondary"
+                className="border-transparent bg-transparent px-0 py-0 not-disabled:hover:bg-transparent"
                 onClick={() => {
+                  setPrompt(false);
                   void toggle();
-                  saveChoice("enabled");
                   trigger.current?.focus({ preventScroll: true });
                 }}
               >
-                Enable music
+                <span className="inline-flex items-center gap-2 rounded-sm bg-primary px-3 py-2 text-sm text-primary-foreground">
+                  <Play aria-hidden="true" className="size-4" />
+                  Enable music
+                </span>
               </Button>
               <Button
                 variant="secondary"
+                className="border-transparent px-3 py-0 text-sm"
                 onClick={() => {
-                  saveChoice("dismissed");
+                  setPrompt(false);
                   trigger.current?.focus({ preventScroll: true });
                 }}
               >
@@ -112,7 +90,7 @@ export function HeroMusic() {
               </Button>
             </div>
           </aside>,
-          document.body,
+          portalTarget,
         )}
       <audio
         ref={audio}
@@ -139,6 +117,7 @@ export function HeroMusic() {
         title={playing ? "Pause background music" : "Play background music"}
         onClick={() => {
           void toggle();
+          setPrompt(false);
           setOpen(true);
         }}
         className="min-h-12 min-w-12 border-transparent bg-transparent p-0 text-background not-disabled:hover:bg-primary focus-visible:inset-ring-background sm:px-3"
@@ -155,10 +134,7 @@ export function HeroMusic() {
       <Dialog
         data-music-control
         open={open}
-        onOpenChange={(next) => {
-          if (!next && prompt) saveChoice("dismissed");
-          setOpen(next);
-        }}
+        onOpenChange={setOpen}
         title="Background music"
         closeLabel="Close music controls"
         returnFocusRef={trigger}
@@ -166,15 +142,7 @@ export function HeroMusic() {
         <div className="grid gap-4" data-music-control>
           <p className="m-0 text-lg font-semibold">Gyatabruwa (Psalm 34)</p>
           <p className="m-0 text-base">Osei Boateng</p>
-          <Button
-            onClick={() => {
-              void toggle();
-              if (prompt) {
-                saveChoice("enabled");
-                setOpen(false);
-              }
-            }}
-          >
+          <Button onClick={() => void toggle()}>
             {playing ? (
               <Pause aria-hidden="true" className="size-4" />
             ) : (
@@ -182,11 +150,6 @@ export function HeroMusic() {
             )}
             {playing ? "Pause music" : "Play music"}
           </Button>
-          {prompt && (
-            <Button variant="secondary" onClick={() => saveChoice("dismissed")}>
-              Not now
-            </Button>
-          )}
           <label className="grid gap-2 text-base font-semibold">
             Volume — {volume}%
             <input

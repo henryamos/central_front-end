@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen, History, UsersRound } from "lucide-react";
+import { ArrowUpRight, BookOpen, History, UsersRound } from "lucide-react";
 import { Container } from "@/components/layout/container/container";
 import { Section } from "@/components/layout/section/section";
 import { Heading, Text } from "@/components/ui/typography/typography";
@@ -16,8 +16,8 @@ const discoveries = [
     id: "history",
     label: "History",
     icon: History,
-    title: "Discover our story.",
-    description: "Discover the story of Cape Coast Central SDA.",
+    title: "Our roots in Cape Coast",
+    description: "Trace the story of the congregation that gathers here today.",
     action: "Explore our history",
     href: "/about/history",
   },
@@ -25,7 +25,7 @@ const discoveries = [
     id: "beliefs",
     label: "Beliefs",
     icon: BookOpen,
-    title: "Get to know our beliefs.",
+    title: "The faith we share",
     description:
       "Explore the Seventh-day Adventist beliefs that shape our church.",
     action: "Explore our beliefs",
@@ -35,7 +35,7 @@ const discoveries = [
     id: "leadership",
     label: "Leadership",
     icon: UsersRound,
-    title: "Meet the people who serve.",
+    title: "People behind the ministry",
     description: "Get to know the people who lead and serve our church.",
     action: "Meet our leadership",
     href: "/about/leadership",
@@ -65,24 +65,24 @@ export function ChurchIntroduction() {
         />
         <div className="absolute inset-0 bg-church-overlay" />
       </div>
-      <Container className="relative grid justify-items-center gap-6 text-center sm:gap-8 md:gap-12">
-        <div className="grid max-w-(--church-discovery-max) gap-4">
-          <Text size="small" className="font-semibold">
-            OUR CHURCH
-          </Text>
+      <Container className="relative grid gap-8 md:gap-12">
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 border-b border-primary-foreground/50 pb-4">
           <Heading level={2} id="church-title" size="title" weight="bold">
-            Get to know
-            <br className="sm:hidden" /> our church.
+            Get to know our church.
           </Heading>
-          <Text size="lead" className="text-base sm:text-lg">
-            Our story, our faith and our people.
-          </Text>
+          <Link
+            href="/about"
+            className="inline-flex min-h-(--touch-target) min-w-(--touch-target) items-center rounded-sm py-3 text-base font-semibold text-primary-foreground underline underline-offset-(--spacing-1) hover:no-underline focus-visible:outline-focus-inverse"
+          >
+            About our church{" "}
+            <ArrowUpRight aria-hidden="true" className="ml-1 size-4" />
+          </Link>
         </div>
         <div className="grid w-full max-w-(--church-discovery-max) gap-6 sm:gap-8">
           <div
             role="tablist"
             aria-label="Explore our church"
-            className="grid grid-cols-3 gap-2"
+            className="grid grid-cols-3 border-b border-primary-foreground/50 sm:w-fit"
           >
             {discoveries.map((item, index) => (
               <Button
@@ -113,15 +113,15 @@ export function ChurchIntroduction() {
                   tabs.current[next]?.focus();
                 }}
                 className={cn(
-                  "flex min-w-0 flex-col gap-3 rounded-none border-x-0 border-t-0 border-b-(length:--focus-width) border-transparent bg-transparent px-1 py-3 text-primary-foreground not-disabled:hover:bg-transparent not-disabled:hover:underline focus-visible:inset-ring-primary-foreground not-disabled:active:border-transparent not-disabled:active:text-primary-foreground sm:px-4 sm:py-4",
+                  "flex min-w-0 flex-col gap-3 rounded-none border-x-0 border-t-0 border-b-(length:--focus-width) border-transparent bg-transparent px-1 py-3 text-primary-foreground not-disabled:hover:bg-transparent not-disabled:hover:underline focus-visible:inset-ring-primary-foreground not-disabled:active:border-transparent not-disabled:active:text-primary-foreground sm:px-4 sm:py-2",
                   active === index &&
                     "border-primary-foreground not-disabled:active:border-primary-foreground",
                 )}
               >
-                <span className="flex flex-col items-center gap-2 sm:gap-3">
+                <span className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
                   <item.icon
                     aria-hidden="true"
-                    className="size-6 shrink-0"
+                    className="size-5 shrink-0"
                     strokeWidth={1.75}
                   />
                   <span className="sm:hidden">
@@ -142,7 +142,7 @@ export function ChurchIntroduction() {
                 aria-hidden={active !== index}
                 tabIndex={active === index ? 0 : -1}
                 className={cn(
-                  "col-start-1 row-start-1 grid content-start justify-items-center gap-6 rounded-sm focus-visible:outline-focus-inverse",
+                  "col-start-1 row-start-1 grid content-start justify-items-start gap-4 rounded-sm focus-visible:outline-focus-inverse",
                   active === index
                     ? "motion-safe:animate-church-panel-enter"
                     : "pointer-events-none invisible",
@@ -156,7 +156,7 @@ export function ChurchIntroduction() {
                 </div>
                 <ButtonLink
                   href={item.href}
-                  className="w-full bg-background text-primary not-disabled:hover:bg-surface-muted focus-visible:inset-ring-primary not-disabled:active:bg-background sm:w-auto"
+                  className="w-fit bg-background text-primary not-disabled:hover:bg-surface-muted focus-visible:inset-ring-primary not-disabled:active:bg-background sm:w-auto"
                 >
                   {item.action}
                 </ButtonLink>
@@ -164,12 +164,6 @@ export function ChurchIntroduction() {
             ))}
           </div>
         </div>
-        <Link
-          href="/about"
-          className="inline-flex min-h-(--touch-target) min-w-(--touch-target) items-center rounded-sm py-3 text-base font-semibold text-primary-foreground underline underline-offset-(--spacing-1) hover:no-underline focus-visible:outline-focus-inverse"
-        >
-          About our church
-        </Link>
       </Container>
     </Section>
   );
