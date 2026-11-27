@@ -228,6 +228,13 @@
     min-height: clamp(8.25rem, 13vw, 10.5rem);
     background: var(--color-primary);
   }
+  .profile-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--color-overlay);
+  }
   .profile-heading {
     grid-area: 2/1;
     display: flex;
@@ -267,9 +274,8 @@
     min-height: calc(var(--touch-target) + var(--spacing-3));
     margin-top: var(--spacing-12);
     padding: 0 var(--spacing-3);
-    background: color-mix(in srgb, var(--color-background) 96%, transparent);
-    color: var(--color-primary);
-    border-top: 1px solid var(--color-border);
+    background: var(--color-church-overlay);
+    color: var(--color-primary-foreground);
     pointer-events: none;
     visibility: hidden;
     opacity: 0;
@@ -281,6 +287,7 @@
     font-size: var(--text-sm);
   }
   .profile-summary a {
+    color: inherit;
     display: inline-flex;
     justify-content: center;
     min-width: var(--touch-target);
@@ -293,7 +300,8 @@
     text-decoration: underline;
   }
   .profile-summary a:is(:hover, :focus-visible) {
-    background: var(--color-surface-muted);
+    background: var(--color-primary);
+    outline-color: var(--color-focus-inverse);
   }
   .board-connector {
     z-index: 2;
