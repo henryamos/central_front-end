@@ -8,6 +8,7 @@
   --color-foreground: var(--color-primary);
   /* Validation text/borders: semantic feedback, never a decorative accent. */
   --color-danger: #b42318;
+  --color-charcoal: #171717;
   --color-overlay: #17171799;
   --color-church-overlay: #171717bf;
   --color-transparent: transparent;

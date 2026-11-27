@@ -970,6 +970,8 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
       .locator(":scope > .board-connector .connector-trace")
       .evaluate((el) => getComputedStyle(el).animationName);
   expect(await animation()).toBe("draw-branch");
+  const card = branch.locator(".branch-preview");
+  await expect(card).toHaveCSS("animation-name", "card-connect");
   const art = branch.locator(".profile-art");
   const title = branch.locator(".profile-heading");
   expect((await art.boundingBox())!.height).toBeGreaterThan(
@@ -977,6 +979,7 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
   );
   await page.emulateMedia({ reducedMotion: "reduce" });
   expect(await animation()).toBe("none");
+  await expect(card).toHaveCSS("animation-name", "none");
 });
 test("connector endpoints meet their cards on desktop and mobile", async ({
   page,

@@ -136,7 +136,9 @@
 
 @layer components {
   .church-board {
-    --branch-gap: var(--spacing-6);
+    --branch-gap: var(--spacing-8);
+    --branch-row-gap: var(--spacing-6);
+    --branch-start: calc(var(--branch-row-gap) - var(--spacing-1));
     --branch-ink: var(--color-muted-foreground);
     display: grid;
     background: var(--color-surface-muted);
@@ -170,7 +172,7 @@
   .board-children > li {
     position: relative;
     min-width: 0;
-    padding: var(--spacing-4) 0 0 var(--branch-gap);
+    padding: var(--branch-row-gap) 0 0 var(--branch-gap);
   }
   .board-branch::before,
   .board-children > li::before {
@@ -184,7 +186,7 @@
     position: absolute;
     pointer-events: none;
     overflow: visible;
-    top: var(--spacing-3);
+    top: var(--branch-start);
     left: 0;
     width: var(--branch-gap);
     height: var(--spacing-8);
@@ -192,7 +194,7 @@
   }
   .board-branch:last-child::before,
   .board-children > li:last-child::before {
-    height: var(--spacing-3);
+    height: var(--branch-start);
   }
   .board-entry {
     min-width: 0;
@@ -252,14 +254,14 @@
     pointer-events: none;
     position: absolute;
     z-index: 2;
-    inset: var(--spacing-2) auto auto var(--spacing-2);
+    inset: var(--spacing-2) var(--spacing-2) auto auto;
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-1);
     padding: var(--spacing-1) var(--spacing-2);
     border-radius: var(--radius-sm);
-    background: var(--color-background);
-    color: var(--color-primary);
+    background: var(--color-charcoal);
+    color: var(--color-primary-foreground);
     font-size: var(--text-sm);
     font-weight: 600;
   }
@@ -340,7 +342,8 @@
   }
   @media (min-width: 48rem) {
     .church-board {
-      --branch-gap: var(--spacing-8);
+      --branch-gap: var(--spacing-12);
+      --branch-row-gap: var(--spacing-8);
       padding: var(--spacing-6);
     }
     .board-root {
@@ -367,7 +370,7 @@
       transform: scaleX(-1);
     }
     .board-branch:nth-last-child(2):nth-child(odd)::before {
-      height: var(--spacing-3);
+      height: var(--branch-start);
     }
     .board-branch:only-child {
       grid-column: 1/-1;
@@ -377,7 +380,7 @@
     }
     .board-branch:only-child::before {
       left: 50%;
-      height: var(--spacing-4);
+      height: var(--branch-row-gap);
     }
     .board-branch:only-child > .board-connector {
       display: none;
@@ -387,6 +390,33 @@
     li[data-branch-arrived] > .board-connector .connector-trace {
       stroke-dasharray: 1;
       animation: draw-branch var(--duration-hero-enter) ease-in-out both;
+    }
+    li[data-branch-arrived] > .branch-preview,
+    li[data-branch-arrived] > .board-entry > .branch-preview {
+      transform-origin: var(--card-origin, left) var(--spacing-6);
+      animation: card-connect var(--duration-church-panel) ease-out
+        var(--duration-normal) backwards;
+    }
+    @media (min-width: 48rem) {
+      .board-branch:nth-child(odd) {
+        --card-origin: right;
+      }
+      .board-branch:only-child {
+        --card-origin: center;
+      }
+      .board-children > li {
+        --card-origin: left;
+      }
+    }
+    @keyframes card-connect {
+      from {
+        transform: scale(0.94);
+        opacity: 0.65;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
     @keyframes draw-branch {
       from {

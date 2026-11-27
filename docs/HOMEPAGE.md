@@ -88,4 +88,4 @@ Every ministry and music-group node opens a short profile on hover or activation
 
 The leadership board uses the same curved branches and full-size previews. A published officer links to a dedicated profile. Until the roster is supplied, the homepage previews the Church officers directory entry. The directory points visitors to the information desk.
 
-Directory cards use a compact photographic header, a top-left category label and a wrapping summary strip with an eye icon linking to the profile. Each curved branch stays visible as an accent stroke traces its path once when its card enters the viewport. Reduced motion keeps the hierarchy static.
+Directory cards use a compact photographic header, a dark upper-right category label and a wrapping summary strip with an eye icon linking to the profile. Each curved branch stays visible as an accent stroke traces its path once when its card enters the viewport. The card scales gently from its connection point as the stroke arrives. Reduced motion keeps the hierarchy static.
