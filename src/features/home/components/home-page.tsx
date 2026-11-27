@@ -6,6 +6,7 @@ import { Heading, Text } from "@/components/ui/typography/typography";
 import { ButtonLink } from "@/components/ui/button/button-link";
 import { homeSlides, homeMinistries } from "../constants/home.constants";
 import { HomeHero } from "./home-hero";
+import { HeroGreeting } from "./hero-greeting";
 import { SabbathInvitation } from "./sabbath-invitation";
 import { ChurchIntroduction } from "./church-introduction";
 const textLink =
@@ -15,52 +16,7 @@ export function HomePage() {
     <>
       <HomeHero slides={homeSlides}>
         <div className="grid w-full max-w-(--home-copy-max) justify-items-start gap-4 text-left sm:gap-6">
-          <Heading
-            level={1}
-            id="home-title"
-            size="display"
-            weight="extrabold"
-            className="text-4xl leading-display font-bold tracking-display motion-safe:animate-hero-enter sm:text-display sm:font-extrabold"
-          >
-            Cape Coast
-            <br />
-            Central SDA
-          </Heading>
-          <Text
-            size="lead"
-            className="text-hero-lead leading-ui motion-safe:animate-hero-enter motion-safe:[animation-delay:var(--hero-copy-delay)]"
-          >
-            <span className="sr-only">
-              Come as you are and find a place to belong. Join us this Sabbath
-              for worship, Bible study and fellowship.
-            </span>
-            <span aria-hidden="true" className="grid gap-3 sm:gap-1">
-              <span className="text-balance sm:hidden">
-                Come as you are and find a place to belong. Join us this Sabbath
-                for worship, Bible study and fellowship.
-              </span>
-              <span className="hidden sm:block">
-                Come as you are and find a place to belong.
-              </span>
-              <span className="hidden sm:block">
-                <span>Join us this Sabbath</span>{" "}
-                <span className="inline-block w-max max-w-full">
-                  <span>for</span>{" "}
-                  <span className="relative isolate inline-grid min-h-[calc(1em*var(--leading-ui))] max-w-full overflow-hidden align-baseline">
-                    <span className="hero-phrase col-start-1 row-start-1 font-bold">
-                      worship
-                    </span>
-                    <span className="hero-phrase col-start-1 row-start-1 font-bold">
-                      Bible study
-                    </span>
-                    <span className="hero-phrase col-start-1 row-start-1 font-bold">
-                      fellowship
-                    </span>
-                  </span>
-                </span>
-              </span>
-            </span>
-          </Text>
+          <HeroGreeting />
           <div className="mt-2 flex w-full flex-col items-stretch gap-3 motion-safe:animate-hero-enter motion-safe:[animation-delay:var(--hero-actions-delay)] sm:mt-0 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <ButtonLink href="/visit" className="w-full sm:w-auto">
               <CalendarDays aria-hidden="true" className="size-4" />

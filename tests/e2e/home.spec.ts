@@ -3,6 +3,91 @@ import { homeSlides } from "../../src/features/home/constants/home.constants";
 test.setTimeout(90000);
 const carouselSelector = 'section[aria-roledescription="carousel"]';
 
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date("2026-11-27T12:00:00Z"));
+});
+
+test.describe("church-day welcome", () => {
+  test.use({ timezoneId: "America/Los_Angeles" });
+
+  test("the welcome stays the main heading while activity messages change", async ({
+    page,
+  }, testInfo) => {
+    await page.clock.setFixedTime(new Date("2026-11-28T00:30:00Z"));
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    for (const width of [320, 390, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      const hero = page.locator(carouselSelector);
+      await expect(hero.locator("[data-hero-greeting]")).toContainText(
+        "Happy Sabbath",
+      );
+      await expect(hero.locator("[data-hero-greeting]")).toBeVisible();
+      await expect(
+        hero.getByText(/Welcome to Cape Coast Central SDA Church/),
+      ).toBeVisible();
+      await expect(hero.locator(".hero-phrase")).toHaveCount(0);
+      await expect(
+        hero.getByRole("link", { name: "Plan a Visit", exact: true }),
+      ).toBeVisible();
+      expect(
+        await page.evaluate(
+          () =>
+            document.documentElement.scrollWidth <=
+            document.documentElement.clientWidth,
+        ),
+      ).toBe(true);
+      await page.screenshot({
+        path: testInfo.outputPath(`sabbath-hero-${width}.png`),
+      });
+      if (width === 320) {
+        await page.evaluate(() => {
+          document.documentElement.style.fontSize = "200%";
+        });
+        expect(
+          await page.evaluate(
+            () =>
+              document.documentElement.scrollWidth <=
+              document.documentElement.clientWidth,
+          ),
+        ).toBe(true);
+        await page.evaluate(() =>
+          document.documentElement.style.removeProperty("font-size"),
+        );
+      }
+    }
+    expect(errors).toEqual([]);
+    await page.clock.setFixedTime(new Date("2026-11-29T00:30:00Z"));
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Welcome to Cape Coast Central SDA Church",
+    );
+    await expect(page.locator("[data-hero-greeting]")).toContainText(
+      "Come as you are",
+    );
+    await page.clock.setFixedTime(new Date("2026-11-27T18:00:00Z"));
+    await page.reload();
+    await expect(page.locator("[data-hero-greeting]")).toContainText(
+      "Happy Sabbath",
+    );
+    await page.clock.setFixedTime(new Date("2026-12-02T12:00:00Z"));
+    await page.reload();
+    await expect(page.locator("[data-hero-greeting]")).toContainText(
+      "Midweek prayer",
+    );
+    await expect(page.locator("[data-hero-welcome]")).toHaveText(
+      "Welcome to Cape Coast Central SDA Church",
+    );
+    await expect(page.locator(".text-hero-lead")).toContainText(
+      "6:00 PM–8:00 PM",
+    );
+  });
+});
+
 test("phone layouts keep navigation, hero controls and section actions compact and reachable", async ({
   page,
 }, testInfo) => {
@@ -23,17 +108,17 @@ test("phone layouts keep navigation, hero controls and section actions compact a
     ).toHaveCount(0);
     const carousel = page.locator(carouselSelector);
     const title = carousel.getByRole("heading", { level: 1 });
-    await expect(title).toHaveCSS("font-size", "40px");
+    await expect(title).toHaveCSS("font-size", "32px");
     await expect(title).toHaveCSS("font-weight", "700");
-    const titleBox = await title.boundingBox();
+    const titleBox = await carousel
+      .locator("[data-hero-welcome]")
+      .boundingBox();
     const headerBox = await header.boundingBox();
     expect(titleBox!.y - headerBox!.y - headerBox!.height).toBeLessThanOrEqual(
       80,
     );
-    await expect(
-      carousel.locator(".text-hero-lead .sm\\:hidden"),
-    ).toContainText(
-      "Join us this Sabbath for worship, Bible study and fellowship.",
+    await expect(carousel.locator("[data-hero-greeting]")).toContainText(
+      "Join us for worship, Bible study and fellowship.",
     );
     await expect(carousel.locator("[data-hero-shade]")).toHaveCSS(
       "background-image",
@@ -275,7 +360,7 @@ test("homepage uses real content and selected photographs with stable manual con
   await page.goto("/");
   const carousel = page.locator(carouselSelector);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    /Cape Coast.*Central SDA/,
+    "Welcome to Cape Coast Central SDA Church",
   );
   await expect(
     page.getByText("Content is not available yet.", { exact: true }),
@@ -403,18 +488,18 @@ test("homepage colours, controls and typography reflow at narrow widths and enla
   ).toBe(true);
 });
 
-test("hero phrase changes without shifting actions and header protects following sections", async ({
+test("hero has balanced heading, supporting copy and actions with a protective header", async ({
   page,
-}) => {
+}, testInfo) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/");
   const header = page.getByRole("banner");
   await expect(header).toHaveCSS("position", "sticky");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    /Central SDA$/,
+    "Welcome to Cape Coast Central SDA Church",
   );
-  const phrases = page.locator(".hero-phrase");
-  await expect(phrases).toHaveCount(3);
+  const copy = page.locator("[data-hero-greeting]");
+  await expect(copy).toHaveCount(1);
   const action = page
     .locator('section[aria-roledescription="carousel"]')
     .getByRole("link", { name: "Plan a Visit", exact: true });
@@ -423,17 +508,32 @@ test("hero phrase changes without shifting actions and header protects following
     "transform",
     "matrix(1, 0, 0, 1, 0, 0)",
   );
-  const before = await action.boundingBox();
-  await page.waitForTimeout(4500);
-  await expect(phrases.nth(1)).toHaveCSS("opacity", "1");
-  expect((await action.boundingBox())?.y).toBeCloseTo(before!.y, 1);
+  const headingBox = await page
+    .getByRole("heading", { level: 1 })
+    .boundingBox();
+  const copyBox = await copy.boundingBox();
+  const actionBox = await action.boundingBox();
+  expect(copyBox!.x).toBeCloseTo(headingBox!.x, 0);
+  expect(actionBox!.x).toBeCloseTo(headingBox!.x, 0);
+  expect(
+    copyBox!.y - headingBox!.y - headingBox!.height,
+  ).toBeGreaterThanOrEqual(15);
+  expect(copyBox!.y - headingBox!.y - headingBox!.height).toBeLessThanOrEqual(
+    25,
+  );
+  expect(actionBox!.y - copyBox!.y - copyBox!.height).toBeGreaterThanOrEqual(
+    23,
+  );
+  expect(actionBox!.y - copyBox!.y - copyBox!.height).toBeLessThanOrEqual(25);
+  await page.screenshot({
+    path: testInfo.outputPath("hero-layout-desktop.png"),
+  });
   await page.locator("#sabbath-title").evaluate((e) => e.scrollIntoView());
   await expect(header).toBeInViewport();
   await expect(header).toHaveCSS("background-color", "rgb(255, 255, 255)");
   await expect(header).toHaveCSS("backdrop-filter", "none");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(phrases.first()).toHaveCSS("animation-name", "none");
-  await expect(phrases.nth(1)).toHaveCSS("visibility", "hidden");
+  await expect(copy).toHaveCSS("animation-name", "none");
 });
 
 test("weekly programme rotates incoming activities, pauses for reading and exposes the complete schedule", async ({
