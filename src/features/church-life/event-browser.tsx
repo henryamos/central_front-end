@@ -31,7 +31,7 @@ export function EventBrowser() {
       <div
         role="group"
         aria-label="Filter events"
-        className="flex flex-wrap gap-x-1 border-b border-border"
+        className="flex w-fit max-w-full flex-wrap gap-1 rounded-md border border-border bg-background p-1"
       >
         {(["Upcoming", "Latest", "Past"] as const).map((label) => (
           <Button
@@ -39,7 +39,7 @@ export function EventBrowser() {
             variant="secondary"
             aria-pressed={view === label}
             onClick={() => setView(label)}
-            className="rounded-none border-0 border-b-2 border-transparent px-3 py-2 aria-pressed:border-primary aria-pressed:bg-surface-muted"
+            className="border-transparent px-3 py-1 aria-pressed:bg-primary aria-pressed:text-background aria-pressed:not-disabled:hover:bg-primary-hover aria-pressed:focus-visible:inset-ring-background"
           >
             {label}
           </Button>
@@ -78,10 +78,24 @@ export function EventBrowser() {
             ))}
           </ul>
         ) : (
-          <p className="m-0 flex items-start gap-3 py-4 text-muted-foreground">
-            <CalendarDays aria-hidden="true" className="size-5 shrink-0" />
-            {emptyText[view]}
-          </p>
+          <div className="flex items-start gap-4 border-t border-border py-4">
+            <CalendarDays
+              aria-hidden="true"
+              className="mt-1 size-6 shrink-0"
+              strokeWidth={1.5}
+            />
+            <div>
+              <p className="m-0">{emptyText[view]}</p>
+              {view === "Upcoming" && (
+                <Link
+                  href="/visit"
+                  className="inline-flex min-h-12 items-center font-semibold underline"
+                >
+                  See weekly worship times
+                </Link>
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>

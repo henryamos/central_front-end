@@ -4,7 +4,10 @@ test.setTimeout(90000);
 const carouselSelector = 'section[aria-roledescription="carousel"]';
 
 test.beforeEach(async ({ page }, testInfo) => {
-  if (!testInfo.title.startsWith("music uses"))
+  if (
+    !testInfo.title.startsWith("music uses") &&
+    !/leadership preview|homepage ministry and resource/.test(testInfo.title)
+  )
     await page.addLocatorHandler(
       page.getByRole("complementary", { name: "Background music invitation" }),
       async (card) => {
@@ -901,4 +904,55 @@ test("events and leadership reflow below the mobile welcome", async ({
   await expect(
     page.getByText("Leadership profiles will appear here when published."),
   ).toBeVisible();
+});
+
+test("homepage ministry and resource links open the corresponding destinations", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Not now", exact: true }).click();
+  const ministries = page.getByRole("region", {
+    name: "Our ministries",
+    exact: true,
+  });
+  await expect(ministries.getByRole("button")).toHaveCount(8);
+  const music = ministries.getByRole("button", { name: "Music", exact: true });
+  await music.scrollIntoViewIfNeeded();
+  await music.hover();
+  const details = ministries.getByRole("link", {
+    name: "View details for Music",
+    exact: true,
+  });
+  await expect(details).toBeVisible();
+  await music.focus();
+  await music.press("Escape");
+  await expect(details).toBeHidden();
+  await music.press("Enter");
+  await details.click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Music");
+  await page.goBack();
+  await page
+    .locator("main")
+    .getByRole("link", { name: "Sabbath bulletins", exact: true })
+    .click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Church bulletins",
+  );
+});
+
+test("leadership preview opens its directory from the phone board", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Not now", exact: true }).click();
+  const board = page.getByRole("region", { name: "Leadership board" });
+  const officer = board.getByRole("button", { name: "Church officers" });
+  await officer.scrollIntoViewIfNeeded();
+  await officer.click({ position: { x: 12, y: 12 } });
+  await expect(officer).toHaveAttribute("aria-expanded", "true");
+  await board
+    .getByRole("link", { name: "View details for Church officers" })
+    .click();
+  await expect(page).toHaveURL(/\/about\/leadership$/);
 });

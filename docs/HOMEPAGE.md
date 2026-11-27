@@ -80,4 +80,10 @@ Bottom overlay correction: the single blue gradient is positioned at bottom: 0 w
 
 The homepage offers music on every fresh visit or refresh. Enable music starts the local recording at 45% volume. Not now dismisses the card for the current page. The compact controls retain 48px touch targets. The church introduction groups its overview link with the heading and places the topic tabs directly above the selected story.
 
-Events and church leadership share a responsive homepage section. The Events and Leadership pages reuse the same lists. Upcoming includes ongoing events through their Ghana end date, Latest orders by publication, and Past shows finished events. Leadership profiles group by team. Both collections are empty until church records are supplied.
+Events and church leadership have separate homepage sections. The Events page shares the homepage filters. Upcoming includes ongoing events through their Ghana end date, Latest orders by publication, and Past shows finished events. Leadership profiles show role and team. Only explicit reporting assignments draw links between officers. Both collections are empty until church records are supplied.
+
+The connected ministry directory presents all eight ministries as peers. Only Music branches to the three named groups. Connector motion follows hover and keyboard focus and respects reduced motion. A dedicated leadership section opens the leadership directory. The church introduction places its keyboard-operated topic selector and reading panel over the interior photograph. The closing section links recordings, news and Sabbath bulletins.
+
+Every ministry and music-group node opens a short profile on hover or activation. Click or Enter pins the preview for its View details link. Escape closes the preview and restores focus to its trigger.
+
+The leadership board uses the same curved branches and full-size previews. A published officer links to a dedicated profile. Until the roster is supplied, the homepage previews the Church officers directory entry. The directory points visitors to the information desk.

@@ -1,4 +1,3 @@
-import { ministries } from "@/features/ministries";
 /** User-supplied photographs; no identities, dates or leadership roles inferred from filenames. */
 export const homeSlides = [
   {
@@ -47,4 +46,3 @@ export const homeSlides = [
     position: "center 35%",
   },
 ] as const;
-export const homeMinistries = ministries.map((ministry) => ministry.name);

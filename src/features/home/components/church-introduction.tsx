@@ -65,10 +65,10 @@ export function ChurchIntroduction() {
         />
         <div className="absolute inset-0 bg-church-overlay" />
       </div>
-      <Container className="relative grid gap-8 md:gap-12">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 border-b border-primary-foreground/50 pb-4">
+      <Container className="relative grid gap-8 md:gap-16">
+        <div className="grid max-w-(--church-discovery-max) justify-items-start gap-3">
           <Heading level={2} id="church-title" size="title" weight="bold">
-            Get to know our church.
+            Get to know our church
           </Heading>
           <Link
             href="/about"
@@ -78,11 +78,11 @@ export function ChurchIntroduction() {
             <ArrowUpRight aria-hidden="true" className="ml-1 size-4" />
           </Link>
         </div>
-        <div className="grid w-full max-w-(--church-discovery-max) gap-6 sm:gap-8">
+        <div className="grid w-full gap-6 border-t border-background/50 pt-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start lg:gap-12">
           <div
             role="tablist"
             aria-label="Explore our church"
-            className="grid grid-cols-3 border-b border-primary-foreground/50 sm:w-fit"
+            className="relative grid grid-cols-3 before:absolute before:inset-x-0 before:top-0 before:border-t before:border-background/50"
           >
             {discoveries.map((item, index) => (
               <Button
@@ -113,9 +113,9 @@ export function ChurchIntroduction() {
                   tabs.current[next]?.focus();
                 }}
                 className={cn(
-                  "flex min-w-0 flex-col gap-3 rounded-none border-x-0 border-t-0 border-b-(length:--focus-width) border-transparent bg-transparent px-1 py-3 text-primary-foreground not-disabled:hover:bg-transparent not-disabled:hover:underline focus-visible:inset-ring-primary-foreground not-disabled:active:border-transparent not-disabled:active:text-primary-foreground sm:px-4 sm:py-2",
+                  "relative flex min-w-0 flex-col gap-3 rounded-none border-x-0 border-t-0 border-b-(length:--focus-width) border-transparent bg-transparent px-1 py-3 text-background before:absolute before:top-0 before:left-1/2 before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:bg-background not-disabled:hover:bg-transparent not-disabled:hover:underline focus-visible:inset-ring-background not-disabled:active:border-transparent not-disabled:active:text-background sm:px-4 sm:py-2",
                   active === index &&
-                    "border-primary-foreground not-disabled:active:border-primary-foreground",
+                    "border-background not-disabled:active:border-background",
                 )}
               >
                 <span className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
@@ -142,21 +142,22 @@ export function ChurchIntroduction() {
                 aria-hidden={active !== index}
                 tabIndex={active === index ? 0 : -1}
                 className={cn(
-                  "col-start-1 row-start-1 grid content-start justify-items-start gap-4 rounded-sm focus-visible:outline-focus-inverse",
+                  "col-start-1 row-start-1 grid content-start justify-items-start gap-4 rounded-sm focus-visible:outline-primary",
                   active === index
                     ? "motion-safe:animate-church-panel-enter"
                     : "pointer-events-none invisible",
                 )}
               >
                 <div className="grid gap-3">
-                  <Heading level={3} size="subsection" weight="bold">
+                  <Heading level={3} size="section" weight="bold">
                     {item.title}
                   </Heading>
                   <Text>{item.description}</Text>
                 </div>
                 <ButtonLink
                   href={item.href}
-                  className="w-fit bg-background text-primary not-disabled:hover:bg-surface-muted focus-visible:inset-ring-primary not-disabled:active:bg-background sm:w-auto"
+                  variant="secondary"
+                  className="w-fit"
                 >
                   {item.action}
                 </ButtonLink>

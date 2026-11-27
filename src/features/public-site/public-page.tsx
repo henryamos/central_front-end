@@ -16,15 +16,19 @@ export function PublicPage({
 }) {
   return (
     <>
-      <Section className="bg-surface-muted">
-        <Container className="grid gap-4">
-          <Heading level={1} weight="bold">
-            {title}
-          </Heading>
-          <Text size="lead">{intro}</Text>
+      <Section className="bg-background pb-0">
+        <Container>
+          <div className="grid items-end gap-4 border-b border-primary pb-6 sm:pb-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-12">
+            <Heading level={1} weight="bold">
+              {title}
+            </Heading>
+            <Text size="lead" tone="muted">
+              {intro}
+            </Text>
+          </div>
         </Container>
       </Section>
-      <Section>
+      <Section className="pt-8 sm:pt-12">
         <Container className="grid gap-8 [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:font-bold md:[&_h2]:text-2xl">
           {children}
         </Container>

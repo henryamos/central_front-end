@@ -38,6 +38,7 @@ export type ChurchLeader = {
   name: string;
   role: string;
   team: string;
+  reportsToId?: string;
   biography?: string;
   portrait?: string;
 };
