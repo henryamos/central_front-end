@@ -1,3 +1,4 @@
+import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "./branch-preview";
 import { Church } from "lucide-react";
 import { publishedLeaders, type ChurchLeader } from "./records";
@@ -15,15 +16,10 @@ function LeaderProfile({ branch }: { branch: LeaderBranch }) {
         href={"/about/leadership/" + encodeURIComponent(leader.id)}
       />
       {reports.length > 0 && (
-        <ul
-          aria-label={"Reports to " + leader.name}
-          className="m-0 list-none border-l border-primary pl-3"
-        >
+        <ul aria-label={"Reports to " + leader.name} className="board-children">
           {reports.map((report) => (
-            <li
-              key={report.leader.id}
-              className="relative py-2 before:absolute before:top-6 before:left-0 before:w-3 before:-translate-x-full before:border-t before:border-primary"
-            >
+            <li key={report.leader.id} className="board-report">
+              <BranchConnector />
               <LeaderProfile branch={report} />
             </li>
           ))}
@@ -48,11 +44,13 @@ export function LeadershipDirectory({
         {roots.length ? (
           roots.map((branch) => (
             <li className="board-branch" key={branch.leader.id}>
+              <BranchConnector />
               <LeaderProfile branch={branch} />
             </li>
           ))
         ) : (
           <li className="board-branch">
+            <BranchConnector />
             <BranchPreview
               category="Leadership"
               name="Church officers"

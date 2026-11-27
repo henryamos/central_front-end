@@ -966,7 +966,9 @@ test("scroll draws a curved branch and keeps the card controls still for reduced
   await branch.scrollIntoViewIfNeeded();
   await expect(branch).toHaveAttribute("data-branch-arrived", "");
   const animation = () =>
-    branch.evaluate((el) => getComputedStyle(el, "::after").animationName);
+    branch
+      .locator(":scope > .board-connector path")
+      .evaluate((el) => getComputedStyle(el).animationName);
   expect(await animation()).toBe("draw-branch");
   const art = branch.locator(".profile-art");
   const title = branch.locator(".profile-heading");

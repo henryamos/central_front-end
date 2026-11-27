@@ -1,3 +1,4 @@
+import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "@/features/church-life/branch-preview";
 import { Church } from "lucide-react";
 import { ministries } from "../constants/ministries.constants";
@@ -26,6 +27,7 @@ export function MinistryBoard() {
             id={ministry.slug}
             tabIndex={-1}
           >
+            <BranchConnector />
             <div className="board-entry">
               <BranchPreview
                 {...art[ministry.slug]}
@@ -39,6 +41,7 @@ export function MinistryBoard() {
                   <ul className="board-children">
                     {ministry.groups.map((name) => (
                       <li key={name}>
+                        <BranchConnector />
                         <BranchPreview
                           category="Music group"
                           symbol="music"
