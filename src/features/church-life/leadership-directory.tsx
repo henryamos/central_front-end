@@ -1,3 +1,4 @@
+import { LeadershipShowcase } from "./leadership-showcase";
 import Link from "next/link";
 import { useId } from "react";
 import { PastoralBranch } from "./pastoral-branch";
@@ -83,6 +84,7 @@ export function LeadershipDirectory({
               ? "departmental-heads"
               : "other");
 
+  if (homepage) return <LeadershipShowcase leaders={leaders} />;
   return (
     <div className={homepage ? "church-board leadership-home" : "church-board"}>
       {!homepage && <BoardIdentity />}

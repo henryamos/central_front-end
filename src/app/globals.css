@@ -783,3 +783,92 @@
     }
   }
 }
+@layer components {
+  .leadership-showcase {
+    display: grid;
+    gap: var(--spacing-12);
+  }
+  .leadership-gallery-group {
+    display: grid;
+    gap: var(--spacing-6);
+    scroll-margin-top: calc(var(--header-row-size) + var(--spacing-6));
+  }
+  .leader-portraits {
+    display: grid;
+    gap: var(--spacing-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .leader-portrait-link {
+    display: block;
+  }
+  .leader-photo {
+    position: relative;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--spacing-3);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--color-background);
+    color: var(--color-primary);
+    border-bottom: var(--focus-width) solid var(--color-primary);
+  }
+  .leader-photo-pending {
+    border: 1px solid var(--color-border);
+    color: var(--color-muted-foreground);
+    font-size: var(--text-sm);
+  }
+  .leader-profile-action {
+    position: absolute;
+    bottom: var(--spacing-3);
+    right: var(--spacing-3);
+    display: grid;
+    place-items: center;
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+    background: var(--color-background);
+    color: var(--color-primary);
+    border-radius: 50%;
+  }
+  .leader-portrait-link:hover h4 {
+    text-decoration: underline;
+  }
+  @media (min-width: 40rem) {
+    .leader-portraits {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .leader-portraits-pastors {
+      max-width: var(--church-discovery-max);
+      width: 100%;
+      justify-self: center;
+    }
+  }
+  @media (min-width: 64rem) {
+    .leader-portraits {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .leader-portraits-pastors {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .leader-photo img {
+      transition: transform var(--duration-church-panel) ease-out;
+    }
+    .leader-portrait-link:hover img {
+      transform: scale(1.025);
+    }
+  }
+}
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .leader-portraits > li[data-motion] {
+      transition: opacity var(--duration-hero-enter);
+    }
+    .leader-portraits > li[data-motion]:not([data-visible]) {
+      opacity: 0;
+    }
+  }
+}

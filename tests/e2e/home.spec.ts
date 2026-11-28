@@ -948,9 +948,9 @@ test("leadership preview opens its directory from the phone board", async ({
   await page.getByRole("button", { name: "Not now", exact: true }).click();
   const board = page.getByRole("region", { name: "Leadership board" });
   await board
-    .getByRole("link", { name: "Contact the information desk", exact: true })
+    .getByRole("link", { name: "Leadership directory", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/contact$/);
+  await expect(page).toHaveURL(/\/about\/leadership$/);
 });
 
 test("scroll draws a curved branch and keeps the card controls still for reduced motion", async ({

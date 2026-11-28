@@ -105,3 +105,5 @@ The pastoral level has a dedicated portrait-and-biography composition. Published
 Homepage leadership starts directly with the pastoral team. Its portrait has an arched top and an open name-and-role panel, with the remaining leadership groups connected beneath it. The homepage and directory share published profiles. No individual names or portraits are supplied yet.
 
 Section photography is differentiated using supplied church images. The interior belongs to the church introduction, leadership uses a gathering photograph, history uses the choir and online worship uses another worship photograph. Ministry cards use distinct supplied photographs as contextual imagery. Images do not identify officeholders or establish programme facts.
+
+The homepage leadership presentation is a portrait gallery led by the pastoral team, followed by elders, Church Board, School Board and departmental heads. Each published person has a visible name, role and profile link. Pending groups show a single labelled portrait placeholder. No supplied congregation photograph is presented as a named leader.
