@@ -9,15 +9,15 @@ export function BrandLoading({ leaving = false }: { leaving?: boolean }) {
     >
       <div className="brand-loading-mark">
         <Image
-          src="/icons/adventist-symbol--bluejay.png"
-          width={96}
-          height={96}
+          src="/icons/CCC%20SDA%20logo.svg"
+          width={938}
+          height={173}
+          className="h-auto w-full max-w-(--brand-header-width)"
           alt=""
           unoptimized
         />
         <span className="brand-loading-line" />
       </div>
-      <p>Cape Coast Central SDA</p>
       <span className="sr-only">Loading</span>
     </div>
   );

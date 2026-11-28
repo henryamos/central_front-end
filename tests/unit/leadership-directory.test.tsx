@@ -41,5 +41,5 @@ it("shows the church leadership levels in order before profiles are supplied", (
     within(structure)
       .getAllByRole("heading", { level: 3 })
       .map((el) => el.textContent),
-  ).toEqual(["Pastors", "Elders", "Church Board", "Departmental heads"]);
+  ).toEqual(["Pastors", "Elders", "Boards", "Departmental heads"]);
 });

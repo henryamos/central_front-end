@@ -46,10 +46,10 @@ export function LeadershipDirectory({
       description: "Elder profiles will appear here when published.",
     },
     {
-      id: "church-board",
-      label: "Church Board",
+      id: "boards",
+      label: "Boards",
       description:
-        "Church Board member profiles will appear here when published.",
+        "Church and school board profiles will appear here when published.",
     },
     {
       id: "departmental-heads",
@@ -69,11 +69,13 @@ export function LeadershipDirectory({
       ? "pastors"
       : /elder/i.test(leader.role)
         ? "elders"
-        : /board/i.test(leader.role)
-          ? "church-board"
-          : /head|director/i.test(leader.role)
-            ? "departmental-heads"
-            : "other");
+        : /school.*board/i.test(leader.role)
+          ? "school-board"
+          : /board/i.test(leader.role)
+            ? "church-board"
+            : /head|director/i.test(leader.role)
+              ? "departmental-heads"
+              : "other");
 
   return (
     <div className="church-board">
@@ -89,15 +91,54 @@ export function LeadershipDirectory({
               leaders.some((leader) => levelOf(leader) === "other"),
           )
           .map((level) => {
-            const members = leaders.filter(
-              (leader) => levelOf(leader) === level.id,
+            const members = leaders.filter((leader) =>
+              level.id === "boards"
+                ? ["church-board", "school-board"].includes(levelOf(leader))
+                : levelOf(leader) === level.id,
             );
             const roots = leadershipHierarchy(members);
             return (
               <li className="leadership-level" key={level.id}>
                 <h3 className="leadership-level-title">{level.label}</h3>
                 <ul className="board-branches" aria-label={level.label}>
-                  {roots.length ? (
+                  {level.id === "boards" ? (
+                    (["church-board", "school-board"] as const).map((board) => {
+                      const label =
+                        board === "church-board"
+                          ? "Church Board"
+                          : "School Board";
+                      const boardMembers = leadershipHierarchy(
+                        members.filter((member) => levelOf(member) === board),
+                      );
+                      return (
+                        <li key={board} className="board-branch">
+                          <BranchConnector />
+                          <BranchPreview
+                            category="Leadership"
+                            name={label}
+                            description={
+                              label +
+                              " member profiles will appear here when published."
+                            }
+                            href="/contact"
+                          />
+                          {boardMembers.length > 0 && (
+                            <ul
+                              className="board-children"
+                              aria-label={label + " members"}
+                            >
+                              {boardMembers.map((branch) => (
+                                <li key={branch.leader.id}>
+                                  <BranchConnector />
+                                  <LeaderProfile branch={branch} />
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })
+                  ) : roots.length ? (
                     roots.map((branch) => (
                       <li className="board-branch" key={branch.leader.id}>
                         <BranchConnector />

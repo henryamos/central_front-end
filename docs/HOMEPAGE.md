@@ -96,4 +96,6 @@ Cards enter from their own side of the board and reverse the slide and fade as t
 
 The ministry section uses one continuous off-white surface with the directory link below the board. Cards fade independently in both scroll directions. Desktop right-hand cards follow left-hand cards after 400ms.
 
-Leadership is presented in the church-specified order of Pastors, Elders, Church Board and Departmental heads. Empty levels retain the role heading until profiles are published. Explicit leadership levels take precedence over older role text. Other published officers remain visible after these levels.
+Leadership is presented in the church-specified order of Pastors, Elders, Boards and Departmental heads. Empty levels retain the role heading until profiles are published. Explicit leadership levels take precedence over older role text. Other published officers remain visible after these levels.
+
+Boards contains separate Church Board and School Board branches. The loading screen uses the complete Central Church SVG wordmark. The older standalone Adventist PNG assets have been removed.
