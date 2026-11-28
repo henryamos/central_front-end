@@ -1,4 +1,6 @@
-﻿"use client";
+"use client";
+import { defaultServices } from "./schedule";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { EventCard } from "./event-card";
@@ -52,24 +54,48 @@ export function EventBrowser() {
             ))}
           </ul>
         ) : (
-          <div className="flex items-start gap-4 rounded-md border border-border bg-background p-6 sm:p-8">
-            <CalendarDays
-              aria-hidden="true"
-              className="mt-1 size-6 shrink-0"
-              strokeWidth={1.5}
-            />
-            <div>
-              <p className="m-0">{emptyText[view]}</p>
-              {view === "Upcoming" && (
-                <Link
-                  href="/visit"
-                  className="inline-flex min-h-12 items-center font-semibold underline"
-                >
-                  See weekly worship times
-                </Link>
-              )}
+          <>
+            <div className="flex items-start gap-4 rounded-md border border-border bg-background p-6 sm:p-8">
+              <CalendarDays
+                aria-hidden="true"
+                className="mt-1 size-6 shrink-0"
+                strokeWidth={1.5}
+              />
+              <div>
+                <p className="m-0">{emptyText[view]}</p>
+                {view === "Upcoming" && (
+                  <Link
+                    href="/visit"
+                    className="inline-flex min-h-12 items-center font-semibold underline"
+                  >
+                    See weekly worship times
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
+            {view === "Upcoming" && (
+              <section
+                className="mt-6 grid gap-4"
+                aria-label="Weekly gatherings"
+              >
+                <h3 className="text-xl font-semibold">
+                  Join our weekly gatherings
+                </h3>
+                <ul className="m-0 grid list-none gap-6 p-0 md:grid-cols-2">
+                  {defaultServices.slice(0, 2).map((gathering, index) => (
+                    <li key={gathering.id}>
+                      <EventCard
+                        gathering={gathering}
+                        image={
+                          index === 0 ? "/images/Boys.jpg" : "/images/New.jpg"
+                        }
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </>
         )}
       </div>
     </div>
