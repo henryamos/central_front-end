@@ -1,7 +1,6 @@
 import { LeadershipDirectory } from "@/features/church-life/leadership-directory";
 import { newestSermons } from "@/features/public-site/sermons";
 import { EventBrowser } from "@/features/church-life/event-browser";
-import { PhotoHeader } from "@/features/public-site/photo-header";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -49,20 +48,18 @@ export function HomePage() {
       <SabbathInvitation />
       <ChurchIntroduction />
       <MinistrySpotlight />
-      <PhotoHeader
-        level={2}
-        title="Church leadership"
-        description="Get to know the people who guide worship, support families and serve our church."
-        image="/images/ChurhcBuilding.jpg"
-      >
-        <ButtonLink href="/about/leadership" variant="secondary">
-          Leadership directory{" "}
-          <ArrowRight aria-hidden="true" className="size-4" />
-        </ButtonLink>
-      </PhotoHeader>
-      <Section aria-label="Leadership board">
-        <Container>
-          <LeadershipDirectory />
+      <Section aria-label="Leadership board" className="bg-surface-muted">
+        <Container className="grid gap-8">
+          <div className="grid gap-3 border-b border-border pb-6">
+            <Heading level={2} size="title" weight="bold">
+              The people who serve our church
+            </Heading>
+            <p className="m-0 max-w-(--measure) text-muted-foreground">
+              Meet our pastoral team, elders, board members and departmental
+              heads.
+            </p>
+          </div>
+          <LeadershipDirectory homepage />
         </Container>
       </Section>
       <Section aria-label="Church events" className="bg-surface-muted">

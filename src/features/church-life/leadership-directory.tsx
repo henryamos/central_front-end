@@ -33,8 +33,10 @@ function LeaderProfile({ branch }: { branch: LeaderBranch }) {
 }
 export function LeadershipDirectory({
   leaders = publishedLeaders,
+  homepage = false,
 }: {
   leaders?: readonly ChurchLeader[];
+  homepage?: boolean;
 }) {
   const navigationId = useId();
   const levels = [
@@ -82,17 +84,19 @@ export function LeadershipDirectory({
               : "other");
 
   return (
-    <div className="church-board">
-      <BoardIdentity />
-      <nav aria-label="Leadership groups" className="leadership-group-nav">
-        {levels
-          .filter((level) => level.id !== "other")
-          .map((level) => (
-            <Link key={level.id} href={"#" + navigationId + "-" + level.id}>
-              {level.label}
-            </Link>
-          ))}
-      </nav>
+    <div className={homepage ? "church-board leadership-home" : "church-board"}>
+      {!homepage && <BoardIdentity />}
+      {!homepage && (
+        <nav aria-label="Leadership groups" className="leadership-group-nav">
+          {levels
+            .filter((level) => level.id !== "other")
+            .map((level) => (
+              <Link key={level.id} href={"#" + navigationId + "-" + level.id}>
+                {level.label}
+              </Link>
+            ))}
+        </nav>
+      )}
       <ol
         className="leadership-levels"
         aria-label="Church leadership structure"

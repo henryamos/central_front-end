@@ -702,3 +702,84 @@
     scroll-margin-top: calc(var(--header-row-size) + var(--spacing-6));
   }
 }
+
+@layer components {
+  .pastoral-introduction {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: var(--spacing-3);
+    padding: var(--spacing-6);
+  }
+  .leadership-home {
+    background: transparent;
+  }
+  .leadership-home .leadership-level:first-child {
+    padding-top: 0;
+  }
+  .leadership-home .leadership-level:first-child::before,
+  .leadership-home .pastoral-hierarchy::before {
+    display: none;
+  }
+  .leadership-home .leadership-level:first-child > .leadership-level-title {
+    display: none;
+  }
+  .leadership-home .pastoral-hierarchy {
+    padding-top: 0;
+  }
+  .leadership-home .pastoral-profile {
+    max-width: var(--church-discovery-max);
+    width: 100%;
+    margin-inline: auto;
+    grid-template-columns: minmax(0, 1fr);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .leadership-home .pastoral-portrait {
+    aspect-ratio: 4/3;
+    max-width: 24rem;
+    width: 100%;
+    justify-self: center;
+    border-radius: var(--spacing-24) var(--spacing-24) var(--radius-sm)
+      var(--radius-sm);
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+  }
+  .leadership-home .pastoral-introduction {
+    position: relative;
+    justify-items: center;
+    text-align: center;
+    padding: var(--spacing-6) var(--spacing-4);
+    border-bottom: 1px solid var(--color-primary);
+  }
+  .leadership-home .pastoral-introduction h4 {
+    font-size: var(--text-title);
+    line-height: var(--leading-heading);
+  }
+  .leadership-home .pastoral-introduction > p:first-child {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .leadership-home .pastoral-introduction > p {
+    max-width: var(--measure);
+  }
+  .leadership-home .pastoral-introduction a {
+    margin-top: var(--spacing-1);
+  }
+  @media (min-width: 48rem) {
+    .leadership-home .pastoral-profile {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: var(--spacing-8);
+      align-items: center;
+    }
+    .leadership-home .pastoral-portrait {
+      aspect-ratio: 4/5;
+    }
+    .leadership-home .pastoral-introduction {
+      justify-items: start;
+      text-align: start;
+      padding-inline: 0;
+    }
+  }
+}

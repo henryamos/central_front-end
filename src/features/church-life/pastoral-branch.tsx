@@ -36,19 +36,19 @@ export function PastoralBranch({ branch }: { branch?: LeaderBranch }) {
               className="object-cover object-top"
             />
           ) : (
-            <UserRound aria-hidden="true" className="size-16" strokeWidth={1} />
+            <UserRound aria-hidden="true" className="size-24" strokeWidth={1} />
           )}
         </div>
-        <div className="grid content-center justify-items-start gap-3 p-4 sm:p-6">
+        <div className="pastoral-introduction">
           <p className="m-0 text-sm font-semibold">
             {leader?.role ?? "Pastoral leadership"}
           </p>
           <h4 className="m-0 text-2xl font-bold">
-            {leader?.name ?? "Meet our pastors"}
+            {leader?.name ?? "Our pastoral team"}
           </h4>
           <p className="m-0 text-muted-foreground">
             {leader?.biography?.split(/(?<=[.!?])\s+/)[0] ??
-              "Pastoral profiles will be available when the church publishes its roster."}
+              "Get to know the pastors who serve Cape Coast Central SDA Church. Their names and profiles will appear here when published."}
           </p>
           {leader ? (
             <Link

@@ -101,3 +101,5 @@ Leadership is presented in the church-specified order of Pastors, Elders, Boards
 Boards contains separate Church Board and School Board branches. The loading screen uses the complete Central Church SVG wordmark. The older standalone Adventist PNG assets have been removed.
 
 The pastoral level has a dedicated portrait-and-biography composition. Published reporting relationships create nested pastoral branches. Each profile fades independently on viewport entry. Officer details use a portrait-led header and a full biography. Names and appointments await the church roster.
+
+Homepage leadership starts directly with the pastoral team. Its portrait has an arched top and an open name-and-role panel, with the remaining leadership groups connected beneath it. The homepage and directory share published profiles. No individual names or portraits are supplied yet.
