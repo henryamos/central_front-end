@@ -947,14 +947,12 @@ test("leadership preview opens its directory from the phone board", async ({
   await page.goto("/");
   await page.getByRole("button", { name: "Not now", exact: true }).click();
   const board = page.getByRole("region", { name: "Leadership board" });
-  const officer = board.getByRole("button", { name: "Church officers" });
+  const officer = board.getByRole("button", { name: "Pastors" });
   await officer.scrollIntoViewIfNeeded();
   await officer.click({ position: { x: 12, y: 12 } });
   await expect(officer).toHaveAttribute("aria-expanded", "true");
-  await board
-    .getByRole("link", { name: "View details for Church officers" })
-    .click();
-  await expect(page).toHaveURL(/\/about\/leadership$/);
+  await board.getByRole("link", { name: "View details for Pastors" }).click();
+  await expect(page).toHaveURL(/\/contact$/);
 });
 
 test("scroll draws a curved branch and keeps the card controls still for reduced motion", async ({

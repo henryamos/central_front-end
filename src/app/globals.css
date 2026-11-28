@@ -541,3 +541,46 @@
     }
   }
 }
+
+@layer components {
+  .leadership-levels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+  .leadership-level {
+    position: relative;
+    min-width: 0;
+    padding-top: var(--spacing-8);
+  }
+  .leadership-level::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--branch-ink);
+  }
+  .leadership-level:last-child::before {
+    height: var(--spacing-8);
+  }
+  .leadership-level-title {
+    position: relative;
+    z-index: 1;
+    display: table;
+    margin: 0 auto;
+    padding: var(--spacing-2) var(--spacing-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-background);
+    font-size: var(--text-lg);
+    font-weight: 700;
+  }
+  .leadership-level > .board-branches {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+  }
+}

@@ -1,8 +1,4 @@
-import { BoardIdentity } from "@/features/church-life/board-identity";
-import { BranchConnector } from "@/features/church-life/branch-connector";
 import { LeadershipDirectory } from "@/features/church-life/leadership-directory";
-import { BranchPreview } from "@/features/church-life/branch-preview";
-import { publishedLeaders } from "@/features/church-life/records";
 import { newestSermons } from "@/features/public-site/sermons";
 import { EventBrowser } from "@/features/church-life/event-browser";
 import { PhotoHeader } from "@/features/public-site/photo-header";
@@ -66,25 +62,7 @@ export function HomePage() {
       </PhotoHeader>
       <Section aria-label="Leadership board">
         <Container>
-          {publishedLeaders.length ? (
-            <LeadershipDirectory />
-          ) : (
-            <div className="church-board">
-              <BoardIdentity />
-              <ul className="board-branches">
-                <li className="board-branch">
-                  <BranchConnector />
-                  <BranchPreview
-                    category="Leadership"
-                    image="/images/ChurhcBuilding.jpg"
-                    name="Church officers"
-                    description="Explore the church leadership directory and find the information desk."
-                    href="/about/leadership"
-                  />
-                </li>
-              </ul>
-            </div>
-          )}
+          <LeadershipDirectory />
         </Container>
       </Section>
       <Section aria-label="Church events" className="bg-surface-muted">

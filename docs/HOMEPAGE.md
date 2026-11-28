@@ -95,3 +95,5 @@ The board uses the church wordmark as its origin. Curved branches land at the to
 Cards enter from their own side of the board and reverse the slide and fade as they leave the viewport. Fresh page loads show the animated Adventist symbol for at least 900ms, then fade out when the window load completes, with a four-second readiness fallback. Route loading shares the same screen. Reduced motion uses a static logo and progress line.
 
 The ministry section uses one continuous off-white surface with the directory link below the board. Cards fade independently in both scroll directions. Desktop right-hand cards follow left-hand cards after 400ms.
+
+Leadership is presented in the church-specified order of Pastors, Elders, Church Board and Departmental heads. Empty levels retain the role heading until profiles are published. Explicit leadership levels take precedence over older role text. Other published officers remain visible after these levels.

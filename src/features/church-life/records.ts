@@ -38,6 +38,8 @@ export type ChurchLeader = {
   name: string;
   role: string;
   team: string;
+  leadershipLevel?:
+    "pastors" | "elders" | "church-board" | "departmental-heads";
   reportsToId?: string;
   biography?: string;
   portrait?: string;
