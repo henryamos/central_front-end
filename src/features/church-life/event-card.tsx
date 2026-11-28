@@ -41,7 +41,7 @@ export function EventCard({ event }: { event: ChurchEvent }) {
             {fullDate.format(date)}
             {event.endDate &&
               event.endDate !== event.startDate &&
-              " � " + fullDate.format(new Date(event.endDate))}
+              " to " + fullDate.format(new Date(event.endDate))}
           </p>
           {event.description && <p className="m-0">{event.description}</p>}
           {event.location && (

@@ -17,7 +17,7 @@ it("shows supplied multi-day event details and links to the record", () => {
     />,
   );
   expect(screen.getByText("Example venue")).toBeVisible();
-  expect(screen.getByText("1 December 2026 – 2 December 2026")).toBeVisible();
+  expect(screen.getByText("1 December 2026 to 2 December 2026")).toBeVisible();
   expect(
     screen.getByRole("link", { name: "Event details for Example gathering" }),
   ).toHaveAttribute("href", "/events/example");
