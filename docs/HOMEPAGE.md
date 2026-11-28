@@ -106,4 +106,6 @@ Homepage leadership starts directly with the pastoral team. Its portrait has an 
 
 Section photography is differentiated using supplied church images. The interior belongs to the church introduction, leadership uses a gathering photograph, history uses the choir and online worship uses another worship photograph. Ministry cards use distinct supplied photographs as contextual imagery. Images do not identify officeholders or establish programme facts.
 
-The homepage leadership presentation is a portrait gallery led by the pastoral team, followed by elders, Church Board, School Board and departmental heads. Each published person has a visible name, role and profile link. Pending groups show a single labelled portrait placeholder. No supplied congregation photograph is presented as a named leader.
+The homepage leadership explorer presents the pastoral team first, with role tabs for elders, Church Board, School Board and departmental heads. The selected person receives a focused portrait-and-biography stage and manual roster controls. No supplied congregation photograph is presented as a named leader.
+
+The leadership explorer uses role tabs, a focused portrait and biography stage, and a manual team selector on the homepage. Events use date-led cards with optional photographs, descriptions and venues. Event records remain unpublished until provided.

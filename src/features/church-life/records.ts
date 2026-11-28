@@ -6,6 +6,8 @@ export type ChurchEvent = {
   endDate?: string;
   publishedOn: string;
   description?: string;
+  image?: string;
+  imageAlt?: string;
   registrationUrl?: string;
   location?: string;
 };

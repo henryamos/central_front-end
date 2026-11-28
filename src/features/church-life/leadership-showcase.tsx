@@ -1,10 +1,14 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useId, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, UserRound } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  UserRound,
+} from "lucide-react";
 import type { ChurchLeader } from "./records";
-
 const groups = [
   { id: "pastors", label: "Pastoral team" },
   { id: "elders", label: "Elders" },
@@ -12,29 +16,14 @@ const groups = [
   { id: "school-board", label: "School Board" },
   { id: "departmental-heads", label: "Departmental heads" },
 ] as const;
-
 export function LeadershipShowcase({
   leaders,
 }: {
   leaders: readonly ChurchLeader[];
 }) {
-  const gallery = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!gallery.current || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          entry.target.setAttribute("data-motion", "");
-          entry.target.toggleAttribute("data-visible", entry.isIntersecting);
-        }
-      },
-      { threshold: 0.15 },
-    );
-    gallery.current
-      .querySelectorAll(".leader-portraits>li")
-      .forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
-  }, []);
+  const uid = useId();
+  const [active, setActive] = useState(0),
+    [personIndex, setPersonIndex] = useState(0);
   const groupOf = (leader: ChurchLeader) =>
     leader.leadershipLevel ??
     (/pastor/i.test(leader.role)
@@ -46,113 +35,177 @@ export function LeadershipShowcase({
           : /board/i.test(leader.role)
             ? "church-board"
             : "departmental-heads");
+  const group = groups[active],
+    people = leaders.filter((leader) => groupOf(leader) === group.id),
+    person = people[personIndex] ?? people[0];
+  function changeGroup(index: number) {
+    setActive(index);
+    setPersonIndex(0);
+  }
   return (
-    <div ref={gallery} className="leadership-showcase">
-      <nav
+    <div className="leadership-explorer">
+      <div
+        role="tablist"
         aria-label="Leadership groups"
-        className="flex flex-wrap gap-x-6 border-b border-border"
+        className="leadership-role-rail"
       >
-        {groups.map((group) => (
-          <Link
-            key={group.id}
-            href={"#home-leaders-" + group.id}
-            className="inline-flex min-h-12 items-center font-semibold hover:underline"
+        {groups.map((item, index) => (
+          <button
+            key={item.id}
+            type="button"
+            role="tab"
+            aria-selected={active === index}
+            aria-controls={uid + "-stage"}
+            id={uid + "-" + item.id}
+            tabIndex={active === index ? 0 : -1}
+            onClick={() => changeGroup(index)}
+            onKeyDown={(event) => {
+              let next = index;
+              if (event.key === "ArrowRight")
+                next = (index + 1) % groups.length;
+              else if (event.key === "ArrowLeft")
+                next = (index + groups.length - 1) % groups.length;
+              else if (event.key === "Home") next = 0;
+              else if (event.key === "End") next = groups.length - 1;
+              else return;
+              event.preventDefault();
+              changeGroup(next);
+              document.getElementById(uid + "-" + groups[next].id)?.focus();
+            }}
           >
-            {group.label}
-          </Link>
+            {item.label}
+          </button>
         ))}
-      </nav>
-      {groups.map((group) => {
-        const people = leaders.filter((leader) => groupOf(leader) === group.id);
-        return (
-          <section
-            key={group.id}
-            id={"home-leaders-" + group.id}
-            className="leadership-gallery-group"
-          >
-            <header className="flex flex-wrap items-baseline justify-between gap-3">
-              <h3 className="text-2xl font-bold">{group.label}</h3>
-              {!people.length && (
+      </div>
+      <section
+        role="tabpanel"
+        tabIndex={0}
+        id={uid + "-stage"}
+        aria-labelledby={uid + "-" + group.id}
+        className="leadership-person-stage"
+      >
+        <div
+          key={group.id + "-" + (person?.id ?? "pending")}
+          className="leadership-person-layout"
+        >
+          <div className="leadership-feature-portrait">
+            {person?.portrait ? (
+              <Image
+                src={person.portrait}
+                alt=""
+                fill
+                sizes="(min-width:768px) 40vw, 100vw"
+                className="object-cover object-top"
+              />
+            ) : (
+              <div className="grid justify-items-center gap-3">
+                <UserRound
+                  aria-hidden="true"
+                  className="size-24"
+                  strokeWidth={1}
+                />
+                <span className="text-sm">Portrait awaiting publication</span>
+              </div>
+            )}
+            <span className="leadership-portrait-label">
+              {person?.role ?? group.label}
+            </span>
+          </div>
+          <div className="leadership-feature-copy">
+            <p className="m-0 text-sm font-semibold">{group.label}</p>
+            <h3>{person?.name ?? "Meet the people who serve."}</h3>
+            <p className="m-0 text-muted-foreground">
+              {person?.biography
+                ?.split(/(?<=[.!?])\s+/)
+                .slice(0, 2)
+                .join(" ") ??
+                "Names, portraits and profiles will appear here when the church publishes this team."}
+            </p>
+            <Link
+              href={
+                person
+                  ? "/about/leadership/" + encodeURIComponent(person.id)
+                  : "/contact"
+              }
+              className="inline-flex min-h-12 w-fit items-center gap-2 font-semibold underline"
+            >
+              {person ? "Explore profile" : "Contact the information desk"}
+              <ArrowUpRight aria-hidden="true" className="size-5" />
+            </Link>
+            <div className="leadership-roster">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
+                <span className="font-semibold">Meet the team</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    className="min-h-12 min-w-12 rounded-sm border border-border disabled:opacity-40"
+                    disabled={people.length < 2}
+                    aria-label="Previous leader"
+                    onClick={() =>
+                      setPersonIndex(
+                        (personIndex + people.length - 1) % people.length,
+                      )
+                    }
+                  >
+                    <ChevronLeft
+                      aria-hidden="true"
+                      className="mx-auto size-4"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    className="min-h-12 min-w-12 rounded-sm border border-border disabled:opacity-40"
+                    disabled={people.length < 2}
+                    aria-label="Next leader"
+                    onClick={() =>
+                      setPersonIndex((personIndex + 1) % people.length)
+                    }
+                  >
+                    <ChevronRight
+                      aria-hidden="true"
+                      className="mx-auto size-4"
+                    />
+                  </button>
+                </div>
+              </div>
+              {people.length ? (
+                <div className="flex flex-wrap gap-2">
+                  {people.map((member, index) => (
+                    <button
+                      key={member.id}
+                      type="button"
+                      aria-pressed={member.id === person?.id}
+                      onClick={() => setPersonIndex(index)}
+                      className="flex min-h-12 items-center gap-2 rounded-sm border border-border px-3 py-2 text-left aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-background"
+                    >
+                      {member.portrait && (
+                        <Image
+                          src={member.portrait}
+                          alt=""
+                          width={32}
+                          height={40}
+                          className="h-12 w-8 object-cover"
+                        />
+                      )}
+                      <span>{member.name}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
                 <p className="m-0 text-sm text-muted-foreground">
-                  Profiles awaiting publication
+                  The {group.label.toLowerCase()} roster is awaiting
+                  publication.
                 </p>
               )}
-            </header>
-            <ul
-              className={
-                group.id === "pastors"
-                  ? "leader-portraits leader-portraits-pastors"
-                  : "leader-portraits"
-              }
-            >
-              {people.length ? (
-                people.map((person) => (
-                  <li key={person.id}>
-                    <Link
-                      href={
-                        "/about/leadership/" + encodeURIComponent(person.id)
-                      }
-                      className="leader-portrait-link"
-                    >
-                      <div className="leader-photo">
-                        {person.portrait ? (
-                          <Image
-                            src={person.portrait}
-                            alt=""
-                            fill
-                            sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
-                            className="object-cover object-top"
-                          />
-                        ) : (
-                          <UserRound
-                            aria-hidden="true"
-                            className="size-24"
-                            strokeWidth={1}
-                          />
-                        )}
-                        <span className="leader-profile-action">
-                          <ArrowUpRight aria-hidden="true" className="size-5" />
-                          <span className="sr-only">View profile</span>
-                        </span>
-                      </div>
-                      <div className="grid gap-1 py-4">
-                        <h4 className="text-xl font-bold">{person.name}</h4>
-                        <p className="m-0 text-muted-foreground">
-                          {person.role}
-                        </p>
-                        {person.biography && (
-                          <p className="m-0 mt-2 text-sm">
-                            {person.biography.split(/(?<=[.!?])\s+/)[0]}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <div className="leader-photo leader-photo-pending">
-                    <UserRound
-                      aria-hidden="true"
-                      className="size-24"
-                      strokeWidth={1}
-                    />
-                    <span>Portrait pending</span>
-                  </div>
-                  <p className="m-0 py-3 text-muted-foreground">
-                    {group.label} profiles will appear here.
-                  </p>
-                </li>
-              )}
-            </ul>
-          </section>
-        );
-      })}
+            </div>
+          </div>
+        </div>
+      </section>
       <Link
         href="/about/leadership"
-        className="inline-flex min-h-12 w-fit items-center gap-2 font-semibold underline"
+        className="inline-flex min-h-12 w-fit items-center gap-2 justify-self-end font-semibold underline"
       >
-        Leadership directory{" "}
+        Leadership directory
         <ArrowUpRight aria-hidden="true" className="size-4" />
       </Link>
     </div>

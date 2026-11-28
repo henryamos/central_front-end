@@ -1,6 +1,7 @@
 ﻿"use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { EventCard } from "./event-card";
 import { CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button/button";
 import { eventsForView, publishedEvents, type EventView } from "./records";
@@ -10,10 +11,6 @@ const emptyText = {
   Latest: "No event announcements have been published yet.",
   Past: "No past events have been published yet.",
 };
-const dateFormat = new Intl.DateTimeFormat("en-GB", {
-  dateStyle: "long",
-  timeZone: "Africa/Accra",
-});
 
 export function EventBrowser() {
   const [view, setView] = useState<EventView>("Upcoming");
@@ -47,38 +44,15 @@ export function EventBrowser() {
       </div>
       <div aria-live="polite">
         {events.length ? (
-          <ul className="m-0 grid list-none gap-4 p-0">
+          <ul className="m-0 grid list-none gap-6 p-0 md:grid-cols-2">
             {events.map((event) => (
-              <li
-                key={event.id}
-                className="grid gap-1 border-b border-border pb-4"
-              >
-                <Link
-                  className="w-fit py-3 text-lg font-semibold underline"
-                  href={"/events/" + event.id}
-                >
-                  {event.title}
-                </Link>
-                <span>
-                  <time dateTime={event.startDate}>
-                    {dateFormat.format(new Date(event.startDate))}
-                  </time>
-                  {event.endDate && event.endDate !== event.startDate && (
-                    <>
-                      {" "}
-                      –{" "}
-                      <time dateTime={event.endDate}>
-                        {dateFormat.format(new Date(event.endDate))}
-                      </time>
-                    </>
-                  )}
-                </span>
-                {event.location && <span>{event.location}</span>}
+              <li key={event.id}>
+                <EventCard event={event} />
               </li>
             ))}
           </ul>
         ) : (
-          <div className="flex items-start gap-4 border-t border-border py-4">
+          <div className="flex items-start gap-4 rounded-md border border-border bg-background p-6 sm:p-8">
             <CalendarDays
               aria-hidden="true"
               className="mt-1 size-6 shrink-0"
