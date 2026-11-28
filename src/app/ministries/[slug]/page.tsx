@@ -7,6 +7,7 @@ import { Heading } from "@/components/ui/typography/typography";
 import { defaultServices } from "@/features/church-life/schedule";
 import { PageLinks } from "@/features/public-site/public-page";
 import { ministries } from "@/features/ministries";
+import { YouthChoirSongs } from "@/features/ministries/components/youth-choir-songs";
 const music = ministries.find((item) => item.slug === "music")!;
 const groups = music.groups.map((name) => ({
   name,
@@ -55,6 +56,7 @@ export default async function Page({
               </p>
             )}
           </section>
+          {slug === "youth-choir" && <YouthChoirSongs />}
           {slug === "music" && (
             <section>
               <Heading level={2}>Music groups</Heading>

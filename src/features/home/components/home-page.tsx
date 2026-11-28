@@ -19,6 +19,7 @@ import { HomeHero } from "./home-hero";
 import { HeroGreeting } from "./hero-greeting";
 import { SabbathInvitation } from "./sabbath-invitation";
 import { ChurchIntroduction } from "./church-introduction";
+import { ChurchLocation } from "@/features/public-site/church-location";
 const textLink =
   "inline-flex min-h-(--touch-target) min-w-(--touch-target) max-w-full items-center justify-between gap-4 rounded-sm py-3 text-base font-semibold no-underline hover:underline focus-visible:inset-ring-(length:--focus-width) focus-visible:inset-ring-primary focus-visible:outline-hidden";
 export function HomePage() {
@@ -133,6 +134,11 @@ export function HomePage() {
               </Link>
             ))}
           </div>
+        </Container>
+      </Section>
+      <Section>
+        <Container>
+          <ChurchLocation />
         </Container>
       </Section>
     </>

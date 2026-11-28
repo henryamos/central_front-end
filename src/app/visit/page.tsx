@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PublicPage, PageLinks } from "@/features/public-site/public-page";
 import { WeeklySchedule } from "@/features/public-site/weekly-schedule";
 import { VisitorForm } from "@/features/public-site/visitor-form";
+import { ChurchLocation } from "@/features/public-site/church-location";
 export const metadata: Metadata = { title: "Plan a visit" };
 export default function Page() {
   return (
@@ -12,6 +13,7 @@ export default function Page() {
       }
     >
       <WeeklySchedule />
+      <ChurchLocation />
       <VisitorForm planned />
       <PageLinks
         items={[

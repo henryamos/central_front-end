@@ -1,6 +1,7 @@
 import { informationDesk as desk } from "@/features/public-site/church-information";
 import type { Metadata } from "next";
 import { PublicPage, PageLinks } from "@/features/public-site/public-page";
+import { ChurchLocation } from "@/features/public-site/church-location";
 
 export const metadata: Metadata = { title: "Information desk" };
 export default function Page() {
@@ -27,6 +28,7 @@ export default function Page() {
           </p>
         )}
       </section>
+      <ChurchLocation />
       <PageLinks
         items={[
           ["Plan a visit", "/visit"],
