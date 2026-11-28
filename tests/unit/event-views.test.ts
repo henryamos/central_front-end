@@ -16,7 +16,7 @@ test("event views distinguish ongoing dates, finished events and publication ord
     eventsForView(events, "Upcoming", "2026-11-27").map((e) => e.id),
   ).toEqual(["a", "c"]);
   expect(
-    eventsForView(events, "Latest", "2026-11-27").map((e) => e.id),
+    eventsForView(events, "All events", "2026-11-27").map((e) => e.id),
   ).toEqual(["b", "c", "a"]);
   expect(eventsForView(events, "Past", "2026-11-27").map((e) => e.id)).toEqual([
     "b",

@@ -80,7 +80,7 @@ Bottom overlay correction: the single blue gradient is positioned at bottom: 0 w
 
 The homepage offers music on every fresh visit or refresh. Enable music starts the local recording at 45% volume. Not now dismisses the card for the current page. The compact controls retain 48px touch targets. The church introduction groups its overview link with the heading and places the topic tabs directly above the selected story.
 
-Events and church leadership have separate homepage sections. The Events page shares the homepage filters. Upcoming includes ongoing events through their Ghana end date, Latest orders by publication, and Past shows finished events. Leadership profiles show role and team. Only explicit reporting assignments draw links between officers. Both collections are empty until church records are supplied.
+Events and church leadership have separate homepage sections. The Events page shares the homepage filters. Upcoming includes ongoing events through their Ghana end date, All events orders by publication, and Past shows finished events. Leadership profiles show role and team. Only explicit reporting assignments draw links between officers. Both collections are empty until church records are supplied.
 
 The connected ministry directory presents all eight ministries as peers. Only Music branches to the three named groups. Connector motion follows hover and keyboard focus and respects reduced motion. A dedicated leadership section opens the leadership directory. The church introduction places its keyboard-operated topic selector and reading panel over the interior photograph. The closing section links recordings, news and Sabbath bulletins.
 
@@ -111,3 +111,5 @@ The homepage leadership explorer presents the pastoral team first, with role tab
 The leadership explorer uses role tabs, a focused portrait and biography stage, and a manual team selector on the homepage. Events use date-led cards with optional photographs, descriptions and venues. Event records remain unpublished until provided.
 
 When no upcoming special events are published, the event section displays the confirmed Sabbath School and Worship service as recurring gathering cards using the shared EventCard. They are labelled weekly and link to the visit schedule.
+
+Boards is one homepage leadership group, with a second level of selection for Church Board, School Board and additional published boardName values. Switching boards resets the selected member. The directory uses the same board names. No officer identities are invented. The arrival screen reveals the Central church wordmark, followed by a short welcome caption and an indeterminate line; reduced motion keeps the identity static, and readiness timings remain unchanged.

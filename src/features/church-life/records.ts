@@ -12,7 +12,7 @@ export type ChurchEvent = {
   location?: string;
 };
 
-export type EventView = "Upcoming" | "Latest" | "Past";
+export type EventView = "Upcoming" | "All events" | "Past";
 
 export const publishedEvents: readonly ChurchEvent[] = [];
 
@@ -21,7 +21,7 @@ export function eventsForView(
   view: EventView,
   today: string,
 ) {
-  if (view === "Latest")
+  if (view === "All events")
     return [...events].sort((a, b) =>
       b.publishedOn.localeCompare(a.publishedOn),
     );
@@ -40,6 +40,8 @@ export type ChurchLeader = {
   name: string;
   role: string;
   team: string;
+  /** Optional board name, allowing additional boards within the Boards group. */
+  boardName?: string;
   leadershipLevel?:
     | "pastors"
     | "elders"

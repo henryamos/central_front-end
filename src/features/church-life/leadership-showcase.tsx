@@ -12,8 +12,7 @@ import type { ChurchLeader } from "./records";
 const groups = [
   { id: "pastors", label: "Pastoral team" },
   { id: "elders", label: "Elders" },
-  { id: "church-board", label: "Church Board" },
-  { id: "school-board", label: "School Board" },
+  { id: "boards", label: "Boards" },
   { id: "departmental-heads", label: "Departmental heads" },
 ] as const;
 export function LeadershipShowcase({
@@ -24,6 +23,7 @@ export function LeadershipShowcase({
   const uid = useId();
   const [active, setActive] = useState(0),
     [personIndex, setPersonIndex] = useState(0);
+  const [selectedBoard, setSelectedBoard] = useState("Church Board");
   const groupOf = (leader: ChurchLeader) =>
     leader.leadershipLevel ??
     (/pastor/i.test(leader.role)
@@ -35,8 +35,26 @@ export function LeadershipShowcase({
           : /board/i.test(leader.role)
             ? "church-board"
             : "departmental-heads");
+  const boardOf = (leader: ChurchLeader) =>
+    leader.boardName ??
+    (groupOf(leader) === "school-board" ? "School Board" : "Church Board");
+  const isBoard = (leader: ChurchLeader) =>
+    Boolean(leader.boardName) ||
+    ["church-board", "school-board"].includes(groupOf(leader));
+  const boards = [
+    ...new Set([
+      "Church Board",
+      "School Board",
+      ...leaders.filter(isBoard).map(boardOf),
+    ]),
+  ];
   const group = groups[active],
-    people = leaders.filter((leader) => groupOf(leader) === group.id),
+    teamLabel = group.id === "boards" ? selectedBoard : group.label,
+    people = leaders.filter((leader) =>
+      group.id === "boards"
+        ? isBoard(leader) && boardOf(leader) === selectedBoard
+        : !isBoard(leader) && groupOf(leader) === group.id,
+    ),
     person = people[personIndex] ?? people[0];
   function changeGroup(index: number) {
     setActive(index);
@@ -84,11 +102,44 @@ export function LeadershipShowcase({
         aria-labelledby={uid + "-" + group.id}
         className="leadership-person-stage"
       >
+        {group.id === "boards" && (
+          <div className="leadership-board-picker">
+            <div>
+              <h3 className="m-0 text-lg font-semibold">Our boards</h3>
+              <p className="m-0 text-sm text-muted-foreground">
+                Choose a board to meet its members.
+              </p>
+            </div>
+            <div
+              role="group"
+              aria-label="Choose a board"
+              className="flex flex-wrap gap-2"
+            >
+              {boards.map((board) => (
+                <button
+                  key={board}
+                  type="button"
+                  aria-pressed={selectedBoard === board}
+                  className="min-h-12 rounded-sm border border-border-control bg-background px-4 py-2 font-semibold aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-background"
+                  onClick={() => {
+                    setSelectedBoard(board);
+                    setPersonIndex(0);
+                  }}
+                >
+                  {board}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <div
-          key={group.id + "-" + (person?.id ?? "pending")}
+          key={teamLabel + "-" + (person?.id ?? "pending")}
           className="leadership-person-layout"
         >
-          <div className="leadership-feature-portrait">
+          <div
+            className="leadership-feature-portrait"
+            data-empty={!person?.portrait}
+          >
             {person?.portrait ? (
               <Image
                 src={person.portrait}
@@ -108,11 +159,11 @@ export function LeadershipShowcase({
               </div>
             )}
             <span className="leadership-portrait-label">
-              {person?.role ?? group.label}
+              {person?.role ?? teamLabel}
             </span>
           </div>
           <div className="leadership-feature-copy">
-            <p className="m-0 text-sm font-semibold">{group.label}</p>
+            <p className="m-0 text-sm font-semibold">{teamLabel}</p>
             <h3>{person?.name ?? "Meet the people who serve."}</h3>
             <p className="m-0 text-muted-foreground">
               {person?.biography
@@ -193,8 +244,7 @@ export function LeadershipShowcase({
                 </div>
               ) : (
                 <p className="m-0 text-sm text-muted-foreground">
-                  The {group.label.toLowerCase()} roster is awaiting
-                  publication.
+                  The {teamLabel.toLowerCase()} roster is awaiting publication.
                 </p>
               )}
             </div>

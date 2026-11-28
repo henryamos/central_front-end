@@ -17,6 +17,12 @@ export function BrandLoading({ leaving = false }: { leaving?: boolean }) {
           unoptimized
         />
         <span className="brand-loading-line" />
+        <span
+          className="brand-loading-caption text-sm font-medium text-muted-foreground"
+          aria-hidden="true"
+        >
+          A place to belong.
+        </span>
       </div>
       <span className="sr-only">Loading</span>
     </div>

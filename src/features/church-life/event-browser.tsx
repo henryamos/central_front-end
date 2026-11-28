@@ -10,12 +10,12 @@ import { eventsForView, publishedEvents, type EventView } from "./records";
 
 const emptyText = {
   Upcoming: "No upcoming events have been announced.",
-  Latest: "No event announcements have been published yet.",
+  "All events": "No event announcements have been published yet.",
   Past: "No past events have been published yet.",
 };
 
 export function EventBrowser() {
-  const [view, setView] = useState<EventView>("Upcoming");
+  const [view, setView] = useState<EventView>("All events");
   const [today, setToday] = useState("");
   useEffect(() => {
     // Accra observes UTC year-round.
@@ -32,7 +32,7 @@ export function EventBrowser() {
         aria-label="Filter events"
         className="flex w-fit max-w-full flex-wrap gap-1 rounded-md border border-border bg-background p-1"
       >
-        {(["Upcoming", "Latest", "Past"] as const).map((label) => (
+        {(["All events", "Upcoming", "Past"] as const).map((label) => (
           <Button
             key={label}
             variant="secondary"
@@ -63,7 +63,7 @@ export function EventBrowser() {
               />
               <div>
                 <p className="m-0">{emptyText[view]}</p>
-                {view === "Upcoming" && (
+                {view !== "Past" && (
                   <Link
                     href="/visit"
                     className="inline-flex min-h-12 items-center font-semibold underline"
@@ -73,7 +73,7 @@ export function EventBrowser() {
                 )}
               </div>
             </div>
-            {view === "Upcoming" && (
+            {view !== "Past" && (
               <section
                 className="mt-6 grid gap-4"
                 aria-label="Weekly gatherings"

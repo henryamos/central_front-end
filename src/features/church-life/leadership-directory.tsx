@@ -71,7 +71,7 @@ export function LeadershipDirectory({
     },
   ] as const;
   const levelOf = (leader: ChurchLeader) =>
-    leader.leadershipLevel ??
+    (leader.boardName ? "church-board" : leader.leadershipLevel) ??
     (/pastor/i.test(leader.role)
       ? "pastors"
       : /elder/i.test(leader.role)
@@ -84,6 +84,20 @@ export function LeadershipDirectory({
               ? "departmental-heads"
               : "other");
 
+  const boardOf = (leader: ChurchLeader) =>
+    leader.boardName ??
+    (levelOf(leader) === "school-board" ? "School Board" : "Church Board");
+  const boards = [
+    ...new Set([
+      "Church Board",
+      "School Board",
+      ...leaders
+        .filter((leader) =>
+          ["church-board", "school-board"].includes(levelOf(leader)),
+        )
+        .map(boardOf),
+    ]),
+  ];
   if (homepage) return <LeadershipShowcase leaders={leaders} />;
   return (
     <div className={homepage ? "church-board leadership-home" : "church-board"}>
@@ -144,16 +158,12 @@ export function LeadershipDirectory({
                       </li>
                     )
                   ) : level.id === "boards" ? (
-                    (["church-board", "school-board"] as const).map((board) => {
-                      const label =
-                        board === "church-board"
-                          ? "Church Board"
-                          : "School Board";
+                    boards.map((label) => {
                       const boardMembers = leadershipHierarchy(
-                        members.filter((member) => levelOf(member) === board),
+                        members.filter((member) => boardOf(member) === label),
                       );
                       return (
-                        <li key={board} className="board-branch">
+                        <li key={label} className="board-branch">
                           <BranchConnector />
                           <BranchPreview
                             category="Leadership"

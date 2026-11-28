@@ -884,7 +884,7 @@ test("events and leadership reflow below the mobile welcome", async ({
   expect(heading!.y - header!.y - header!.height).toBeGreaterThanOrEqual(96);
   for (const path of ["/", "/events"]) {
     if (path !== "/") await page.goto(path);
-    await page.getByRole("button", { name: "Latest", exact: true }).click();
+    await page.getByRole("button", { name: "All events", exact: true }).click();
     await expect(
       page.getByText("No event announcements have been published yet."),
     ).toBeVisible();

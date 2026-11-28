@@ -499,6 +499,7 @@
     display: grid;
     justify-items: center;
     gap: var(--spacing-6);
+    width: min(var(--brand-header-width), calc(100% - var(--spacing-12)));
   }
   .brand-loading-line {
     width: var(--spacing-24);
@@ -515,20 +516,36 @@
   }
   @media (prefers-reduced-motion: no-preference) {
     .brand-loading-mark img {
-      animation: brand-breathe 1600ms ease-in-out infinite;
+      animation: brand-reveal var(--duration-hero-enter)
+        cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .brand-loading-line::after {
-      animation: brand-progress 1600ms ease-in-out infinite;
+      animation: brand-progress var(--duration-branch-draw) ease-in-out infinite;
     }
-    @keyframes brand-breathe {
-      0%,
-      100% {
-        opacity: 0.55;
-        transform: scale(0.94);
+    .brand-loading-caption {
+      animation: brand-caption var(--duration-hero-enter) ease-out both;
+      animation-delay: var(--duration-fast);
+    }
+    @keyframes brand-reveal {
+      from {
+        opacity: 0;
+        clip-path: inset(0 100% 0 0);
+        transform: translateY(var(--spacing-2));
       }
-      50% {
+      to {
         opacity: 1;
-        transform: scale(1);
+        clip-path: inset(0);
+        transform: translateY(0);
+      }
+    }
+    @keyframes brand-caption {
+      from {
+        opacity: 0;
+        transform: translateY(var(--spacing-3));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
     @keyframes brand-progress {
@@ -877,6 +894,13 @@
     display: grid;
     gap: var(--spacing-6);
   }
+  .leadership-board-picker {
+    display: grid;
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+    padding-bottom: var(--spacing-6);
+    border-bottom: 1px solid var(--color-border);
+  }
   .leadership-role-rail {
     display: flex;
     flex-wrap: wrap;
@@ -919,6 +943,10 @@
     color: var(--color-background);
     font-weight: 600;
     font-size: var(--text-sm);
+  }
+  .leadership-feature-portrait[data-empty="true"] {
+    aspect-ratio: auto;
+    padding: var(--spacing-8) var(--spacing-4) var(--spacing-24);
   }
   .leadership-feature-copy {
     display: grid;
