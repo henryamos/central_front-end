@@ -141,9 +141,7 @@
     --branch-start: 0px;
     --branch-ink: var(--color-muted-foreground);
     display: grid;
-    background: var(--color-surface-muted);
-    padding: var(--spacing-4);
-    border-block: 1px solid var(--color-border);
+    background: transparent;
   }
   .board-root {
     position: relative;
@@ -345,7 +343,6 @@
     .church-board {
       --branch-gap: var(--spacing-12);
       --branch-row-gap: var(--spacing-12);
-      padding: var(--spacing-6);
     }
     .board-root {
       justify-self: center;
@@ -405,34 +402,28 @@
     }
     li[data-branch-motion] > .branch-preview,
     li[data-branch-motion] > .board-entry > .branch-preview {
-      transition:
-        opacity var(--duration-branch-arrival),
-        transform var(--duration-branch-arrival);
+      transition: opacity var(--duration-branch-arrival);
     }
     li[data-branch-motion]:not([data-branch-arrived]) > .branch-preview,
     li[data-branch-motion]:not([data-branch-arrived])
       > .board-entry
       > .branch-preview {
-      opacity: 0.25;
-      transform: translateX(var(--card-shift, var(--spacing-8))) scale(0.94);
+      opacity: 0;
     }
     li[data-branch-arrived] > .branch-preview,
     li[data-branch-arrived] > .board-entry > .branch-preview {
-      transform-origin: var(--card-origin, left) var(--spacing-6);
       animation: card-connect var(--duration-branch-arrival) ease-out
-        var(--duration-normal) backwards;
+        var(--card-delay, 0ms) backwards;
     }
     @media (min-width: 48rem) {
-      .board-branch:nth-child(odd) {
-        --card-origin: right;
-        --card-shift: calc(-1 * var(--spacing-12));
+      .board-branch:nth-child(even) {
+        --card-delay: var(--duration-church-panel);
       }
       .board-branch:only-child {
-        --card-origin: center;
+        --card-delay: 0ms;
       }
       .board-children > li {
-        --card-origin: left;
-        --card-shift: var(--spacing-12);
+        --card-delay: 0ms;
       }
     }
     li[data-branch-arrived] > .board-connector circle {
@@ -449,11 +440,9 @@
     }
     @keyframes card-connect {
       from {
-        transform: translateX(var(--card-shift, var(--spacing-12))) scale(0.94);
-        opacity: 0.65;
+        opacity: 0;
       }
       to {
-        transform: translateX(0) scale(1);
         opacity: 1;
       }
     }

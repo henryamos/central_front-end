@@ -93,3 +93,5 @@ Directory cards use a compact photographic header, a dark upper-right category l
 The board uses the church wordmark as its origin. Curved branches land at the top centre of each card. Each card and connection replay on entering the viewport from either direction, with a fade and scale on leaving. The second column is staggered for a sequential reading flow. Reduced motion shows static cards.
 
 Cards enter from their own side of the board and reverse the slide and fade as they leave the viewport. Fresh page loads show the animated Adventist symbol for at least 900ms, then fade out when the window load completes, with a four-second readiness fallback. Route loading shares the same screen. Reduced motion uses a static logo and progress line.
+
+The ministry section uses one continuous off-white surface with the directory link below the board. Cards fade independently in both scroll directions. Desktop right-hand cards follow left-hand cards after 400ms.

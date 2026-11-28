@@ -10,7 +10,7 @@ export function MinistriesPage() {
         description="Find a ministry for worship, study, fellowship or service."
         image="/images/General.jpg"
       />
-      <Section>
+      <Section className="bg-surface-muted">
         <Container>
           <h2 className="sr-only">Ministry directory</h2>
           <MinistryBoard />
