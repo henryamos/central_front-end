@@ -3,14 +3,20 @@ import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "@/features/church-life/branch-preview";
 import { ministries } from "../constants/ministries.constants";
 const art = {
-  "sabbath-school": { symbol: "study" },
+  "sabbath-school": { image: "/images/Boys.jpg", symbol: "study" },
   music: { image: "/images/General2.jpg", symbol: "music" },
-  "adventist-youth-ministries": { symbol: "youth" },
+  "adventist-youth-ministries": {
+    image: "/images/Chilion.jpg",
+    symbol: "youth",
+  },
   "childrens-ministry": { image: "/images/Childern1.jpg" },
-  "adventist-women-ministry": { symbol: "people" },
-  "adventist-men-ministry": { symbol: "church" },
-  "personal-ministry": { symbol: "service" },
-  "adventist-family-ministry": { symbol: "people" },
+  "adventist-women-ministry": { image: "/images/dance2.jpg", symbol: "people" },
+  "adventist-men-ministry": { image: "/images/General.jpg", symbol: "church" },
+  "personal-ministry": { image: "/images/New.jpg", symbol: "service" },
+  "adventist-family-ministry": {
+    image: "/images/dance1.jpg",
+    symbol: "people",
+  },
 } as const;
 export function MinistryBoard() {
   return (

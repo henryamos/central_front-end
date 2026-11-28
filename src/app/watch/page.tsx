@@ -15,7 +15,7 @@ export default function Page() {
     >
       <section className="relative isolate overflow-hidden rounded-sm bg-primary text-background">
         <Image
-          src="/images/General.jpg"
+          src="/images/New.jpg"
           alt=""
           fill
           sizes="100vw"

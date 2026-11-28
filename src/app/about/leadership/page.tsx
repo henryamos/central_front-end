@@ -12,7 +12,7 @@ export default function Page() {
       <PhotoHeader
         title="Church leadership"
         description="Meet the people who lead and serve Cape Coast Central SDA Church."
-        image="/images/ChurhcBuilding.jpg"
+        image="/images/dance2.jpg"
       />
       <Section>
         <Container className="grid items-start gap-8">

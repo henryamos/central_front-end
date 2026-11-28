@@ -17,7 +17,7 @@ export default function Page() {
       <PhotoHeader
         title="Our history"
         description="The story of Cape Coast Central SDA Church."
-        image="/images/ChurhcBuilding.jpg"
+        image="/images/General2.jpg"
       />
       <Section>
         <Container className="grid gap-8 md:grid-cols-2">
