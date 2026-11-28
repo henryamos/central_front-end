@@ -191,6 +191,11 @@ export function LeadershipDirectory({
                       <BranchPreview
                         category="Leadership"
                         name={level.label}
+                        image={
+                          level.id === "elders"
+                            ? "/images/General2.jpg"
+                            : "/images/New.jpg"
+                        }
                         description={level.description}
                         href="/contact"
                       />
