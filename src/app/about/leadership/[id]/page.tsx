@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { PublicPage, PageLinks } from "@/features/public-site/public-page";
+import { PageLinks } from "@/features/public-site/public-page";
+import { Container } from "@/components/layout/container/container";
+import { Section } from "@/components/layout/section/section";
+import { Heading } from "@/components/ui/typography/typography";
+import { UserRound } from "lucide-react";
 import { publishedLeaders } from "@/features/church-life/records";
 export const dynamicParams = false;
 export const generateStaticParams = () =>
@@ -14,30 +18,44 @@ export default async function Page({
   const leader = publishedLeaders.find((item) => item.id === id);
   if (!leader) notFound();
   return (
-    <PublicPage title={leader.name} intro={leader.role}>
-      <article className="flex flex-wrap items-start gap-6">
-        {leader.portrait && (
-          <Image
-            alt=""
-            src={leader.portrait}
-            width={240}
-            height={300}
-            className="h-auto max-w-full rounded-sm"
-          />
-        )}
-        <div className="grid gap-3">
-          <h2>{leader.team}</h2>
+    <Section className="bg-surface-muted">
+      <Container className="grid gap-8">
+        <article className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-background">
+            {leader.portrait ? (
+              <Image
+                src={leader.portrait}
+                alt=""
+                fill
+                sizes="(min-width:768px) 33vw, 100vw"
+                className="object-cover object-top"
+              />
+            ) : (
+              <UserRound
+                aria-hidden="true"
+                className="absolute inset-0 m-auto size-24"
+              />
+            )}
+          </div>
+          <header className="grid content-center justify-items-start gap-4">
+            <p className="m-0 font-semibold">{leader.role}</p>
+            <Heading level={1}>{leader.name}</Heading>
+            <p className="m-0">{leader.team}</p>
+          </header>
+        </article>
+        <section className="grid max-w-(--measure) gap-4">
+          <Heading level={2}>About {leader.name}</Heading>
           {leader.biography && (
             <p className="m-0 whitespace-pre-line">{leader.biography}</p>
           )}
-        </div>
-      </article>
-      <PageLinks
-        items={[
-          ["Leadership directory", "/about/leadership"],
-          ["Information desk", "/contact"],
-        ]}
-      />
-    </PublicPage>
+        </section>
+        <PageLinks
+          items={[
+            ["Leadership directory", "/about/leadership"],
+            ["Information desk", "/contact"],
+          ]}
+        />
+      </Container>
+    </Section>
   );
 }

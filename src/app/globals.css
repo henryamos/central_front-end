@@ -584,3 +584,121 @@
     max-width: none;
   }
 }
+
+@layer components {
+  .pastoral-hierarchy {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-8) 0 0;
+    display: grid;
+    gap: var(--spacing-8);
+  }
+  .pastoral-hierarchy::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: var(--spacing-8);
+    width: 1px;
+    background: var(--branch-ink);
+  }
+  .pastoral-profile {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background);
+  }
+  .pastoral-portrait {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 3/2;
+    background: var(--color-surface-muted);
+    color: var(--color-primary);
+  }
+  .pastoral-reports {
+    list-style: none;
+    margin: 0 0 0 var(--spacing-6);
+    padding: var(--spacing-8) 0 0 var(--spacing-6);
+    border-left: 1px solid var(--branch-ink);
+    display: grid;
+    gap: var(--spacing-6);
+  }
+  .pastoral-reports > li {
+    position: relative;
+    min-width: 0;
+  }
+  .pastoral-reports > li::before {
+    content: "";
+    position: absolute;
+    top: var(--spacing-6);
+    right: 100%;
+    width: var(--spacing-6);
+    border-top: 1px solid var(--branch-ink);
+  }
+  @media (min-width: 48rem) {
+    .pastoral-profile {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+    .pastoral-portrait {
+      aspect-ratio: 4/5;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pastoral-profile[data-visible] {
+      animation: pastoral-reveal var(--duration-hero-enter) ease-out both;
+    }
+    @keyframes pastoral-reveal {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .pastoral-profile[data-motion] {
+      transition: opacity var(--duration-branch-arrival);
+    }
+    .pastoral-profile[data-motion]:not([data-visible]) {
+      opacity: 0;
+    }
+  }
+}
+@layer components {
+  .leadership-group-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-1);
+    padding-block: var(--spacing-4);
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .leadership-group-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: var(--spacing-1);
+  }
+  .leadership-group-nav a:hover {
+    background: var(--color-surface-muted);
+  }
+  .leadership-level {
+    scroll-margin-top: calc(var(--header-row-size) + var(--spacing-6));
+  }
+}

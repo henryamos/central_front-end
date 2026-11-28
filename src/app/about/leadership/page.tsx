@@ -15,12 +15,12 @@ export default function Page() {
         image="/images/ChurhcBuilding.jpg"
       />
       <Section>
-        <Container className="grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <Container className="grid items-start gap-8">
           <section className="grid gap-4">
             <Heading level={2}>Leadership directory</Heading>
             <LeadershipDirectory />
           </section>
-          <aside className="grid justify-items-start gap-4 border-l-4 border-primary bg-surface-muted p-6">
+          <aside className="flex flex-wrap items-center gap-4 border-t border-border pt-6">
             <Heading level={2} size="subsection">
               Reach the church
             </Heading>

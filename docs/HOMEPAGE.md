@@ -99,3 +99,5 @@ The ministry section uses one continuous off-white surface with the directory li
 Leadership is presented in the church-specified order of Pastors, Elders, Boards and Departmental heads. Empty levels retain the role heading until profiles are published. Explicit leadership levels take precedence over older role text. Other published officers remain visible after these levels.
 
 Boards contains separate Church Board and School Board branches. The loading screen uses the complete Central Church SVG wordmark. The older standalone Adventist PNG assets have been removed.
+
+The pastoral level has a dedicated portrait-and-biography composition. Published reporting relationships create nested pastoral branches. Each profile fades independently on viewport entry. Officer details use a portrait-led header and a full biography. Names and appointments await the church roster.

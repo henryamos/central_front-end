@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { useId } from "react";
+import { PastoralBranch } from "./pastoral-branch";
 import { BoardIdentity } from "@/features/church-life/board-identity";
 import { BranchConnector } from "@/features/church-life/branch-connector";
 import { BranchPreview } from "./branch-preview";
@@ -33,6 +36,7 @@ export function LeadershipDirectory({
 }: {
   leaders?: readonly ChurchLeader[];
 }) {
+  const navigationId = useId();
   const levels = [
     {
       id: "pastors",
@@ -80,6 +84,15 @@ export function LeadershipDirectory({
   return (
     <div className="church-board">
       <BoardIdentity />
+      <nav aria-label="Leadership groups" className="leadership-group-nav">
+        {levels
+          .filter((level) => level.id !== "other")
+          .map((level) => (
+            <Link key={level.id} href={"#" + navigationId + "-" + level.id}>
+              {level.label}
+            </Link>
+          ))}
+      </nav>
       <ol
         className="leadership-levels"
         aria-label="Church leadership structure"
@@ -98,10 +111,33 @@ export function LeadershipDirectory({
             );
             const roots = leadershipHierarchy(members);
             return (
-              <li className="leadership-level" key={level.id}>
+              <li
+                className="leadership-level"
+                id={navigationId + "-" + level.id}
+                key={level.id}
+              >
                 <h3 className="leadership-level-title">{level.label}</h3>
-                <ul className="board-branches" aria-label={level.label}>
-                  {level.id === "boards" ? (
+                <ul
+                  className={
+                    level.id === "pastors"
+                      ? "pastoral-hierarchy"
+                      : "board-branches"
+                  }
+                  aria-label={level.label}
+                >
+                  {level.id === "pastors" ? (
+                    roots.length ? (
+                      roots.map((branch) => (
+                        <li key={branch.leader.id}>
+                          <PastoralBranch branch={branch} />
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        <PastoralBranch />
+                      </li>
+                    )
+                  ) : level.id === "boards" ? (
                     (["church-board", "school-board"] as const).map((board) => {
                       const label =
                         board === "church-board"
